@@ -15,6 +15,10 @@ def proxy_state(service):
 def proxy_enabled_for_service(service):
     return proxy_state(service)['Enabled'] == 'Yes'
 
+def is_primary_service_enabled():
+    return proxy_enabled_for_service(
+              scutil.primary_service(ns.service_map()))
+
 # Enable the proxy for the given service
 def enable_proxy(service, host, port):
     print('Enabling proxy on {}...'.format(service))
@@ -36,12 +40,10 @@ def disable():
         disable_proxy(service)
 
 def toggle(host, port):
-    new_state = not proxy_enabled_for_service(scutil.primary_service(ns.service_map()))
-
     for service in scutil.connected_services():
-        if proxy_enabled_for_service(service) and not new_state:
-            disable_proxy(service)
-        elif not proxy_enabled_for_service(service) and new_state:
+        if proxy_enabled_for_service(service) and is_primary_service_enabled():
+            return disable_proxy(service)
+        else:
             enable_proxy(service, host, port)
 
 
