@@ -3,21 +3,11 @@
 import argparse
 import networksetup as ns
 import os
-import re
 import scutil
 import sys
 
-# Checks the proxy state for the given service
-def proxy_state(service):
-    state = ns.get_webproxy(service).splitlines()
-    return dict([re.findall(r'([^:]+): (.*)', line)[0] for line in state])
-
-def proxy_enabled_for_service(service):
-    return proxy_state(service)['Enabled'] == 'Yes'
-
 def is_primary_service_enabled():
-    return proxy_enabled_for_service(
-              scutil.primary_service(ns.service_map()))
+    return ns.is_proxy_enabled(scutil.primary_service(ns.service_map()))
 
 # Enable the proxy for the given service
 def enable_proxy(service, host, port):
@@ -41,7 +31,7 @@ def disable():
 
 def toggle(host, port):
     for service in scutil.connected_services():
-        if proxy_enabled_for_service(service) and is_primary_service_enabled():
+        if ns.is_proxy_enabled(service) and is_primary_service_enabled():
             return disable_proxy(service)
         else:
             enable_proxy(service, host, port)
