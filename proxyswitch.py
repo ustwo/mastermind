@@ -29,7 +29,7 @@ def disable():
 def toggle(host, port):
     for service in scutil.connected_services():
         if ns.is_proxy_enabled(service) and ns.is_primary_proxy_enabled():
-            return disable_proxy(service)
+            disable_proxy(service)
         else:
             enable_proxy(service, host, port)
 
