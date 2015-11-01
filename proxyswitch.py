@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 
-import subprocess
-import re
 import argparse
-import os
-import sys
 import networksetup as ns
+import os
+import re
 import scutil
+import sys
 
 # Checks the proxy state for the given service
 def proxy_state(service):
