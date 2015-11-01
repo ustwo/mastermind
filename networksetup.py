@@ -1,5 +1,6 @@
 import subprocess
 import re
+import scutil
 
 # Wraps the networksetup CLI
 def networksetup(*arguments):
@@ -31,3 +32,6 @@ def service_map():
 
 def is_proxy_enabled(service):
     return get_webproxy(service)['Enabled'] == 'Yes'
+
+def is_primary_proxy_enabled():
+    return is_proxy_enabled(scutil.primary_service(service_map()))

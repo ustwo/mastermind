@@ -6,9 +6,6 @@ import os
 import scutil
 import sys
 
-def is_primary_service_enabled():
-    return ns.is_proxy_enabled(scutil.primary_service(ns.service_map()))
-
 # Enable the proxy for the given service
 def enable_proxy(service, host, port):
     print('Enabling proxy on {}...'.format(service))
@@ -31,7 +28,7 @@ def disable():
 
 def toggle(host, port):
     for service in scutil.connected_services():
-        if ns.is_proxy_enabled(service) and is_primary_service_enabled():
+        if ns.is_proxy_enabled(service) and ns.is_primary_proxy_enabled():
             return disable_proxy(service)
         else:
             enable_proxy(service, host, port)
