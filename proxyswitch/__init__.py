@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import argparse
 import networksetup as ns
 import os
@@ -69,8 +67,3 @@ def main():
         disable()
     else:
         toggle(args.host, args.port)
-
-
-if __name__ == '__main__':
-    ensure_superuser()
-    main()
