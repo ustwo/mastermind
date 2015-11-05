@@ -1,3 +1,6 @@
+install:
+	pip install git+https://github.com/arnau/proxyswitch.git#egg=proxyswitch
+
 enable:
 	@$(PWD)/proxyswitch/__init__.py --enable
 
