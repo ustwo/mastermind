@@ -38,7 +38,7 @@ def ensure_superuser():
         print('Relaunching with sudo...')
         os.execv('/usr/bin/sudo', ['/usr/bin/sudo'] + sys.argv)
 
-def io():
+def main():
     parser = argparse.ArgumentParser(description='Helper tool for OS X proxy configuration and mitmproxy.',
                                      epilog='Any additional arguments will be passed on unchanged to mitmproxy.')
     parser.add_argument('-e',
@@ -73,4 +73,4 @@ def io():
 
 if __name__ == '__main__':
     ensure_superuser()
-    io()
+    main()
