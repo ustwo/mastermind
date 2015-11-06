@@ -22,5 +22,5 @@ path with the desired response.
 sudo mitmdump --host \
               --script "$(pwd)/proxyswitch/combo.py \
                         https://api.github.com/users/octocat/orgs \
-                        $(shell pwd)/test/records/fake.json"
+                        $(pwd)/test/records/fake.json"
 ```
