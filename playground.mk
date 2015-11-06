@@ -15,7 +15,7 @@ https-google:
 
 # Expected: 302
 http-github:
-	@curl -I \
+	@curl -i \
         --proxy http://localhost:8080 \
         -XGET http://github.com
 
@@ -28,6 +28,12 @@ http-ustwo:
 	@curl -I \
         --proxy http://localhost:8080 \
         -XGET http://ustwo.com
+
+api-call:
+	@curl -ki \
+        --proxy http://localhost:8080 \
+        -XGET https://api.github.com/users/octocat/orgs
+
 
 http-local:
 	@curl -I \

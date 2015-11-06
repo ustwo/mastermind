@@ -25,7 +25,9 @@ disable:
 
 combo:
 	$(mitmcmd) --host \
-             --script ./combo.py
+             --script "$(shell pwd)/combo.py \
+                       https://api.github.com/users/octocat/orgs \
+                       $(shell pwd)/test/records/fake.json"
 
 ps:
 	@$(PS) -ef | $(GREP) $(mitmcmd) | $(LESS)
