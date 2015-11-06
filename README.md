@@ -20,7 +20,7 @@ path with the desired response.
 
 ```sh
 sudo mitmdump --host \
-              --script "$(pwd)/combo.py \
+              --script "$(pwd)/proxyswitch/combo.py \
                         https://api.github.com/users/octocat/orgs \
                         $(shell pwd)/test/records/fake.json"
 ```
