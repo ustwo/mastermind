@@ -2,6 +2,7 @@ import argparse
 import networksetup as ns
 import os
 import scutil
+import mitmproxy
 import sys
 
 # Enable the proxy for the given service
@@ -30,11 +31,6 @@ def toggle(host, port):
             disable_proxy(service)
         else:
             enable_proxy(service, host, port)
-
-def ensure_superuser():
-    if os.getuid() != 0:
-        print('Relaunching with sudo...')
-        os.execv('/usr/bin/sudo', ['/usr/bin/sudo'] + sys.argv)
 
 def main():
     parser = argparse.ArgumentParser(description='Helper tool for OS X proxy configuration and mitmproxy.',

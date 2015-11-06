@@ -4,5 +4,4 @@ from proxyswitch import *
 
 
 if __name__ == '__main__':
-    ensure_superuser()
     main()
