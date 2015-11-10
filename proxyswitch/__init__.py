@@ -62,7 +62,7 @@ def main():
     args, extra_arguments = parser.parse_known_args()
 
     if args.version:
-        return "Version 0.1.0"
+        return "Version 0.1.1"
     if args.enable:
         enable(args.host, args.port)
     elif args.disable:

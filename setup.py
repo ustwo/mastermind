@@ -16,7 +16,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='proxyswitch',
-    version='0.1.0',
+    version='0.1.1',
     description='A proxy switch for Mac OS X',
     long_description=long_description,
     url='https://github.com/arnau/proxyswitch',
