@@ -1,11 +1,11 @@
 import os
-from libmproxy.protocol.http import decoded
+from libmproxy.models import decoded
 from libmproxy import filt
 import proxyswitch as pswitch
 
-def request(context, flow):
-    if flow.match(context.filter):
-        context.log(">>> request")
+# def request(context, flow):
+#     if flow.match(context.filter):
+#         context.log(">>> request")
 
 def response(context,flow):
     if flow.request.url == context.url:
@@ -23,16 +23,16 @@ def response(context,flow):
 
 
 def start(context, argv):
+    context.log(">>> Start")
+    enable()
+
     context.url = argv[1]
     context.filepath  = argv[2]
-
-    context.log(">>> start")
-    enable()
-    context.filter = filt.parse("~d ustwo.com")
+    # context.filter = filt.parse("~d github.com")
 
 def done(context):
     disable()
-    context.log(">>> done")
+    context.log(">>> Done")
 
 def enable():
     settings = ('127.0.0.1', '8080')

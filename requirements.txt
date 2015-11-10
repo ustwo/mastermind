@@ -1,2 +1,2 @@
-mitmproxy==0.13
+mitmproxy==0.14
 Flask==0.10.1

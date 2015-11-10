@@ -29,6 +29,12 @@ combo:
                        https://api.github.com/users/octocat/orgs \
                        $(shell pwd)/test/records/fake.json"
 
+combo-sys:
+	$(mitmcmd) --host \
+             --script "/usr/local/lib/python2.7/site-packages/proxyswitch/combo.py \
+                       https://api.github.com/users/octocat/orgs \
+                       $(shell pwd)/test/records/fake.json"
+
 ps:
 	@$(PS) -ef | $(GREP) $(mitmcmd) | $(LESS)
 
