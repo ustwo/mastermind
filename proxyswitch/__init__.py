@@ -35,6 +35,10 @@ def toggle(host, port):
 def main():
     parser = argparse.ArgumentParser(description='Helper tool for OS X proxy configuration and mitmproxy.',
                                      epilog='Any additional arguments will be passed on unchanged to mitmproxy.')
+    parser.add_argument('-v',
+                        '--version',
+                        action='store_true',
+                        help='Displays the version')
     parser.add_argument('-e',
                         '--enable',
                         action='store_true',
@@ -57,6 +61,8 @@ def main():
 
     args, extra_arguments = parser.parse_known_args()
 
+    if args.version:
+        return "Version 0.1.0"
     if args.enable:
         enable(args.host, args.port)
     elif args.disable:
