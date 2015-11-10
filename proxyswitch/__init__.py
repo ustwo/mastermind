@@ -67,5 +67,6 @@ def main():
 
     if args.version:
         print('Version 0.1.1')
+        return
 
     return parser.print_help()
