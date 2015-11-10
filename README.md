@@ -9,20 +9,14 @@ pip install "git+https://github.com/ustwo/proxyswitch.git@v0.2.0#egg=proxyswitch
 ```
 
 
-## Combo
+## Mastermind
 
-The combo script combines the proxyswitch with a mitmproxy script so it ensures
-the OS configuration is enabled when starting the proxy and it is disabled when
-the proxy is stopped.
-
-In short, the `combo.py` expects two arguments, the URL to act on and the file
-path with the desired response.
+Mastermind combines `mitmdump` and `proxyswitch` allowing you to pass a url and
+a mocked response body:
 
 ```sh
-sudo mitmdump --host \
-              --script "$(pwd)/proxyswitch/combo.py \
-                        https://api.github.com/users/octocat/orgs \
-                        $(pwd)/test/records/fake.json"
+sudo mastermind --response-body $(pwd)/test/records/fake.json" \
+                https://api.github.com/users/octocat/orgs
 ```
 
 ## Maintainers
