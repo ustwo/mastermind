@@ -38,7 +38,7 @@ setup(
         'Programming Language :: Python :: 2.7',
     ],
     packages=find_packages(),
-    install_requires=['mitmproxy=0.14.0'],
+    install_requires='mitmproxy=0.14.0',
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,
