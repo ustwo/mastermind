@@ -9,8 +9,8 @@ import proxyswitch as pswitch
 
 def response(context,flow):
     if flow.request.url == context.url:
-        flow.request.headers.add('Cache-Control', 'no-cache')
-        flow.response.headers.add('Cache-Control', 'no-cache')
+        flow.request.headers['Cache-Control'] = 'no-cache'
+        flow.response.headers['Cache-Control'] = 'no-cache'
         del flow.response.headers['ETag']
 
         with decoded(flow.response):
@@ -29,6 +29,8 @@ def start(context, argv):
     context.url = argv[1]
     context.filepath  = argv[2]
     # context.filter = filt.parse("~d github.com")
+    context.log(context.url)
+    context.log(context.filepath)
 
 def done(context):
     disable()

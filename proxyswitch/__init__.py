@@ -4,6 +4,7 @@ import os
 import scutil
 import mitmproxy
 import sys
+from . import version
 
 # Enable the proxy for the given service
 def enable_proxy(service, host, port):
@@ -36,8 +37,8 @@ def main():
     parser = argparse.ArgumentParser(description='Helper tool for OS X proxy configuration.')
     parser.add_argument('-v',
                         '--version',
-                        action='store_true',
-                        help='Displays the version')
+                        action='version',
+                        version="%(prog)s" + " " + version.VERSION)
     parser.add_argument('--enable',
                         action='store_true',
                         help='enable the proxy configuration')

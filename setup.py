@@ -7,6 +7,7 @@ https://github.com/arnau/proxyswitch
 from setuptools import setup, find_packages
 from codecs import open
 from os import path
+from proxyswitch import version
 
 here = path.abspath(path.dirname(__file__))
 
@@ -16,7 +17,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='proxyswitch',
-    version='0.1.1',
+    version=version.VERSION,
     description='A proxy switch for Mac OS X',
     long_description=long_description,
     url='https://github.com/arnau/proxyswitch',
@@ -61,6 +62,7 @@ setup(
     entry_points={
         'console_scripts': [
             'proxyswitch=proxyswitch:main',
+            'mastermind=proxyswitch.mastermind:main',
         ],
     },
 )
