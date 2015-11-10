@@ -24,3 +24,7 @@ sudo mitmdump --host \
                         https://api.github.com/users/octocat/orgs \
                         $(pwd)/test/records/fake.json"
 ```
+
+## Maintainers
+
+* [Arnau Siches](mailto:arnau@ustwo.com)
