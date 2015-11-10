@@ -33,39 +33,39 @@ def toggle(host, port):
             enable_proxy(service, host, port)
 
 def main():
-    parser = argparse.ArgumentParser(description='Helper tool for OS X proxy configuration and mitmproxy.',
-                                     epilog='Any additional arguments will be passed on unchanged to mitmproxy.')
+    parser = argparse.ArgumentParser(description='Helper tool for OS X proxy configuration.')
     parser.add_argument('-v',
                         '--version',
                         action='store_true',
                         help='Displays the version')
-    parser.add_argument('-e',
-                        '--enable',
+    parser.add_argument('--enable',
                         action='store_true',
                         help='enable the proxy configuration')
-    parser.add_argument('-d',
-                        '--disable',
+    parser.add_argument('--disable',
                         action='store_true',
                         help='disable the proxy configuration')
-    parser.add_argument('-t',
-                        '--toggle',
+    parser.add_argument('--toggle',
                         action='store_true',
                         help='just toggle the proxy configuration')
-    parser.add_argument('-p',
-                        '--port',
-                        help='override the default port 8080',
+    parser.add_argument('--port',
+                        help='Default port 8080',
                         default="8080")
     parser.add_argument('--host',
-                        help='override the default host 127.0.0.1',
+                        help='Default host 127.0.0.1',
                         default="127.0.0.1")
 
     args, extra_arguments = parser.parse_known_args()
 
-    if args.version:
-        return "Version 0.1.1"
     if args.enable:
-        enable(args.host, args.port)
-    elif args.disable:
-        disable()
-    else:
-        toggle(args.host, args.port)
+        return enable(args.host, args.port)
+
+    if args.disable:
+        return disable()
+
+    if args.toggle:
+        return toggle(args.host, args.port)
+
+    if args.version:
+        print('Version 0.1.1')
+
+    return parser.print_help()
