@@ -8,6 +8,14 @@ Test [mitmproxy](https://mitmproxy.org) via rewriting their [mitmwrapper.py exam
 pip install "git+https://github.com/ustwo/proxyswitch.git@v0.2.0#egg=proxyswitch"
 ```
 
+## Proxyswitch
+
+Check the help:
+
+```sh
+proxyswitch --help
+```
+
 
 ## Mastermind
 

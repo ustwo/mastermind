@@ -11,9 +11,13 @@ ifeq ($(INTERACTIVE), true)
   mitmcmd = $(MITMPROXY)
 endif
 
+.PHONY: test
 
 install:
 	$(PIP) install "git+https://github.com/ustwo/proxyswitch.git#egg=proxyswitch"
+
+test:
+	nosetests -s
 
 include playground.mk
 

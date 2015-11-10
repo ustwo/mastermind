@@ -1,2 +1,4 @@
 *.pyc
 sandbox/
+.cache
+__pycache__

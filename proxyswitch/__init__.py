@@ -28,10 +28,16 @@ def disable():
 
 def toggle(host, port):
     for service in scutil.connected_services():
-        if ns.is_proxy_enabled(service) and ns.is_primary_proxy_enabled():
+        if ns.is_proxy_enabled(record(service)) and ns.is_proxy_enabled(record(primary_service())):
             disable_proxy(service)
         else:
             enable_proxy(service, host, port)
+
+def record(service):
+    return ns.webproxy_record(ns.get_webproxy(service))
+
+def primary_service():
+    return scutil.primary_service(ns.service_map(ns.service_order()))
 
 def main():
     parser = argparse.ArgumentParser(description='Helper tool for OS X proxy configuration.')

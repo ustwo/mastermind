@@ -1,14 +1,12 @@
 import subprocess
 import re
-import scutil
 
 # Wraps the networksetup CLI
 def networksetup(*arguments):
     return subprocess.check_output(['/usr/sbin/networksetup'] + list(arguments))
 
 def get_webproxy(service):
-    return dict(map(lambda x: x.split(': '),
-                networksetup('-getwebproxy', service).splitlines()))
+    return networksetup('-getwebproxy', service)
 
 def set_webproxy(*arguments):
     return networksetup('-setwebproxy', *arguments)
@@ -25,13 +23,13 @@ def set_secure_webproxy_state(*arguments):
 def service_order():
     return networksetup('-listnetworkserviceorder')
 
-def service_map():
+def webproxy_record(raw_record):
+    return dict(map(lambda x: x.split(': '), raw_record.splitlines()))
+
+def service_map(service_order):
     return re.findall(r'\(\d+\)\s(.*)$\n\(.*Device: (.+)\)$',
-                      service_order(),
+                      service_order,
                       re.MULTILINE)
 
-def is_proxy_enabled(service):
-    return get_webproxy(service)['Enabled'] == 'Yes'
-
-def is_primary_proxy_enabled():
-    return is_proxy_enabled(scutil.primary_service(service_map()))
+def is_proxy_enabled(record):
+    return record['Enabled'] == 'Yes'
