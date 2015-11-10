@@ -19,6 +19,15 @@ sudo mastermind --response-body $(pwd)/test/records/fake.json" \
                 https://api.github.com/users/octocat/orgs
 ```
 
+Which is essentially:
+
+```sh
+mitmdump --host \
+         --script "$(pwd)/proxyswitch/combo.py \
+                   https://api.github.com/users/octocat/orgs \
+                   $(pwd)/test/records/fake.json"
+```
+
 ## Maintainers
 
 * [Arnau Siches](mailto:arnau@ustwo.com)
