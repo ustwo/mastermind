@@ -1,7 +1,7 @@
 """A proxy switch for Mac OS X
 
 See:
-https://github.com/arnau/proxyswitch
+https://github.com/ustwo/proxyswitch
 """
 
 from setuptools import setup, find_packages
@@ -20,9 +20,9 @@ setup(
     version=version.VERSION,
     description='A proxy switch for Mac OS X',
     long_description=long_description,
-    url='https://github.com/arnau/proxyswitch',
+    url='https://github.com/ustwo/proxyswitch',
     author='Arnau Siches',
-    author_email='asiches@gmail.com',
+    author_email='arnau@ustwo.com',
     license='MIT',
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
@@ -38,7 +38,7 @@ setup(
         'Programming Language :: Python :: 2.7',
     ],
     packages=find_packages(),
-    install_requires=['mitmproxy'],
+    install_requires=['mitmproxy=0.14.0'],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,

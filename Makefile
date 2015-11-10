@@ -13,7 +13,7 @@ endif
 
 
 install:
-	$(PIP) install "git+https://github.com/arnau/proxyswitch.git#egg=proxyswitch"
+	$(PIP) install "git+https://github.com/ustwo/proxyswitch.git#egg=proxyswitch"
 
 include playground.mk
 
@@ -23,6 +23,7 @@ enable:
 disable:
 	@$(PWD)/proxyswitch.py --disable
 
+# Mastermind without mastermind
 combo:
 	$(mitmcmd) --host \
              --script "$(shell pwd)/proxyswitch/combo.py \
@@ -30,7 +31,8 @@ combo:
                        $(shell pwd)/test/records/fake.json"
 
 mastermind:
-	@$(shell pwd)/mastermind.py --response-body $(shell pwd)/test/records/fake.json \
+	@$(shell pwd)/mastermind.py --quiet \
+                              --response-body $(shell pwd)/test/records/fake.json \
                               https://api.github.com/users/octocat/orgs
 
 

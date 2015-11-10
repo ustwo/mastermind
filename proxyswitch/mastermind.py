@@ -29,12 +29,19 @@ def main():
     parser.add_argument('--no-proxy-settings',
                         action='store_true',
                         help='Skips changing the OS proxy settings')
+    parser.add_argument('--quiet',
+                        action='store_true',
+                        help='Makes mitmproxy quiet')
 
     args, extra_arguments = parser.parse_known_args()
 
     mitm_args = ['--host',
-                 '--quiet',
-                 '--script', "./proxyswitch/combo.py https://api.github.com/users/octocat/orgs /Users/arnau/kitchen/me/proxyswitch/test/records/fake.json"]
+                 '--script',
+                    "./proxyswitch/combo.py {} {}".format(args.url,
+                                                          args.response_body)]
+
+    if args.quiet:
+        mitm_args.append('--quiet')
 
     try:
         mitmdump(mitm_args)

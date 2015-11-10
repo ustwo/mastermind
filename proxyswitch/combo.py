@@ -23,7 +23,6 @@ def response(context,flow):
 
 
 def start(context, argv):
-    context.log(">>> Start")
     enable()
 
     context.url = argv[1]
@@ -34,7 +33,6 @@ def start(context, argv):
 
 def done(context):
     disable()
-    context.log(">>> Done")
 
 def enable():
     settings = ('127.0.0.1', '8080')
