@@ -2,7 +2,6 @@ import argparse
 import networksetup as ns
 import os
 import scutil
-import mitmproxy
 import sys
 from . import version
 
