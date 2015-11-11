@@ -47,14 +47,14 @@ def main():
 
     if args.script:
         if args.response_body or args.url:
-            parser.error("mmec")
+            parser.error("The Script mode does not allow a response body or a URL.")
 
         mitm_args.append('--script')
         mitm_args.append(args.script)
     elif args.response_body:
         mitm_args = ['--script',
-                        "./proxyswitch/combo.py {} {}".format(args.url,
-                                                              args.response_body)]
+                     "./proxyswitch/combo.py {} {}".format(args.url,
+                                                           args.response_body)]
 
     if args.quiet:
         mitm_args.append('--quiet')

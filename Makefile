@@ -39,6 +39,13 @@ mastermind-script:
                                         https://api.github.com/users/octocat/orgs \
                                         $(shell pwd)/test/records/fake.json"
 
+mastermind-error:
+	@$(shell pwd)/mastermind.py --quiet \
+                              --response-body $(shell pwd)/test/records/fake.json \
+                              --script "$(shell pwd)/proxyswitch/combo.py \
+                                        https://api.github.com/users/octocat/orgs \
+                                        $(shell pwd)/test/records/fake.json"
+
 
 ps:
 	@$(PS) -ef | $(GREP) $(mitmcmd) | $(LESS)
