@@ -19,22 +19,37 @@ proxyswitch --help
 
 ## Mastermind
 
-Mastermind combines `mitmdump` and `proxyswitch` allowing you to pass a url and
-a mocked response body:
+Mastermind combines `mitmdump` and `proxyswitch` making sure the proxy settings
+are enabled when the mitmproxy starts and disabling them when the proxy stops.
+
+There are two forms you can use, "Simple" and "Script".  The first expects a
+response body and a URL.  It will use the response body everytime it intercepts
+the given URL.
+
 
 ```sh
 sudo mastermind --response-body $(pwd)/test/records/fake.json" \
                 https://api.github.com/users/octocat/orgs
 ```
 
-Which is essentially:
+The former expects a mitmproxy Python script. So you can do:
 
 ```sh
-mitmdump --host \
-         --script "$(pwd)/proxyswitch/combo.py \
-                   https://api.github.com/users/octocat/orgs \
-                   $(pwd)/test/records/fake.json"
+sudo mastermind --script $(pwd)/myscript.py
 ```
+
+Or pass parameters to your script the same way mitmproxy does:
+
+```sh
+sudo mastermind --script "$(pwd)/myscript.py param1 param2"
+```
+
+Check the help for more.
+
+```sh
+mastermind --help
+```
+
 
 ## Maintainers
 
