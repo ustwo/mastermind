@@ -7,7 +7,7 @@ https://github.com/ustwo/proxyswitch
 from setuptools import setup, find_packages
 from codecs import open
 from os import path
-from proxyswitch import version
+from proxyswitch.version import *
 
 here = path.abspath(path.dirname(__file__))
 
@@ -17,7 +17,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='proxyswitch',
-    version=version.VERSION,
+    version=VERSION,
     description='A proxy switch for Mac OS X',
     long_description=long_description,
     url='https://github.com/ustwo/proxyswitch',
