@@ -44,6 +44,27 @@ Or pass parameters to your script the same way mitmproxy does:
 sudo mastermind --script "$(pwd)/myscript.py param1 param2"
 ```
 
+If you go for the `--script` approach, you have to explicitly manage proxyswitch
+yourself. Adding the following will do the trick:
+
+```python
+import proxyswitch as pswitch
+
+def start(context, argv):
+    enable()
+
+def done(context):
+    disable()
+
+def enable():
+    settings = ('127.0.0.1', '8080')
+    pswitch.enable(*settings)
+
+def disable():
+    pswitch.disable()
+```
+
+
 Check the help for more.
 
 ```sh
