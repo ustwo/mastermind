@@ -11,7 +11,11 @@ def response(context,flow):
     if flow.request.url == context.url:
         flow.request.headers['Cache-Control'] = 'no-cache'
         flow.response.headers['Cache-Control'] = 'no-cache'
-        del flow.response.headers['ETag']
+
+        if flow.request.headers.get('If-None-Match'):
+            del flow.request.headers['If-None-Match']
+        if flow.response.headers.get('ETag'):
+            del flow.response.headers['ETag']
 
         with decoded(flow.response):
             # data = open(os.path.join(os.getcwd(),

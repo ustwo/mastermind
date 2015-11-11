@@ -7,19 +7,28 @@ import thread
 
 def main():
     parser = argparse.ArgumentParser(prog = 'mastermind',
-                                     description = 'Helper tool for OS X proxy configuration and mitmproxy.',
-                                     epilog = 'Any additional arguments will be passed on unchanged to mitmproxy.')
+                                     description = 'Helper tool to orchestrate OS X proxy settings and mitmproxy.')
     parser.add_argument('-v',
                         '--version',
                         action='version',
                         version="%(prog)s" + " " + version.VERSION)
-    parser.add_argument('--response-body',
+
+    single = parser.add_argument_group('Single')
+    script = parser.add_argument_group('Script')
+
+    single.add_argument('--response-body',
                         metavar = 'FILEPATH',
-                        required = True,
-                        help = 'The file containing the mocked response body')
-    parser.add_argument('url',
+                        help = 'A file containing the mocked response body')
+    single.add_argument('--url',
                         metavar = 'URL',
-                        help = 'The URL to mock its response')
+                        help = 'A URL to mock its response')
+
+    script.add_argument('--script',
+                        metavar = 'FILEPATH',
+                        help = '''A mitmproxy Python script filepath.
+                                  When passed, --response-body and --url are ignored''')
+
+
     parser.add_argument('--port',
                         help = 'Default port 8080',
                         default = "8080")
@@ -34,11 +43,18 @@ def main():
                         help='Makes mitmproxy quiet')
 
     args, extra_arguments = parser.parse_known_args()
+    mitm_args = ['--host']
 
-    mitm_args = ['--host',
-                 '--script',
-                    "./proxyswitch/combo.py {} {}".format(args.url,
-                                                          args.response_body)]
+    if args.script:
+        if args.response_body or args.url:
+            parser.error("mmec")
+
+        mitm_args.append('--script')
+        mitm_args.append(args.script)
+    elif args.response_body:
+        mitm_args = ['--script',
+                        "./proxyswitch/combo.py {} {}".format(args.url,
+                                                              args.response_body)]
 
     if args.quiet:
         mitm_args.append('--quiet')
