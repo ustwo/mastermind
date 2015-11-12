@@ -29,20 +29,25 @@ disable:
 
 
 mastermind:
-	@$(shell pwd)/mastermind.py --quiet \
+	@$(shell pwd)/mastermind.py \
                               --response-body $(shell pwd)/test/records/fake.json \
                               --url https://api.github.com/users/octocat/orgs
 
 mastermind-script:
 	@$(shell pwd)/mastermind.py --quiet \
-                              --script "$(shell pwd)/proxyswitch/combo.py \
+                              --script "$(shell pwd)/scripts/simple.py \
                                         https://api.github.com/users/octocat/orgs \
                                         $(shell pwd)/test/records/fake.json"
+
+mastermind-driver:
+	@$(shell pwd)/mastermind.py \
+                              --with-driver \
+                              --base-path $(shell pwd)/test/records
 
 mastermind-error:
 	@$(shell pwd)/mastermind.py --quiet \
                               --response-body $(shell pwd)/test/records/fake.json \
-                              --script "$(shell pwd)/proxyswitch/combo.py \
+                              --script "$(shell pwd)/scripts/simple.py \
                                         https://api.github.com/users/octocat/orgs \
                                         $(shell pwd)/test/records/fake.json"
 

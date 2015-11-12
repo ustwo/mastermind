@@ -19,10 +19,10 @@ http-github:
         --proxy http://localhost:8080 \
         -XGET http://github.com
 
-http-proxyapp:
-	@curl -I \
+http-proxapp:
+	@curl \
         --proxy http://localhost:8080 \
-        -XGET http://proxyapp/foo
+        -XGET http://proxapp:5000/foo/start
 
 http-ustwo:
 	@curl -I \
@@ -65,12 +65,6 @@ p-script:
 	@mitmproxy --verbose \
              --host \
              --script "$(PWD)/sandbox/example.py"
-
-
-
-proxyapp:
-	@mitmproxy -s ./proxyapp.py
-
 
 record:
 	@mitmdump -w recorded-request

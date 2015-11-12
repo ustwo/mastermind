@@ -53,8 +53,8 @@ def main():
         mitm_args.append(args.script)
     elif args.response_body:
         mitm_args = ['--script',
-                     "./proxyswitch/combo.py {} {}".format(args.url,
-                                                           args.response_body)]
+                     "./scripts/simple.py {} {}".format(args.url,
+                                                        args.response_body)]
 
     if args.quiet:
         mitm_args.append('--quiet')
