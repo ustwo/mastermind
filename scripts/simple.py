@@ -18,9 +18,8 @@ def response(context, flow):
 def start(context, argv):
     context.url = argv[1]
     context.filepath  = argv[2]
-    settings = ('127.0.0.1', '8080')
 
-    enable(*settings)
+    enable('127.0.0.1', '8080')
 
     context.log(context.url)
     context.log(context.filepath)
