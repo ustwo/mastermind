@@ -4,6 +4,7 @@ MITMPROXY := mitmproxy
 MITMDUMP := mitmdump
 PIP := pip
 LESS := less
+CURL := curl
 
 
 mitmcmd = $(MITMDUMP)
@@ -14,43 +15,13 @@ endif
 .PHONY: test
 
 install:
-	$(PIP) install "git+https://github.com/ustwo/proxyswitch.git#egg=proxyswitch"
+	$(PIP) install -r requirements.txt
 
 test:
 	nosetests -s
 
-include playground.mk
 
-enable:
-	@$(PWD)/proxyswitch.py --enable
-
-disable:
-	@$(PWD)/proxyswitch.py --disable
-
-
-mastermind:
-	@$(shell pwd)/mastermind.py \
-                              --response-body $(shell pwd)/test/records/fake.json \
-                              --url https://api.github.com/users/octocat/orgs
-
-mastermind-script:
-	@$(shell pwd)/mastermind.py --quiet \
-                              --script "$(shell pwd)/scripts/simple.py \
-                                        https://api.github.com/users/octocat/orgs \
-                                        $(shell pwd)/test/records/fake.json"
-
-mastermind-driver:
-	@$(shell pwd)/mastermind.py \
-                              --with-driver \
-                              --base-path $(shell pwd)/test/records
-
-mastermind-error:
-	@$(shell pwd)/mastermind.py --quiet \
-                              --response-body $(shell pwd)/test/records/fake.json \
-                              --script "$(shell pwd)/scripts/simple.py \
-                                        https://api.github.com/users/octocat/orgs \
-                                        $(shell pwd)/test/records/fake.json"
-
+include tasks/*.mk
 
 ps:
 	@$(PS) -ef | $(GREP) $(mitmcmd) | $(LESS)

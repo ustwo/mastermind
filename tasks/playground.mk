@@ -19,26 +19,10 @@ http-github:
         --proxy http://localhost:8080 \
         -XGET http://github.com
 
-http-proxapp:
-	@curl \
-        --proxy http://localhost:8080 \
-        -XGET http://proxapp:5000/foo/start
-
 http-ustwo:
 	@curl -I \
         --proxy http://localhost:8080 \
         -XGET http://ustwo.com
-
-api-call:
-	@curl -ki \
-        --proxy http://localhost:8080 \
-        -XGET https://api.github.com/users/octocat/orgs
-
-
-http-local:
-	@curl -I \
-        --proxy http://localhost:8080 \
-        -XGET http://localhost:8080
 
 
 simple:
