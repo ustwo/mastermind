@@ -1,4 +1,5 @@
 import os
+import yaml
 from libmproxy.models import decoded
 from libmproxy import filt
 from proxyswitch import enable, disable
@@ -9,24 +10,26 @@ app = Flask('proxapp')
 driver = Driver()
 
 def response(context, flow):
-    url = 'https://api.github.com/users/octocat/orgs'
-    if flow.request.url == url:
-        context.log(">>>>>>>>>>>>>>>>>>>")
-        context.log(">>>>>>>>>>>>>>>>>>> %s" % driver.name)
-        context.log(">>>>>>>>>>>>>>>>>>>")
+    if driver.name != 'nobody':
+        rules_file = open(os.path.join(context.source_dir,
+                                       '{}.yaml'.format(driver.name))).read()
+        rules = yaml.safe_load(rules_file)
+        urls = rules['urls']
 
-        flow.request.headers['Cache-Control'] = 'no-cache'
-        flow.response.headers['Cache-Control'] = 'no-cache'
+        if flow.request.url in urls:
+            body = open(os.path.join(context.source_dir,
+                                     rules['body'])).read()
 
-        if 'If-None-Match' in flow.request.headers:
-            del flow.request.headers['If-None-Match']
-        if 'ETag' in flow.response.headers:
-            del flow.response.headers['ETag']
+            flow.request.headers['Cache-Control'] = 'no-cache'
+            flow.response.headers['Cache-Control'] = 'no-cache'
 
-        with decoded(flow.response):
-            data = open(os.path.join(context.source_dir,
-                                     'fake.json')).read()
-            flow.response.content = data
+            if 'If-None-Match' in flow.request.headers:
+                del flow.request.headers['If-None-Match']
+            if 'ETag' in flow.response.headers:
+                del flow.response.headers['ETag']
+
+            with decoded(flow.response):
+                flow.response.content = body
 
 
 @app.route('/')

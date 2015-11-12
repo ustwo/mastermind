@@ -1,0 +1,4 @@
+---
+urls:
+  - https://api.github.com/users/octocat/orgs
+body: fake.json
