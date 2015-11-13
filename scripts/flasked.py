@@ -8,13 +8,13 @@ import proxyswitch.rules as rules
 def response(context, flow):
     if driver.name != 'nobody':
         rule_data = rules.load(driver.name,
-                           context.source_dir)
+                               context.source_dir)
 
         urls = rule_data['urls']
 
         if flow.request.url in urls:
             body = rules.load_body(rule_data['body'],
-                             context.source_dir)
+                                   context.source_dir)
 
             flow.response.headers['Cache-Control'] = 'no-cache'
 
