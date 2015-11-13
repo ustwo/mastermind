@@ -1,9 +1,8 @@
 import os
-import yaml
 from libmproxy.models import decoded
 from libmproxy import filt
 from proxyswitch import enable, disable
-from proxyswitch.driver import Driver
+from proxyswitch.driver import Driver, load_rules
 from flask import Flask
 
 app = Flask('proxapp')
@@ -11,9 +10,9 @@ driver = Driver()
 
 def response(context, flow):
     if driver.name != 'nobody':
-        rules_file = open(os.path.join(context.source_dir,
-                                       '{}.yaml'.format(driver.name))).read()
-        rules = yaml.safe_load(rules_file)
+        rules = load_rules(driver.name,
+                           context.source_dir)
+
         urls = rules['urls']
 
         if flow.request.url in urls:
