@@ -33,33 +33,23 @@ def body(rule, base_path):
 def url(rule):
     return rule['url']
 
-def process_request_headers(rule, flow_headers):
-    if 'request' in rule:
-        if 'headers' in rule['request']:
-            headers = rule['request']['headers']
-            to_remove = headers.get('remove', {})
 
-            for header in to_remove:
-                if header in flow_headers:
-                    del flow_headers[header]
+def process_headers(target, rule, flow_headers):
+    if target in rule:
+        if 'headers' in rule[target]:
+            headers = rule[target]['headers']
+            remove_headers(headers, flow_headers)
+            add_headers(headers, flow_headers)
 
-            to_add = headers.get('add', {})
 
-            for (header, value) in to_add.items():
-                flow_headers[header] = value
+def remove_headers(headers, flow_headers):
+    to_remove = headers.get('remove', {})
+    for header in to_remove:
+        if header in flow_headers:
+            del flow_headers[header]
 
-def process_response_headers(rule, flow_headers):
-    if 'response' in rule:
-        if 'headers' in rule['response']:
-            headers = rule['response']['headers']
-            to_remove = headers.get('remove', {})
+def add_headers(headers, flow_headers):
+    to_add = headers.get('add', {})
 
-            for header in to_remove:
-                if header in flow_headers:
-                    del flow_headers[header]
-
-            to_add = headers.get('add', {})
-
-            for (header, value) in to_add.items():
-                flow_headers[header] = value
-
+    for (header, value) in to_add.items():
+        flow_headers[header] = value

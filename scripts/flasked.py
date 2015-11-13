@@ -19,8 +19,12 @@ def response(context, flow):
             body = rules.body(rule,
                               context.source_dir)
 
-            rules.process_request_headers(rule, flow.request.headers)
-            rules.process_response_headers(rule, flow.response.headers)
+            rules.process_headers('request',
+                                  rule,
+                                  flow.request.headers)
+            rules.process_headers('response',
+                                  rule,
+                                  flow.response.headers)
 
             with decoded(flow.response):
                 flow.response.content = body
