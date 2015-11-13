@@ -1,0 +1,13 @@
+[
+  {
+    "login": "ustwo",
+    "id": 625384,
+    "url": "https://api.github.com/orgs/ustwo",
+    "repos_url": "https://api.github.com/orgs/ustwo/repos",
+    "events_url": "https://api.github.com/orgs/ustwo/events",
+    "members_url": "https://api.github.com/orgs/ustwo/members{/member}",
+    "public_members_url": "https://api.github.com/orgs/ustwo/public_members{/member}",
+    "avatar_url": "https://avatars.githubusercontent.com/u/625384?v=3",
+    "description": "Digital product studio developing products that will make a difference to the world"
+  }
+]

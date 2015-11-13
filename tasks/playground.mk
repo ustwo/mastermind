@@ -19,26 +19,10 @@ http-github:
         --proxy http://localhost:8080 \
         -XGET http://github.com
 
-http-proxyapp:
-	@curl -I \
-        --proxy http://localhost:8080 \
-        -XGET http://proxyapp/foo
-
 http-ustwo:
 	@curl -I \
         --proxy http://localhost:8080 \
         -XGET http://ustwo.com
-
-api-call:
-	@curl -ki \
-        --proxy http://localhost:8080 \
-        -XGET https://api.github.com/users/octocat/orgs
-
-
-http-local:
-	@curl -I \
-        --proxy http://localhost:8080 \
-        -XGET http://localhost:8080
 
 
 simple:
@@ -65,12 +49,6 @@ p-script:
 	@mitmproxy --verbose \
              --host \
              --script "$(PWD)/sandbox/example.py"
-
-
-
-proxyapp:
-	@mitmproxy -s ./proxyapp.py
-
 
 record:
 	@mitmdump -w recorded-request
