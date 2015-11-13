@@ -2,7 +2,7 @@ import os
 import yaml
 
 
-def load_rules(filename, base_path):
+def load(filename, base_path):
     file = read_file(os.path.join(base_path,
                                   '{}.yaml'.format(filename)))
 

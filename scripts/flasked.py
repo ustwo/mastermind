@@ -3,7 +3,7 @@ from libmproxy.models import decoded
 from libmproxy import filt
 from proxyswitch import enable, disable
 from proxyswitch.driver import Driver
-from proxyswitch.rules import load_rules, load_body
+import proxyswitch.rules as rules
 from flask import Flask
 
 app = Flask('proxapp')
@@ -11,13 +11,13 @@ driver = Driver()
 
 def response(context, flow):
     if driver.name != 'nobody':
-        rules = load_rules(driver.name,
+        rule_data = rules.load(driver.name,
                            context.source_dir)
 
-        urls = rules['urls']
+        urls = rule_data['urls']
 
         if flow.request.url in urls:
-            body = load_body(rules['body'],
+            body = rules.load_body(rule_data['body'],
                              context.source_dir)
 
             flow.response.headers['Cache-Control'] = 'no-cache'
