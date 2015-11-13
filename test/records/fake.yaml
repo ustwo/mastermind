@@ -15,4 +15,5 @@
       remove:
         - 'ETag'
       add:
-        X-ustwo-intercepted: Yes
+        Cache-Control: no-cache
+        X-ustwo-intercepted: 'Yes'

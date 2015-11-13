@@ -15,15 +15,38 @@ def response(context, flow):
         if flow.request.url in urls:
             rule = rules.find_by_url(flow.request.url,
                                      ruleset)
+
             body = rules.body(rule,
                               context.source_dir)
 
-            # flow.response.headers['Cache-Control'] = 'no-cache'
+            if 'request' in rule:
+                if 'headers' in rule['request']:
+                    headers = rule['request']['headers']
+                    to_remove = headers.get('remove', {})
 
-            # if 'If-None-Match' in flow.request.headers:
-            #     del flow.request.headers['If-None-Match']
-            # if 'ETag' in flow.response.headers:
-            #     del flow.response.headers['ETag']
+                    for header in to_remove:
+                        if header in flow.request.headers:
+                            del flow.request.headers[header]
+
+                    to_add = headers.get('add', {})
+
+                    for (header, value) in to_add.items():
+                        flow.request.headers[header] = value
+
+
+            if 'response' in rule:
+                if 'headers' in rule['response']:
+                    headers = rule['response']['headers']
+                    to_remove = headers.get('remove', {})
+
+                    for header in to_remove:
+                        if header in flow.response.headers:
+                            del flow.response.headers[header]
+
+                    to_add = headers.get('add', {})
+
+                    for (header, value) in to_add.items():
+                        flow.response.headers[header] = value
 
             with decoded(flow.response):
                 flow.response.content = body

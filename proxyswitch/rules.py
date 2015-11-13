@@ -12,22 +12,23 @@ def read_file(filepath):
     return open(filepath).read()
 
 def urls(ruleset):
-    return map(extract_url, ruleset)
-
-def extract_url(rule):
-    return rule['url']
+    return map(url, ruleset)
 
 def find_by_url(url, ruleset):
-    return reduce(extract_rule_by_url(url), ruleset)
+    return head(filter(lambda x: x['url'] == url,
+                       ruleset))
 
-def extract_rule_by_url(url):
-    def extract_rule(rule, result):
-        if rule['url'] == url: result = rule
-        return result
+def head(collection):
+    try:
+        return collection[0]
+    except:
+        return None
 
-    return extract_rule
-
+# Rule functions
 def body(rule, base_path):
     filename = rule['response']['body']
     return read_file(os.path.join(base_path,
                                   filename))
+
+def url(rule):
+    return rule['url']
