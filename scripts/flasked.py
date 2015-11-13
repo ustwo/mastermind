@@ -19,34 +19,8 @@ def response(context, flow):
             body = rules.body(rule,
                               context.source_dir)
 
-            if 'request' in rule:
-                if 'headers' in rule['request']:
-                    headers = rule['request']['headers']
-                    to_remove = headers.get('remove', {})
-
-                    for header in to_remove:
-                        if header in flow.request.headers:
-                            del flow.request.headers[header]
-
-                    to_add = headers.get('add', {})
-
-                    for (header, value) in to_add.items():
-                        flow.request.headers[header] = value
-
-
-            if 'response' in rule:
-                if 'headers' in rule['response']:
-                    headers = rule['response']['headers']
-                    to_remove = headers.get('remove', {})
-
-                    for header in to_remove:
-                        if header in flow.response.headers:
-                            del flow.response.headers[header]
-
-                    to_add = headers.get('add', {})
-
-                    for (header, value) in to_add.items():
-                        flow.response.headers[header] = value
+            rules.process_request_headers(rule, flow.request.headers)
+            rules.process_response_headers(rule, flow.response.headers)
 
             with decoded(flow.response):
                 flow.response.content = body

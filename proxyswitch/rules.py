@@ -32,3 +32,34 @@ def body(rule, base_path):
 
 def url(rule):
     return rule['url']
+
+def process_request_headers(rule, flow_headers):
+    if 'request' in rule:
+        if 'headers' in rule['request']:
+            headers = rule['request']['headers']
+            to_remove = headers.get('remove', {})
+
+            for header in to_remove:
+                if header in flow_headers:
+                    del flow_headers[header]
+
+            to_add = headers.get('add', {})
+
+            for (header, value) in to_add.items():
+                flow_headers[header] = value
+
+def process_response_headers(rule, flow_headers):
+    if 'response' in rule:
+        if 'headers' in rule['response']:
+            headers = rule['response']['headers']
+            to_remove = headers.get('remove', {})
+
+            for header in to_remove:
+                if header in flow_headers:
+                    del flow_headers[header]
+
+            to_add = headers.get('add', {})
+
+            for (header, value) in to_add.items():
+                flow_headers[header] = value
+
