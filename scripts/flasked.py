@@ -7,24 +7,27 @@ import proxyswitch.rules as rules
 
 def response(context, flow):
     if driver.name != 'nobody':
-        rule_data = rules.load(driver.name,
-                               context.source_dir)
+        ruleset = rules.load(driver.name,
+                             context.source_dir)
 
-        urls = rule_data['urls']
+        urls = rules.urls(ruleset)
 
         if flow.request.url in urls:
-            body = rules.load_body(rule_data['body'],
-                                   context.source_dir)
+            rule = rules.find_by_url(flow.request.url,
+                                     ruleset)
+            body = rules.body(rule,
+                              context.source_dir)
 
-            flow.response.headers['Cache-Control'] = 'no-cache'
+            # flow.response.headers['Cache-Control'] = 'no-cache'
 
-            if 'If-None-Match' in flow.request.headers:
-                del flow.request.headers['If-None-Match']
-            if 'ETag' in flow.response.headers:
-                del flow.response.headers['ETag']
+            # if 'If-None-Match' in flow.request.headers:
+            #     del flow.request.headers['If-None-Match']
+            # if 'ETag' in flow.response.headers:
+            #     del flow.response.headers['ETag']
 
             with decoded(flow.response):
                 flow.response.content = body
+
 
 def start(context, argv):
     register(context)

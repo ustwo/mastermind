@@ -38,3 +38,8 @@ test-api-call:
 	@curl -ki \
         --proxy http://localhost:8080 \
         -XGET https://api.github.com/users/octocat/orgs
+
+test-api-call2:
+	@curl -ki \
+        --proxy http://localhost:8080 \
+        -XGET https://api.github.com/users/arnau/orgs

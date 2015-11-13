@@ -1,4 +1,18 @@
 ---
-urls:
-  - https://api.github.com/users/octocat/orgs
-body: fake.json
+- name: foo
+  url: https://api.github.com/users/octocat/orgs
+  response:
+    body: fake.json
+- name: bar
+  url: https://api.github.com/users/arnau/orgs
+  request:
+    headers:
+      remove:
+        - 'If-None-Match'
+  response:
+    body: arnau-orgs.json
+    headers:
+      remove:
+        - 'ETag'
+      add:
+        X-ustwo-intercepted: Yes
