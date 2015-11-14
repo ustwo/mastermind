@@ -68,6 +68,29 @@ A more elaborated case will have headers to add or remove:
         X-ustwo-intercepted: 'Yes'
 ```
 
+Assuming the two examples above were named `a.yaml` and `b.yaml` a running
+`mastermind` in driver mode would load the first with:
+
+```sh
+curl --proxy http://localhost:8080 \
+     -XGET http://proxapp:5000/a/start
+```
+
+The second with:
+
+```sh
+curl --proxy http://localhost:8080 \
+     -XGET http://proxapp:5000/b/start
+```
+
+And cleaning any ruleset with:
+
+```sh
+curl --proxy http://localhost:8080 \
+     -XGET http://proxapp:5000/stop
+```
+
+
 ### Simple
 
 The simple mode expects a response body filepath and a URL to intercept:
