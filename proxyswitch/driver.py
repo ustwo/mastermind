@@ -16,6 +16,7 @@ class Driver:
         return self.name
 
 app = Flask('proxapp')
+app.host = '0.0.0.0'
 driver = Driver()
 
 def register(context):
