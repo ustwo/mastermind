@@ -22,17 +22,64 @@ proxyswitch --help
 Mastermind combines `mitmdump` and `proxyswitch` making sure the proxy settings
 are enabled when the mitmproxy starts and disabling them when the proxy stops.
 
-There are two forms you can use, "Simple" and "Script".  The first expects a
-response body and a URL.  It will use the response body everytime it intercepts
-the given URL.
+There are three forms you can use, "Driver", "Simple" and "Script".  They can't
+be mixed.
 
+### Driver
+
+The driver mode will mount a thin HTTP server listening for actions and a set
+of rules to apply.
+
+```sh
+sudo mastermind --with-driver \
+                --source-dir $(pwd)/test/records
+```
+
+In the example above, `mastermind` will expect to find one or more YAML ruleset
+files.  [Check the example](test/records).
+
+A ruleset file is an array of rules.  Each rule is composed by at least a `url`
+and a `response.body`.  The body must be a _relative_ path to an existing file.
+
+```yaml
+---
+- url: https://api.github.com/users/octocat/orgs
+  response:
+    body: fake.json
+```
+
+A more elaborated case will have headers to add or remove:
+
+```yaml
+---
+- name: bar
+  url: https://api.github.com/users/arnau/orgs
+  request:
+    headers:
+      remove:
+        - 'If-None-Match'
+  response:
+    body: arnau-orgs.json
+    headers:
+      remove:
+        - 'ETag'
+      add:
+        Cache-Control: no-cache
+        X-ustwo-intercepted: 'Yes'
+```
+
+### Simple
+
+The simple mode expects a response body filepath and a URL to intercept:
 
 ```sh
 sudo mastermind --response-body $(pwd)/test/records/fake.json" \
                 https://api.github.com/users/octocat/orgs
 ```
 
-The former expects a mitmproxy Python script. So you can do:
+### Script
+
+The script mode expects a mitmproxy Python script:
 
 ```sh
 sudo mastermind --script $(pwd)/myscript.py
@@ -48,20 +95,13 @@ If you go for the `--script` approach, you have to explicitly manage proxyswitch
 yourself. Adding the following will do the trick:
 
 ```python
-import proxyswitch as pswitch
+from proxyswitch import enable, disable
 
 def start(context, argv):
-    enable()
+    enable('127.0.0.1', '8080')
 
 def done(context):
     disable()
-
-def enable():
-    settings = ('127.0.0.1', '8080')
-    pswitch.enable(*settings)
-
-def disable():
-    pswitch.disable()
 ```
 
 
