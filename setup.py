@@ -55,7 +55,6 @@ setup(
     # package_data={
     #     'sample': ['package_data.dat'],
     # },
-    package_data={'proxyswitch': ['scripts/*.py']},
 
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow

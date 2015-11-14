@@ -63,8 +63,8 @@ def main():
             parser.error("--source-dir is required with the Driver mode")
 
         mitm_args = ['--script',
-                     "{}/scripts/flasked.py {}".format(os.path.dirname(os.path.realpath(__file__)),
-                                                       args.source_dir)]
+                     "{}/flasked.py {}".format(os.path.dirname(os.path.realpath(__file__)),
+                                               args.source_dir)]
     elif args.script:
         if args.response_body or args.url:
             parser.error("The Script mode does not allow a response body or a URL.")
@@ -73,9 +73,9 @@ def main():
         mitm_args.append(args.script)
     elif args.response_body:
         mitm_args = ['--script',
-                     "{}/scripts/simple.py {} {}".format(os.path.dirname(os.path.realpath(__file__)),
-                                                         args.url,
-                                                         args.response_body)]
+                     "{}/simple.py {} {}".format(os.path.dirname(os.path.realpath(__file__)),
+                                                 args.url,
+                                                 args.response_body)]
 
     if args.quiet:
         mitm_args.append('--quiet')
