@@ -39,7 +39,7 @@ setup(
     ],
     packages=find_packages(),
     install_requires=['mitmproxy==0.14.0',
-                      'Flask==0.10.1'
+                      'Flask==0.10.1',
                       'pyYAML==3.11'],
 
     # List additional groups of dependencies here (e.g. development
