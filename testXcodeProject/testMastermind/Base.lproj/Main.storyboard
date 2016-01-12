@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="testMastermind" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="amA-kC-ONr">
+                                <rect key="frame" x="203" y="285" width="195" height="30"/>
+                                <state key="normal" title="Send request to Mastermind"/>
+                                <connections>
+                                    <action selector="sendRequestToMastermind:" destination="BYZ-38-t0r" eventType="touchUpInside" id="WeG-6w-4HU"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Mastermind IP address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ULu-gr-7qF">
+                                <rect key="frame" x="203" y="247" width="195" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ZOy-SQ-Bc8">
+                                <rect key="frame" x="20" y="328" width="560" height="264"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="amA-kC-ONr" firstAttribute="top" secondItem="ULu-gr-7qF" secondAttribute="bottom" constant="8" id="1WX-Lw-JYc"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ZOy-SQ-Bc8" secondAttribute="bottom" constant="8" id="7yt-A1-mX9"/>
+                            <constraint firstItem="ZOy-SQ-Bc8" firstAttribute="top" secondItem="amA-kC-ONr" secondAttribute="bottom" constant="13" id="JDl-3J-TZl"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ZOy-SQ-Bc8" secondAttribute="trailing" id="QeE-Lv-BOg"/>
+                            <constraint firstItem="amA-kC-ONr" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="WZV-cp-nmw"/>
+                            <constraint firstItem="ULu-gr-7qF" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Xxy-81-hrO"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="ZOy-SQ-Bc8" secondAttribute="leading" id="hBN-ab-f5e"/>
+                            <constraint firstItem="amA-kC-ONr" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="sB4-ck-6Hk"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="IPAddress" destination="ULu-gr-7qF" id="uS2-3w-0iS"/>
+                        <outlet property="sendToMastermind" destination="amA-kC-ONr" id="GMQ-Zp-8kN"/>
+                        <outlet property="textView" destination="ZOy-SQ-Bc8" id="zeD-rg-Lx8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="503" y="578"/>
+        </scene>
+    </scenes>
+</document>
