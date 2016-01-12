@@ -14,3 +14,7 @@ driver-start:
 driver-stop:
 	@$(CURL) --proxy http://localhost:8080 \
            -XGET http://proxapp:5000/stop
+
+driver-stop2:
+	@$(CURL) -XGET http://0.0.0.0:5000/stop \
+           --proxy http://localhost:8080

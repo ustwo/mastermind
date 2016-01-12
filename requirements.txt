@@ -1,4 +1,4 @@
-mitmproxy==0.14
+mitmproxy==0.15
 Flask==0.10.1
 nose==1.3.7
 pytest==2.8.2
