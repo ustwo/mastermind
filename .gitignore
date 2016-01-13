@@ -2,3 +2,5 @@
 sandbox/
 .cache
 __pycache__
+xcuserdata/
+project.xcworkspace/
