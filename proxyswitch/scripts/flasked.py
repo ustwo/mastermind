@@ -6,8 +6,6 @@ from proxyswitch import enable, disable
 from proxyswitch.driver import driver, register
 import proxyswitch.rules as rules
 
-reverse = None
-
 def response(context, flow):
     if driver.name != 'nobody':
         ruleset = rules.load(driver.name,
@@ -36,13 +34,16 @@ def response(context, flow):
 def start(context, argv):
     register(context)
     enable('127.0.0.1', '8080')
-    reverse_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../reverse.py')
 
-    reverse = subprocess.Popen(['python', reverse_path])
+    context.reverse_access = argv[2]
 
-    print("Reverse proxy PID: {}".format(reverse.pid))
+    # argv[2] is a stringified boolean.
+    if context.reverse_access == 'True':
+        reverse_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../reverse.py')
+        reverse = subprocess.Popen(['python', reverse_path])
+        print("Reverse proxy PID: {}".format(reverse.pid))
+
     context.source_dir = argv[1]
-
     # context.filter = filt.parse("~d github.com")
     context.log('Source dir: {}'.format(context.source_dir))
 

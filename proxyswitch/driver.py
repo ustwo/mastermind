@@ -35,6 +35,8 @@ def stop_driver():
 
 @app.route('/<driver_name>/start')
 def start_driver(driver_name):
-    print(driver.start(driver_name))
+    message = '{} driver started\n'.format(driver_name)
+    driver.start(driver_name)
 
-    return '{} driver started\n'.format(driver_name)
+    print(message)
+    return message
