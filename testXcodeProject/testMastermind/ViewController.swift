@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    @IBOutlet var IPAddress: UITextField?
+    @IBOutlet var path: UITextField?
     @IBOutlet var textView: UITextView?
     @IBOutlet weak var sendToMastermind: UIButton!
     
@@ -26,12 +26,12 @@ class ViewController: UIViewController {
         
         sendToMastermind.enabled = false
         
-        if let address = IPAddress?.text {
-            if let url = NSURL(string: "http://\(address):5000/") {
-                
+        if let address = path?.text {
+            if let url = NSURL(string: "http://proxapp:5000/\(address)") {
+                print(url)
+
                 let request = NSMutableURLRequest(URL: url)
                 let config = NSURLSessionConfiguration.ephemeralSessionConfiguration()
-                config.timeoutIntervalForRequest = 5.0
                 
                 let session = NSURLSession(configuration: config)
                 
@@ -45,6 +45,9 @@ class ViewController: UIViewController {
                         
                         if let errorMessage = error?.localizedDescription {
                             self.textView?.text? = errorMessage
+                        } else {
+                            let datastring = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                            print(datastring!)
                         }
                     })
                 })
