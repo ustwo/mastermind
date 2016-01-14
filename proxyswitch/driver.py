@@ -25,18 +25,25 @@ class Driver:
 
         return {"driver": self.name, "state": "running"}
 
-
-app = Flask('proxapp')
+driver_host = "proxapp"
+driver_port = 5000
+driver_endpoint = "http://{}:{}".format(driver_host, driver_port)
+app = Flask(driver_host)
 app.host = '127.0.0.1'
 driver = Driver()
 
 def register(context):
-    context.app_registry.add(app, 'proxapp', 5000)
+    context.app_registry.add(app, driver_host, driver_port)
     return context
 
+# Links use https://tools.ietf.org/html/rfc6570 URI templates
+# The data structure is close to JSON API http://jsonapi.org/
 @app.route('/')
 def index():
-    return 'Try /:driver/start, /stop, /state instead'
+    return jsonify({"links": {"self": driver_endpoint,
+                              "start": "{}/{driver}/start".format(driver_endpoint),
+                              "stop": "{}/stop".format(driver_endpoint),
+                              "state": "{}/state".format(driver_endpoint)}})
 
 @app.route('/state')
 def state():
