@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify
 
 class Driver:
@@ -6,8 +7,18 @@ class Driver:
         on what the user injects via HTTP
     '''
     name = None
+    base_path = None
+
+    def root(self, base_path):
+        self.base_path = base_path
 
     def start(self, name):
+        filename = os.path.join(self.base_path,
+                                '{}.yaml'.format(name))
+
+        if not os.path.exists(filename):
+            return {"state": "error", "message": "Driver {} not found".format(filename)}
+
         self.name = name
         return {"driver": self.name, "state": "started"}
 
@@ -33,6 +44,7 @@ app.host = '127.0.0.1'
 driver = Driver()
 
 def register(context):
+    driver.root(context.source_dir)
     context.app_registry.add(app, driver_host, driver_port)
     return context
 

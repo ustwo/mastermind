@@ -32,10 +32,11 @@ def response(context, flow):
 
 
 def start(context, argv):
+    context.source_dir = argv[1]
+    context.reverse_access = argv[2]
+
     register(context)
     enable('127.0.0.1', '8080')
-
-    context.reverse_access = argv[2]
 
     # argv[2] is a stringified boolean.
     if context.reverse_access == 'True':
@@ -43,7 +44,6 @@ def start(context, argv):
         reverse = subprocess.Popen(['python', reverse_path])
         print("Reverse proxy PID: {}".format(reverse.pid))
 
-    context.source_dir = argv[1]
     # context.filter = filt.parse("~d github.com")
     context.log('Source dir: {}'.format(context.source_dir))
 
