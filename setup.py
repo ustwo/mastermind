@@ -40,7 +40,8 @@ setup(
     packages=find_packages(),
     install_requires=['mitmproxy==0.15',
                       'Flask==0.10',
-                      'pyYAML==3.11'],
+                      'pyYAML==3.11',
+                      'requests==2.9'],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,

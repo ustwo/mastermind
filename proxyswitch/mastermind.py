@@ -23,6 +23,9 @@ def main():
     driver.add_argument('--source-dir',
                         metavar = 'DIR',
                         help = 'An absolute path used as a source directory to lookup for mock rules')
+    driver.add_argument('--with-reverse-access',
+                        action = 'store_true',
+                        help = 'Activates the reverse proxy to drive from the outside via port 5001')
 
 
     single.add_argument('--response-body',
@@ -63,8 +66,9 @@ def main():
             parser.error("--source-dir is required with the Driver mode")
 
         mitm_args = ['--script',
-                     "{}/scripts/flasked.py {}".format(os.path.dirname(os.path.realpath(__file__)),
-                                                       args.source_dir)]
+                     "{}/scripts/flasked.py {} {}".format(os.path.dirname(os.path.realpath(__file__)),
+                                                          args.source_dir,
+                                                          args.with_reverse_access)]
     elif args.script:
         if args.response_body or args.url:
             parser.error("The Script mode does not allow a response body or a URL.")

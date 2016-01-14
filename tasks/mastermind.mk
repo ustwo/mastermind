@@ -22,9 +22,16 @@ mastermind-script:
                                         $(shell pwd)/test/records/fake.json"
 
 mastermind-driver:
-	@$(shell pwd)/mastermind.py \
+	@$(shell pwd)/mastermind.py --quiet \
                               --with-driver \
                               --source-dir $(shell pwd)/test/records
+
+mastermind-reverse-access:
+	@$(shell pwd)/mastermind.py --quiet \
+                              --with-driver \
+                              --with-reverse-access \
+                              --source-dir $(shell pwd)/test/records
+
 
 mastermind-error:
 	@$(shell pwd)/mastermind.py --quiet \
