@@ -10,10 +10,21 @@ app = Flask(__name__)
 proxies = {"http": proxy_host}
 
 @app.route("/")
-def hello():
-    return "Hello World!"
+def index():
+    try:
+        r = requests.get("{}".format(driver_host), proxies=proxies)
+        return r.text
+    except requests.exceptions.RequestException:
+        return "Couldn't reach the proxy driver"
 
-# TODO: handle proxapp not running or timeout
+@app.route("/state")
+def state():
+    try:
+        r = requests.get("{}/state".format(driver_host), proxies=proxies)
+        return r.text
+    except requests.exceptions.RequestException:
+        return "Couldn't reach the proxy driver"
+
 @app.route("/stop")
 def stop():
     try:
