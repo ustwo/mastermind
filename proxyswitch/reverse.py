@@ -9,15 +9,8 @@ driver_host = "http://proxapp:5000"
 app = Flask(__name__)
 proxies = {"http": proxy_host}
 
-@app.route("/")
-def index():
-    try:
-        r = requests.get("{}".format(driver_host), proxies=proxies)
-        return r.text
-    except requests.exceptions.RequestException:
-        return "Couldn't reach the proxy driver"
-
-@app.route('/<path>')
+@app.route("/", defaults={"path": ""})
+@app.route('/<path:path>')
 def catch_all(path):
     try:
         r = requests.get("{}/{}".format(driver_host, path), proxies=proxies)
