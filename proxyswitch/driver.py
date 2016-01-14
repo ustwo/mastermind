@@ -39,26 +39,26 @@ def register(context):
 # Links use https://tools.ietf.org/html/rfc6570 URI templates
 # The data structure is close to JSON API http://jsonapi.org/
 @app.route('/', defaults={"path": ""})
-@app.route('/<path:path>')
+@app.route('/<path:path>/')
 def index(path):
     return jsonify({"links": {"self": driver_endpoint,
-                              "start": "{}/{{driver}}/start".format(driver_endpoint),
-                              "stop": "{}/stop".format(driver_endpoint),
-                              "state": "{}/state".format(driver_endpoint)}})
+                              "start": "{}/{{driver}}/start/".format(driver_endpoint),
+                              "stop": "{}/stop/".format(driver_endpoint),
+                              "state": "{}/state/".format(driver_endpoint)}})
 
-@app.route('/state')
+@app.route('/state/')
 def state():
     message = driver.state()
     print(message)
     return jsonify(message)
 
-@app.route('/stop')
+@app.route('/stop/')
 def stop_driver():
     message = driver.stop()
     print(message)
     return jsonify(message)
 
-@app.route('/<driver_name>/start')
+@app.route('/<driver_name>/start/')
 def start_driver(driver_name):
     message = driver.start(driver_name)
     print(message)

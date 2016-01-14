@@ -10,7 +10,7 @@ app = Flask(__name__)
 proxies = {"http": proxy_host}
 
 @app.route("/", defaults={"path": ""})
-@app.route('/<path:path>')
+@app.route('/<path:path>/')
 def catch_all(path):
     try:
         r = requests.get("{}/{}".format(driver_host, path), proxies=proxies)

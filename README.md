@@ -77,7 +77,7 @@ Assuming the two examples above were named `foo.yaml` and `bar.yaml` a running
 
 ```sh
 $ curl --proxy http://localhost:8080 \
-       -XGET http://proxapp:5000/a/start
+       -XGET http://proxapp:5000/foo/start/
 {"driver": "foo", "state": "started"}
 ```
 
@@ -85,7 +85,7 @@ The second with:
 
 ```sh
 $ curl --proxy http://localhost:8080 \
-       -XGET http://proxapp:5000/b/start
+       -XGET http://proxapp:5000/bar/start/
 {"driver": "bar", "state": "started"}
 ```
 
@@ -93,19 +93,23 @@ And cleaning any ruleset with:
 
 ```sh
 $ curl --proxy http://localhost:8080 \
-       -XGET http://proxapp:5000/stop
+       -XGET http://proxapp:5000/stop/
 {"driver": "bar", "state": "stopped"}
 ```
 
-If you want to check what driver is being used, use `/state`:
+If you want to check what driver is being used, use `/state/`:
 
 ```sh
 $ curl --proxy http://localhost:8080 \
-       -XGET http://proxapp:5000/state
+       -XGET http://proxapp:5000/state/
 {"driver": "bar", "state": "running"}
 ```
 
 When no driver is running the resonse is `{"driver": null, "state": null}`.
+
+**Note** URI without a trailing slash (`/`) will be redirected (301) to the
+canonical ones with trailing slash.  If you use curl you might want to use the
+`-L` flag.
 
 
 ### Simple
