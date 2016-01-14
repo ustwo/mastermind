@@ -17,27 +17,10 @@ def index():
     except requests.exceptions.RequestException:
         return "Couldn't reach the proxy driver"
 
-@app.route("/state")
-def state():
+@app.route('/<path>')
+def catch_all(path):
     try:
-        r = requests.get("{}/state".format(driver_host), proxies=proxies)
-        return r.text
-    except requests.exceptions.RequestException:
-        return "Couldn't reach the proxy driver"
-
-@app.route("/stop")
-def stop():
-    try:
-        r = requests.get("{}/stop".format(driver_host), proxies=proxies)
-        return r.text
-    except requests.exceptions.RequestException:
-        return "Couldn't reach the proxy driver"
-
-@app.route("/<driver_name>/start")
-def start_driver(driver_name):
-    try:
-        r = requests.get("{}/{}/start".format(driver_host, driver_name),
-                         proxies=proxies)
+        r = requests.get("{}/{}".format(driver_host, path), proxies=proxies)
         return r.text
     except requests.exceptions.RequestException:
         return "Couldn't reach the proxy driver"
