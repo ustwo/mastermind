@@ -5,7 +5,7 @@ Test [mitmproxy](https://mitmproxy.org) via rewriting their [mitmwrapper.py exam
 ## Install
 
 ```sh
-pip install "git+https://github.com/ustwo/proxyswitch.git@v0.4.4#egg=proxyswitch"
+pip install "git+https://github.com/ustwo/proxyswitch.git@v0.5.0#egg=proxyswitch"
 ```
 
 ## Proxyswitch
