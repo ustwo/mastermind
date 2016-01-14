@@ -159,3 +159,10 @@ mastermind --help
 ## Maintainers
 
 * [Arnau Siches](mailto:arnau@ustwo.com)
+
+
+## License
+
+This is a proof of concept with no guarantee of active maintenance.
+
+See [License](./LICENSE)
