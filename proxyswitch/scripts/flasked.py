@@ -7,7 +7,7 @@ from proxyswitch.driver import driver, register
 import proxyswitch.rules as rules
 
 def response(context, flow):
-    if driver.name != 'nobody':
+    if driver.name != None:
         ruleset = rules.load(driver.name,
                              context.source_dir)
 

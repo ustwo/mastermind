@@ -1,19 +1,30 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 class Driver:
     '''
         Holds the driver state so the flasked script can change behaviour based
         on what the user injects via HTTP
     '''
-    name = 'nobody'
+    name = None
 
     def start(self, name):
         self.name = name
-        return self.name
+        return {"driver": self.name, "state": "started"}
 
     def stop(self):
-        self.name = 'nobody'
-        return self.name
+        if self.name == None:
+            return {"driver": None, "state": None}
+
+        message = {"driver": self.name, "state": "stopped"}
+        self.name = None
+        return message
+
+    def state(self):
+        if self.name == None:
+            return {"driver": None, "state": None}
+
+        return {"driver": self.name, "state": "running"}
+
 
 app = Flask('proxapp')
 app.host = '127.0.0.1'
@@ -25,18 +36,22 @@ def register(context):
 
 @app.route('/')
 def index():
-    return 'Try /start/:driver or /stop/:driver instead'
+    return 'Try /:driver/start, /stop, /state instead'
+
+@app.route('/state')
+def state():
+    message = driver.state()
+    print(message)
+    return jsonify(message)
 
 @app.route('/stop')
 def stop_driver():
-    driver.stop()
-
-    return 'No drivers running\n'
+    message = driver.stop()
+    print(message)
+    return jsonify(message)
 
 @app.route('/<driver_name>/start')
 def start_driver(driver_name):
-    message = '{} driver started\n'.format(driver_name)
-    driver.start(driver_name)
-
+    message = driver.start(driver_name)
     print(message)
-    return message
+    return jsonify(message)

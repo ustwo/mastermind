@@ -68,27 +68,44 @@ A more elaborated case will have headers to add or remove:
         X-ustwo-intercepted: 'Yes'
 ```
 
-Assuming the two examples above were named `a.yaml` and `b.yaml` a running
+**Note**: Examples use `curl` which does not use the system proxy by default.
+This is why the `--proxy` flag is used.  In contexts like Safari or XCode this
+is not necessary.
+
+Assuming the two examples above were named `foo.yaml` and `bar.yaml` a running
 `mastermind` in driver mode would load the first with:
 
 ```sh
-curl --proxy http://localhost:8080 \
-     -XGET http://proxapp:5000/a/start
+$ curl --proxy http://localhost:8080 \
+       -XGET http://proxapp:5000/a/start
+{"driver": "foo", "state": "started"}
 ```
 
 The second with:
 
 ```sh
-curl --proxy http://localhost:8080 \
-     -XGET http://proxapp:5000/b/start
+$ curl --proxy http://localhost:8080 \
+       -XGET http://proxapp:5000/b/start
+{"driver": "bar", "state": "started"}
 ```
 
 And cleaning any ruleset with:
 
 ```sh
-curl --proxy http://localhost:8080 \
-     -XGET http://proxapp:5000/stop
+$ curl --proxy http://localhost:8080 \
+       -XGET http://proxapp:5000/stop
+{"driver": "bar", "state": "stopped"}
 ```
+
+If you want to check what driver is being used, use `/state`:
+
+```sh
+$ curl --proxy http://localhost:8080 \
+       -XGET http://proxapp:5000/state
+{"driver": "bar", "state": "running"}
+```
+
+When no driver is running the resonse is `{"driver": null, "state": null}`.
 
 
 ### Simple
