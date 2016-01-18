@@ -1,5 +1,9 @@
 # Changelog
 
+## Next
+
+* Add flag to disable proxy settings switch.
+
 ## 0.6.0
 
 * Fix missing driver files.  If the YAML file is missing /start returns an error.
