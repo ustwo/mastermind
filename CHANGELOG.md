@@ -1,8 +1,9 @@
 # Changelog
 
-## Next
+## 0.6.0
 
 * Fix missing driver files.  If the YAML file is missing /start returns an error.
+* Rename package to mastermind.
 
 ## 0.5.0
 
