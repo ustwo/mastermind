@@ -34,9 +34,14 @@ def response(context, flow):
 def start(context, argv):
     context.source_dir = argv[1]
     context.reverse_access = argv[2]
+    context.without_proxy_settings = argv[3]
 
     register(context)
-    enable('127.0.0.1', '8080')
+
+    context.log(context.without_proxy_settings)
+    if context.without_proxy_settings == 'False':
+        context.log("woo")
+        enable('127.0.0.1', '8080')
 
     # argv[2] is a stringified boolean.
     if context.reverse_access == 'True':
@@ -48,4 +53,5 @@ def start(context, argv):
     context.log('Source dir: {}'.format(context.source_dir))
 
 def done(context):
-    disable()
+    if context.without_proxy_settings == 'False':
+        disable()

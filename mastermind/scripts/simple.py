@@ -17,12 +17,15 @@ def response(context, flow):
 
 def start(context, argv):
     context.url = argv[1]
-    context.filepath  = argv[2]
+    context.filepath = argv[2]
+    context.without_proxy_settings = argv[3]
 
-    enable('127.0.0.1', '8080')
+    if context.without_proxy_settings == 'False':
+        enable('127.0.0.1', '8080')
 
     context.log(context.url)
     context.log(context.filepath)
 
 def done(context):
-    disable()
+    if context.without_proxy_settings == 'False':
+        disable()

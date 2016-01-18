@@ -47,9 +47,9 @@ def main():
     # parser.add_argument('--host',
     #                     help = 'Default host 127.0.0.1',
     #                     default = "127.0.0.1")
-    # parser.add_argument('--no-proxy-settings',
-    #                     action='store_true',
-    #                     help='Skips changing the OS proxy settings')
+    parser.add_argument('--without-proxy-settings',
+                        action='store_true',
+                        help='Skips changing the OS proxy settings')
 
     parser.add_argument('--quiet',
                         action='store_true',
@@ -66,9 +66,10 @@ def main():
             parser.error("--source-dir is required with the Driver mode")
 
         mitm_args = ['--script',
-                     "{}/scripts/flasked.py {} {}".format(os.path.dirname(os.path.realpath(__file__)),
+                     "{}/scripts/flasked.py {} {} {}".format(os.path.dirname(os.path.realpath(__file__)),
                                                           args.source_dir,
-                                                          args.with_reverse_access)]
+                                                          args.with_reverse_access,
+                                                          args.without_proxy_settings)]
     elif args.script:
         if args.response_body or args.url:
             parser.error("The Script mode does not allow a response body or a URL.")
@@ -77,9 +78,10 @@ def main():
         mitm_args.append(args.script)
     elif args.response_body:
         mitm_args = ['--script',
-                     "{}/scripts/simple.py {} {}".format(os.path.dirname(os.path.realpath(__file__)),
+                     "{}/scripts/simple.py {} {} {}".format(os.path.dirname(os.path.realpath(__file__)),
                                                          args.url,
-                                                         args.response_body)]
+                                                         args.response_body,
+                                                         args.without_proxy_settings)]
 
     if args.quiet:
         mitm_args.append('--quiet')
