@@ -1,13 +1,13 @@
-"""A proxy switch for Mac OS X
+"""CLI to easily intercept and mock HTTP requests.
 
 See:
-https://github.com/ustwo/proxyswitch
+https://github.com/ustwo/mastermind
 """
 
 from setuptools import setup, find_packages
 from codecs import open
 from os import path
-from proxyswitch.version import *
+from mastermind.version import *
 
 here = path.abspath(path.dirname(__file__))
 
@@ -16,11 +16,11 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='proxyswitch',
+    name='mastermind',
     version=VERSION,
-    description='A proxy switch for Mac OS X',
+    description='CLI to easily intercept and mock HTTP requests',
     long_description=long_description,
-    url='https://github.com/ustwo/proxyswitch',
+    url='https://github.com/ustwo/mastermind',
     author='Arnau Siches',
     author_email='arnau@ustwo.com',
     license='MIT',
@@ -58,15 +58,15 @@ setup(
     # package_data={
     #     'sample': ['package_data.dat'],
     # },
-    package_data={'proxyswitch': ['scripts/*.py']},
+    package_data={'mastermind': ['scripts/*.py']},
 
     # To provide executable scripts, use entry points in preference to the
     # "scripts" keyword. Entry points provide cross-platform support and allow
     # pip to create the appropriate form of executable for the target platform.
     entry_points={
         'console_scripts': [
-            'proxyswitch=proxyswitch:main',
-            'mastermind=proxyswitch.mastermind:main',
+            'proxyswitch=mastermind.proxyswitch:main',
+            'mastermind=mastermind:main',
         ],
     },
 )

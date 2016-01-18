@@ -2,9 +2,9 @@ import os
 import subprocess
 from libmproxy.models import decoded
 from libmproxy import filt
-from proxyswitch import enable, disable
-from proxyswitch.driver import driver, register
-import proxyswitch.rules as rules
+from mastermind.proxyswitch import enable, disable
+from mastermind.driver import driver, register
+import mastermind.rules as rules
 
 def response(context, flow):
     if driver.name != None:

@@ -1,5 +1,5 @@
 from libmproxy.models import decoded
-from proxyswitch import enable, disable
+from mastermind.proxyswitch import enable, disable
 
 def response(context, flow):
     if flow.request.url == context.url:

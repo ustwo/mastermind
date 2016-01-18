@@ -1,4 +1,4 @@
-from . import __init__
+from . import proxyswitch
 from . import version
 from libmproxy.main import mitmdump
 import argparse
