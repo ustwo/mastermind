@@ -1,34 +1,36 @@
-# Proxy Switch
+# Mastermind
 
-Test [mitmproxy](https://mitmproxy.org) via rewriting their [mitmwrapper.py example](https://github.com/mitmproxy/mitmproxy/blob/master/examples/mitmproxywrapper.py)
+Mastermind is written on top of the great [mitmproxy](https://mitmproxy.org)
+to allow an easy way to intercept specific HTTP requests and mock its responses.
+
+It has a complementary tool to easily switch the **OSX** proxy configuration.
+
 
 ## Install
 
 ```sh
-pip install "git+https://github.com/ustwo/proxyswitch.git@v0.5.0#egg=proxyswitch"
+pip install "git+https://github.com/ustwo/mastermind.git@v0.5.0#egg=mastermind"
 ```
-
-## Proxyswitch
-
-Check the help:
-
-```sh
-proxyswitch --help
-```
-
 
 ## Mastermind
 
-Mastermind combines `mitmdump` and `proxyswitch` making sure the proxy settings
-are enabled when the mitmproxy starts and disabling them when the proxy stops.
+Mastermind is a CLI using `libmproxy` that offers an easy way to define rules
+to intercept HTTP(S) requests and mock its responses.  By default it makes sure
+the OSX proxy settings are enabled only when the proxy is running.
+
+The proxy runs by default on `http://localhost:8080`.
 
 There are three forms you can use, "Driver", "Simple" and "Script".  They can't
 be mixed.
 
+**Note** Examples using `sudo` indicate you need high privileges to let
+mastermind change the *system* proxy configuration.  If you run it
+`--without-proxy-settings` there is no need for special privileges.
+
 ### Driver
 
-The driver mode will mount a thin HTTP server listening for actions and a set
-of rules to apply.
+The driver mode will mount a thin HTTP server listening for actions at
+`http://proxapp:5000` and a set of rules to apply.
 
 ```sh
 sudo mastermind --with-driver \
@@ -70,7 +72,7 @@ A more elaborated case will have headers to add or remove:
 
 **Note**: Examples use `curl` which does not use the system proxy by default.
 This is why the `--proxy` flag is used.  In contexts like Safari or XCode this
-is not necessary.
+is implicit.
 
 Assuming the two examples above were named `foo.yaml` and `bar.yaml` a running
 `mastermind` in driver mode would load the first with:
@@ -123,6 +125,8 @@ sudo mastermind --response-body $(pwd)/test/records/fake.json" \
 
 ### Script
 
+**Use this option if you *know* what you are doing**.
+
 The script mode expects a mitmproxy Python script:
 
 ```sh
@@ -153,6 +157,16 @@ Check the help for more.
 
 ```sh
 mastermind --help
+```
+
+
+## Proxyswitch
+
+CLI to switch on and off the OSX proxy configuration for HTTP and HTTPS. Check
+the help:
+
+```sh
+proxyswitch --help
 ```
 
 
