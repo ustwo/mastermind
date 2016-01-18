@@ -107,7 +107,7 @@ $ curl --proxy http://localhost:8080 \
 {"driver": "bar", "state": "running"}
 ```
 
-When no driver is running the resonse is `{"driver": null, "state": null}`.
+When no driver is running the response is `{"driver": null, "state": null}`.
 
 **Note** URI without a trailing slash (`/`) will be redirected (301) to the
 canonical ones with trailing slash.  If you use curl you might want to use the
