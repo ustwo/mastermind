@@ -9,7 +9,7 @@ It has a complementary tool to easily switch the **OSX** proxy configuration.
 ## Install
 
 ```sh
-pip install "git+https://github.com/ustwo/mastermind.git@v0.5.0#egg=mastermind"
+pip install "git+https://github.com/ustwo/mastermind.git@v0.6.0#egg=mastermind"
 ```
 
 ## Mastermind
