@@ -120,7 +120,7 @@ In one picture:
 #### Validation with JSON Schema
 
 When a `schema` is present at the driver level the original resopnse will be
-validated agains the given JSON schema file.
+validated against the given JSON schema file.
 
 The mocked response will be sent even if the validation fails.  This ensures
 you get the information when the API contract is broken without making your
