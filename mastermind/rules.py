@@ -73,8 +73,7 @@ def status_code(rule):
     return 200
 
 def schema(rule, base_path):
-    if not 'schema' in rule:
-        return
+    if not 'schema' in rule: return
 
     return yaml.safe_load(read_file(os.path.join(base_path,
                                                  rule['schema'])))
