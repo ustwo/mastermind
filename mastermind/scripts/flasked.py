@@ -24,8 +24,11 @@ def request(context, flow):
                                   context.source_dir)
 
             if schema:
-                print(rules.check(flow.response.content,
-                                  schema))
+                table = driver.db.table(flow.request.url)
+                schema_result = rules.check(flow.response.content,
+                                            schema)
+                [table.insert(x) for x in schema_result]
+                print(schema_result)
 
             rules.process_headers('request',
                                   rule,
@@ -53,10 +56,6 @@ def response(context, flow):
                 if body_filename:
                     flow.response.content = rules.body(body_filename,
                                                        context.source_dir)
-
-                rules.process_headers('response',
-                                      rule,
-                                      flow.response.headers)
 
 
 def start(context, argv):

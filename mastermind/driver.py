@@ -1,5 +1,6 @@
 import os
 from flask import Flask, jsonify
+from tinydb import TinyDB, where
 
 class Driver:
     '''
@@ -8,18 +9,22 @@ class Driver:
     '''
     name = None
     base_path = None
+    db = None
 
     def root(self, base_path):
         self.base_path = base_path
 
     def start(self, name):
         filename = os.path.join(self.base_path,
-                                '{}.yaml'.format(name))
+                                "{}.yaml".format(name))
 
         if not os.path.exists(filename):
             return {"state": "error", "message": "Driver {} not found".format(filename)}
 
         self.name = name
+        self.db = TinyDB(os.path.join(self.base_path,
+                                      "{}-store.json".format(name)))
+
         return {"driver": self.name, "state": "started"}
 
     def stop(self):

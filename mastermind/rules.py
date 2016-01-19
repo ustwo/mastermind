@@ -1,5 +1,6 @@
 import os
 import yaml
+import datetime
 import jsonschema
 from jsonschema import Draft4Validator, exceptions
 
@@ -80,12 +81,15 @@ def schema(rule, base_path):
 
 def check(instance, schema):
     v = Draft4Validator(schema)
-    return [to_hashmap(x) for x in sorted(v.iter_errors(yaml.safe_load(instance)),
-                                          key=exceptions.relevance)]
+    timestamp = datetime.datetime.utcnow().isoformat()
 
-def to_hashmap(item):
+    return [to_hashmap(x, timestamp) for x in sorted(v.iter_errors(yaml.safe_load(instance)),
+                                                     key=exceptions.relevance)]
+
+def to_hashmap(item, timestamp):
     return {"message": item.message,
             "context": item.context,
+            "timestamp": timestamp,
             "cause": item.cause,
             "schema_path": list(item.schema_path),
             "path": list(item.absolute_path)}
