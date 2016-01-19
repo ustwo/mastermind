@@ -20,15 +20,6 @@ def request(context, flow):
             rule = rules.find_by_url(flow.request.url,
                                      ruleset)
             flow.mastermind['rule'] = rule
-            schema = rules.schema(rule,
-                                  context.source_dir)
-
-            if schema:
-                table = driver.db.table(flow.request.url)
-                schema_result = rules.check(flow.response.content,
-                                            schema)
-                [table.insert(x) for x in schema_result]
-                print(schema_result)
 
             rules.process_headers('request',
                                   rule,
@@ -45,9 +36,18 @@ def response(context, flow):
                 status_code = rules.status_code(rule)
                 status_message = http.status_message(status_code)
                 body_filename = rules.body_filename(rule)
+                schema = rules.schema(rule,
+                                      context.source_dir)
 
                 flow.response.status_code = status_code
                 flow.response.msg = status_message
+
+                if schema:
+                    table = driver.db.table(flow.request.url)
+                    schema_result = rules.check(flow.response.content,
+                                                schema)
+                    table.insert_multiple(schema_result)
+                    print(schema_result)
 
                 rules.process_headers('response',
                                       rule,

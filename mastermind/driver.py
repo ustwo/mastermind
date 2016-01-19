@@ -1,5 +1,5 @@
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from tinydb import TinyDB, where
 
 class Driver:
@@ -33,6 +33,8 @@ class Driver:
 
         message = {"driver": self.name, "state": "stopped"}
         self.name = None
+        self.db.close()
+        self.db = None
         return message
 
     def state(self):
@@ -79,3 +81,27 @@ def start_driver(driver_name):
     message = driver.start(driver_name)
     print(message)
     return jsonify(message)
+
+@app.route('/<driver_name>/exceptions/')
+def exceptions(driver_name):
+    message = driver.start(driver_name)
+    uri = request.args.get('uri')
+
+    if not driver.name: return jsonify(message)
+    if not uri:
+        result = {"exceptions": [],
+               "driver": driver_name}
+        tables = driver.db.tables()
+        tables.remove("_default")
+        for table in list(tables):
+            data = driver.db.table(table).all()
+            result['exceptions'].append({table: data})
+        return jsonify(result)
+
+    table = driver.db.table(uri)
+    table_all = table.all()
+    driver.stop()
+
+    return jsonify({"exceptions": table_all,
+                    "driver": driver_name,
+                    "uri": uri})
