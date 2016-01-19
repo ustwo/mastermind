@@ -53,6 +53,10 @@ def response(context, flow):
                     flow.response.content = rules.body(body_filename,
                                                        context.source_dir)
 
+                rules.process_headers('response',
+                                      rule,
+                                      flow.response.headers)
+
 
 def start(context, argv):
     context.source_dir = argv[1]
