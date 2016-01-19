@@ -1,6 +1,7 @@
 import os
 import subprocess
-from libmproxy.models import decoded, Headers
+from libmproxy.models import decoded
+from libmproxy import filt
 from mastermind.proxyswitch import enable, disable
 from mastermind.driver import driver, register
 import mastermind.rules as rules
