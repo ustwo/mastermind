@@ -62,7 +62,8 @@ def register(context):
 def index(path):
     return jsonify({"links": {"start": "/{driver}/start/",
                               "stop": "/stop/",
-                              "state": "/state/"}})
+                              "state": "/state/",
+                              "exceptions": "/{driver}/exceptions/"}})
 
 @app.route('/state/')
 def state():
