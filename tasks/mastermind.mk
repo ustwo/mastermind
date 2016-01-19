@@ -31,7 +31,6 @@ mastermind-driver2:
                               --source-dir $(shell pwd)/test/records
 .PHONY: mastermind-driver2
 
-
 mastermind-reverse-access:
 	@$(shell pwd)/mastermind.py --quiet \
                               --with-driver \
@@ -67,3 +66,15 @@ schematics-driver-state:
               arnau/mermaid mermaid --png \
                                     -o schematics/ \
                                     schematics/driver-stateful.mmd
+
+test-api-call:
+	@curl -ki \
+        --proxy http://localhost:8080 \
+        -XGET https://api.github.com/users/octocat/orgs
+
+test-api-call2:
+	@curl -L --proxy http://localhost:8080 \
+        -XGET http://proxapp:5000/fake/start/
+	@curl -ki \
+        --proxy http://localhost:8080 \
+        -XGET https://api.github.com/users/arnau/orgs

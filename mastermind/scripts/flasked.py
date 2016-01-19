@@ -19,6 +19,12 @@ def request(context, flow):
             rule = rules.find_by_url(flow.request.url,
                                      ruleset)
             flow.mastermind['rule'] = rule
+            schema = rules.schema(rule,
+                                  context.source_dir)
+
+            if schema:
+                print(rules.check(flow.response.content,
+                                  schema))
 
             rules.process_headers('request',
                                   rule,

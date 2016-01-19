@@ -1,6 +1,6 @@
 [
   {
-    "login": "ustwo-foo",
+    "login": "ustwo-intercepted",
     "id": 625384,
     "url": "https://api.github.com/orgs/ustwo",
     "repos_url": "https://api.github.com/orgs/ustwo/repos",

@@ -1,5 +1,7 @@
 import os
 import yaml
+import jsonschema
+from jsonschema import Draft4Validator, exceptions
 
 
 def load(filename, base_path):
@@ -69,3 +71,22 @@ def status_code(rule):
         if 'code' in rule['response']:
             return int(rule['response']['code'])
     return 200
+
+def schema(rule, base_path):
+    if not 'schema' in rule:
+        return
+
+    return yaml.safe_load(read_file(os.path.join(base_path,
+                                                 rule['schema'])))
+
+def check(instance, schema):
+    v = Draft4Validator(schema)
+    return [to_hashmap(x) for x in sorted(v.iter_errors(yaml.safe_load(instance)),
+                                          key=exceptions.relevance)]
+
+def to_hashmap(item):
+    return {"message": item.message,
+            "context": item.context,
+            "cause": item.cause,
+            "schema_path": list(item.schema_path),
+            "path": list(item.absolute_path)}

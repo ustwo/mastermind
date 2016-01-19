@@ -5,6 +5,7 @@
     body: fake.json
 - name: bar
   url: https://api.github.com/users/arnau/orgs
+  schema: github-orgs-schema.json
   request:
     headers:
       remove:
