@@ -14,7 +14,7 @@ sequenceDiagram
   API-->>Mastermind: {...}
   Mastermind->>Mastermind: Apply rules
   Mastermind-->>Device: {...}
-  XCode-->>Mastermind: http://proxapp:5000/stop/
+  XCode->>Mastermind: http://proxapp:5000/stop/
   Note right of Mastermind: Mastermind stops applying rules
   Mastermind->>XCode: {"driver": "github", "state": "stopped"}
   XCode->>Device: Start test
