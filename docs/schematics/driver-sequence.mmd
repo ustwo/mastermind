@@ -1,0 +1,13 @@
+sequenceDiagram
+  participant Device
+  participant Mastermind
+  participant API
+
+  Device->>Mastermind: API request
+  Mastermind->>Mastermind: Modify request headers
+  Mastermind->>API: Intercepted request
+  API-->>Mastermind: Response
+  Mastermind->>Mastermind: Validate JSON response
+  Mastermind->>Mastermind: Modify response headers
+  Mastermind->>Mastermind: Modify response body
+  Mastermind-->>Device: Intercepted response

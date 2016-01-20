@@ -113,6 +113,10 @@ When no driver is running the response is `{"driver": null, "state": null}`.
 canonical ones with trailing slash.  If you use curl you might want to use the
 `-L` flag.
 
+In one picture:
+
+![Driver with state sequence](./docs/schematics/driver-stateful.mmd.png)
+
 
 ### Simple
 

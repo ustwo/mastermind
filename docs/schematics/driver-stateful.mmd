@@ -1,0 +1,24 @@
+sequenceDiagram
+  participant Device
+  participant XCode
+  participant Mastermind
+  participant API
+
+  XCode->>Mastermind: http://proxapp:5000/github/start/
+  Note right of Mastermind: Mastermind applies github rules from now on
+  Mastermind->>XCode: {"driver": "github", "state": "started"}
+  XCode->>Device: Start test
+  Device->>Mastermind: https://api.github.com/...
+  Mastermind->>Mastermind: Apply rules
+  Mastermind->>API: https://api.github.com/...
+  API-->>Mastermind: {...}
+  Mastermind->>Mastermind: Apply rules
+  Mastermind-->>Device: {...}
+  XCode-->>Mastermind: http://proxapp:5000/stop/
+  Note right of Mastermind: Mastermind stops applying rules
+  Mastermind->>XCode: {"driver": "github", "state": "stopped"}
+  XCode->>Device: Start test
+  Device->>Mastermind: https://api.github.com/...
+  Mastermind->>API: https://api.github.com/...
+  API-->>Mastermind: {...}
+  Mastermind-->>Device: {...}
