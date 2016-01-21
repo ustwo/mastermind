@@ -50,3 +50,11 @@ test-api-call2:
 	@curl -ki \
         --proxy http://localhost:8080 \
         -XGET https://api.github.com/users/arnau/orgs
+
+test-local-call:
+	@curl -L --proxy http://localhost:8080 \
+           -XGET http://proxapp:5000/skip/start/
+	@curl -i --proxy http://localhost:8080 \
+           -XGET http://localhost:8000
+	@curl -L --proxy http://localhost:8080 \
+           -XGET http://proxapp:5000/stop/

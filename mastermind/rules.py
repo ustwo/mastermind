@@ -33,6 +33,11 @@ def body(rule, base_path):
 def url(rule):
     return rule['url']
 
+def skip(rule):
+    if 'request' in rule:
+        if 'skip' in rule['request']:
+            return rule['request']['skip']
+    return False
 
 def process_headers(target, rule, flow_headers):
     if target in rule:

@@ -1,0 +1,19 @@
+---
+- name: arnau-orgs
+  url: https://api.github.com/users/arnau/orgs
+  request:
+    skip: true
+  response:
+    body: arnau-orgs.json
+    headers:
+      add:
+        X-ustwo-intercepted: 'Yes'
+- name: local
+  url: http://localhost:8000/
+  request:
+    skip: true
+  response:
+    body: arnau-orgs.json
+    headers:
+      add:
+        X-ustwo-intercepted: 'Yes'
