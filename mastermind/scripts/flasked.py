@@ -5,6 +5,7 @@ from libmproxy import filt
 from mastermind.proxyswitch import enable, disable
 from mastermind.driver import driver, register
 import mastermind.rules as rules
+import mastermind.http as http
 
 # TODO: Allow smarter URL pattern matching,
 #       e.g. flow.request.pretty_url.endswith
@@ -37,10 +38,7 @@ def response(context, flow):
             with decoded(flow.response):
                 status_code = rules.status_code(rule)
                 if status_code >= 500:
-                    flow.response = HTTPResponse("HTTP/1.1",
-                                                 status_code,
-                                                 "Internal Server Error",
-                                                 Headers(), None)
+                    flow.response = http.empty_response(status_code)
                     return flow
 
                 body = rules.body(rule,
