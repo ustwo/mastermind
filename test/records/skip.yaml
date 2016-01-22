@@ -17,3 +17,10 @@
     headers:
       add:
         X-ustwo-intercepted: 'Yes'
+
+- name: error500
+  url: http://localhost:8000/error500/
+  request:
+    skip: true
+  response:
+    code: 500

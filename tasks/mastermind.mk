@@ -58,3 +58,11 @@ test-local-call:
            -XGET http://localhost:8000
 	@curl -L --proxy http://localhost:8080 \
            -XGET http://proxapp:5000/stop/
+
+test-error500:
+	@curl -L --proxy http://localhost:8080 \
+           -XGET http://proxapp:5000/skip/start/
+	@curl -i --proxy http://localhost:8080 \
+           -XGET http://localhost:8000/error500/
+	@curl -L --proxy http://localhost:8080/ \
+           -XGET http://proxapp:5000/stop/

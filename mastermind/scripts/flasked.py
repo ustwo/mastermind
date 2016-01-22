@@ -35,6 +35,14 @@ def response(context, flow):
         rule = flow.mastermind['rule']
         if rule:
             with decoded(flow.response):
+                status_code = rules.status_code(rule)
+                if status_code >= 500:
+                    flow.response = HTTPResponse("HTTP/1.1",
+                                                 status_code,
+                                                 "Internal Server Error",
+                                                 Headers(), None)
+                    return flow
+
                 body = rules.body(rule,
                                   context.source_dir)
 

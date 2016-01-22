@@ -42,3 +42,11 @@ def test_skip_false():
     assert r.skip({'request': {'skip': False}}) == False
     assert r.skip({'request': {}}) == False
     assert r.skip({}) == False
+
+def test_status_code():
+    assert r.status_code({'url': 'http://foo',
+                          'response': {'code': 500}}) == 500
+
+def test_status_code_casted():
+    assert r.status_code({'url': 'http://foo',
+                          'response': {'code': '500'}}) == 500

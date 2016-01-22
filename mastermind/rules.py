@@ -58,3 +58,9 @@ def add_headers(headers, flow_headers):
 
     for (header, value) in to_add.items():
         flow_headers[header] = value
+
+def status_code(rule):
+    if 'response' in rule:
+        if 'code' in rule['response']:
+            return int(rule['response']['code'])
+    return 0
