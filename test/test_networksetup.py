@@ -1,4 +1,4 @@
-from proxyswitch.networksetup import *
+from mastermind.networksetup import *
 
 def test_service_map():
     mock_service_order = """An asterisk (*) denotes that a network service is disabled.
