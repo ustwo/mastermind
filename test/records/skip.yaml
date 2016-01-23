@@ -1,0 +1,25 @@
+---
+- name: ok200
+  url: http://localhost:8000/
+  request:
+    skip: true
+  response:
+    body: ok200.json
+    headers:
+      add:
+        X-ustwo-intercepted: 'Yes'
+
+- name: error400
+  url: http://localhost:8000/400/
+  request:
+    skip: true
+  response:
+    code: 400
+    body: error400.json
+
+- name: error500
+  url: http://localhost:8000/500/
+  request:
+    skip: true
+  response:
+    code: 500
