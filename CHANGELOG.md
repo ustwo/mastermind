@@ -2,6 +2,8 @@
 
 ## Next
 
+* Add code property to the response definition.
+* Add skip property to the response definition.
 * Add flag to disable proxy settings switch.
 
 ## 0.6.0
