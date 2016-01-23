@@ -37,3 +37,23 @@ mastermind-error:
                                         https://api.github.com/users/octocat/orgs \
                                         $(shell pwd)/test/records/fake.json"
 .PHONY: mastermind-error
+
+schematics-architecture:
+	@docker run --rm -it \
+              -v $(PWD)/docs:/data \
+              arnau/mermaid mermaid --png \
+                                    -o schematics/ \
+                                    schematics/architecture.mmd
+schematics-driver:
+	@docker run --rm -it \
+              -v $(PWD)/docs:/data \
+              arnau/mermaid mermaid --png \
+                                    -o schematics/ \
+                                    schematics/driver-sequence.mmd
+
+schematics-driver-state:
+	@docker run --rm -it \
+              -v $(PWD)/docs:/data \
+              arnau/mermaid mermaid --png \
+                                    -o schematics/ \
+                                    schematics/driver-stateful.mmd
