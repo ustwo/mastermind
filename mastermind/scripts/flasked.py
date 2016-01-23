@@ -1,7 +1,6 @@
 import os
 import subprocess
-from libmproxy.models import decoded, HTTPResponse, Headers
-from libmproxy import filt
+from libmproxy.models import decoded, Headers
 from mastermind.proxyswitch import enable, disable
 from mastermind.driver import driver, register
 import mastermind.rules as rules
@@ -26,10 +25,7 @@ def request(context, flow):
                                   flow.request.headers)
 
             if rule and rules.skip(rule):
-                resp = HTTPResponse("HTTP/1.1", 200, "OK",
-                                    Headers(Content_Type="application/json"),
-                                    '{"skip": "true"}')
-                flow.reply(resp)
+                flow.reply(http.response(204))
 
 def response(context, flow):
     if driver.name:
@@ -37,41 +33,39 @@ def response(context, flow):
         if rule:
             with decoded(flow.response):
                 status_code = rules.status_code(rule)
-                if status_code >= 500:
-                    flow.response = http.empty_response(status_code)
-                    return flow
+                status_message = http.status_message(status_code)
+                body_filename = rules.body_filename(rule)
 
-                body = rules.body(rule,
-                                  context.source_dir)
+                flow.response.status_code = status_code
+                flow.response.msg = status_message
 
                 rules.process_headers('response',
                                       rule,
                                       flow.response.headers)
 
-                flow.response.content = body
+                if body_filename:
+                    flow.response.content = rules.body(body_filename,
+                                                       context.source_dir)
 
 
 def start(context, argv):
     context.source_dir = argv[1]
-    context.reverse_access = argv[2]
-    context.without_proxy_settings = argv[3]
+    context.reverse_access = argv[2] == "True"
+    context.without_proxy_settings = argv[3] == "True"
 
     register(context)
 
-    context.log(context.without_proxy_settings)
-    if context.without_proxy_settings == 'False':
-        context.log("woo")
+    if not context.without_proxy_settings:
+        context.log("No OS proxy settings")
         enable('127.0.0.1', '8080')
 
-    # argv[2] is a stringified boolean.
-    if context.reverse_access == 'True':
+    if context.reverse_access:
         reverse_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../reverse.py')
         reverse = subprocess.Popen(['python', reverse_path])
         print("Reverse proxy PID: {}".format(reverse.pid))
 
-    # context.filter = filt.parse("~d github.com")
     context.log('Source dir: {}'.format(context.source_dir))
 
 def done(context):
-    if context.without_proxy_settings == 'False':
+    if not context.without_proxy_settings:
         disable()

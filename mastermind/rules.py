@@ -25,10 +25,15 @@ def head(collection):
         return None
 
 # Rule functions
-def body(rule, base_path):
-    filename = rule['response']['body']
+def body(filename, base_path):
     return read_file(os.path.join(base_path,
                                   filename))
+
+def body_filename(rule):
+    if 'response' in rule:
+        if 'body' in rule['response']:
+            return rule['response']['body']
+    return None
 
 def url(rule):
     return rule['url']
@@ -63,4 +68,4 @@ def status_code(rule):
     if 'response' in rule:
         if 'code' in rule['response']:
             return int(rule['response']['code'])
-    return 0
+    return 200

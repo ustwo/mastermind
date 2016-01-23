@@ -3,13 +3,13 @@ import mastermind.rules as r
 ruleset = [{'url': 'http://localhost:8000/',
             'request': {'skip': True},
             'name': 'foo',
-            'response': {'body': 'arnau-orgs.json',
+            'response': {'body': 'ok200.json',
                          'headers': {'add': {'X-ustwo-intercepted': 'Yes'}}}}]
 
 rule = {'url': 'http://localhost:8000/',
         'request': {'skip': True},
         'name': 'foo',
-        'response': {'body': 'arnau-orgs.json',
+        'response': {'body': 'ok200.json',
                      'headers': {'add': {'X-ustwo-intercepted': 'Yes'}}}}
 
 
@@ -50,3 +50,9 @@ def test_status_code():
 def test_status_code_casted():
     assert r.status_code({'url': 'http://foo',
                           'response': {'code': '500'}}) == 500
+
+def test_body_filename_exists():
+    assert r.body_filename(rule) == 'ok200.json'
+
+def test_body_filename_not_exists():
+    assert r.body_filename({'url': 'http://foo'}) == None
