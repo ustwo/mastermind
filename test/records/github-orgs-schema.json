@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "/",
+  "type": "array",
+  "items": {
+    "id": "0",
+    "type": "object",
+    "properties": {
+      "age": {
+        "description": "years",
+        "minimum": 0,
+        "type": "integer"
+      },
+      "x": {
+        "type": "object",
+        "properties": {
+          "y": {
+            "description": "years",
+            "minimum": 0,
+            "type": "integer"
+          }
+        }
+      },
+      "login": {
+        "type": "string"
+      },
+      "id": {
+        "type": "integer"
+      },
+      "url": {
+        "type": "string"
+      },
+      "repos_url": {
+        "type": "string"
+      },
+      "events_url": {
+        "type": "string"
+      },
+      "members_url": {
+        "type": "string"
+      },
+      "public_members_urll": {
+        "type": "string"
+      },
+      "avatar_url": {
+        "type": "string"
+      },
+      "descriptionn": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "login",
+      "id",
+      "url",
+      "repos_url",
+      "events_url",
+      "members_url",
+      "public_members_urll",
+      "descriptionn"
+    ]
+  },
+  "required": [
+    "0"
+  ]
+}

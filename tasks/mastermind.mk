@@ -31,7 +31,6 @@ mastermind-driver2:
                               --source-dir $(shell pwd)/test/records
 .PHONY: mastermind-driver2
 
-
 mastermind-reverse-access:
 	@$(shell pwd)/mastermind.py --quiet \
                               --with-driver \

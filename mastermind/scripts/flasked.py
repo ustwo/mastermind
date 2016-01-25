@@ -1,6 +1,7 @@
 import os
 import subprocess
-from libmproxy.models import decoded, Headers
+from libmproxy.models import decoded
+from libmproxy import filt
 from mastermind.proxyswitch import enable, disable
 from mastermind.driver import driver, register
 import mastermind.rules as rules
@@ -35,9 +36,18 @@ def response(context, flow):
                 status_code = rules.status_code(rule)
                 status_message = http.status_message(status_code)
                 body_filename = rules.body_filename(rule)
+                schema = rules.schema(rule,
+                                      context.source_dir)
 
                 flow.response.status_code = status_code
                 flow.response.msg = status_message
+
+                if schema:
+                    table = driver.db.table(flow.request.url)
+                    schema_result = rules.check(flow.response.content,
+                                                schema)
+                    table.insert_multiple(schema_result)
+                    print(schema_result)
 
                 rules.process_headers('response',
                                       rule,

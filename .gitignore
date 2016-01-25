@@ -4,3 +4,4 @@ sandbox/
 __pycache__
 xcuserdata/
 project.xcworkspace/
+*-store.json

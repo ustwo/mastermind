@@ -1,12 +1,19 @@
+test-schema-errors:
+	@curl --proxy http://localhost:8080 \
+        -XGET "http://proxapp:5000/fake/exceptions/?uri=https://api.github.com/users/arnau/orgs"
+
+
 test-api-call:
 	@curl -ki \
         --proxy http://localhost:8080 \
         -XGET https://api.github.com/users/octocat/orgs
 
 test-api-call2:
+	@$(call driver_start, fake)
 	@curl -ki \
         --proxy http://localhost:8080 \
         -XGET https://api.github.com/users/arnau/orgs
+	@$(call driver_stop)
 
 
 test-200:

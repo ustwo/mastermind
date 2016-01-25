@@ -1,5 +1,6 @@
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
+from tinydb import TinyDB, where
 
 class Driver:
     '''
@@ -8,18 +9,22 @@ class Driver:
     '''
     name = None
     base_path = None
+    db = None
 
     def root(self, base_path):
         self.base_path = base_path
 
     def start(self, name):
         filename = os.path.join(self.base_path,
-                                '{}.yaml'.format(name))
+                                "{}.yaml".format(name))
 
         if not os.path.exists(filename):
             return {"state": "error", "message": "Driver {} not found".format(filename)}
 
         self.name = name
+        self.db = TinyDB(os.path.join(self.base_path,
+                                      "{}-store.json".format(name)))
+
         return {"driver": self.name, "state": "started"}
 
     def stop(self):
@@ -28,6 +33,8 @@ class Driver:
 
         message = {"driver": self.name, "state": "stopped"}
         self.name = None
+        self.db.close()
+        self.db = None
         return message
 
     def state(self):
@@ -55,7 +62,8 @@ def register(context):
 def index(path):
     return jsonify({"links": {"start": "/{driver}/start/",
                               "stop": "/stop/",
-                              "state": "/state/"}})
+                              "state": "/state/",
+                              "exceptions": "/{driver}/exceptions/"}})
 
 @app.route('/state/')
 def state():
@@ -74,3 +82,27 @@ def start_driver(driver_name):
     message = driver.start(driver_name)
     print(message)
     return jsonify(message)
+
+@app.route('/<driver_name>/exceptions/')
+def exceptions(driver_name):
+    message = driver.start(driver_name)
+    uri = request.args.get('uri')
+
+    if not driver.name: return jsonify(message)
+    if not uri:
+        result = {"exceptions": [],
+               "driver": driver_name}
+        tables = driver.db.tables()
+        tables.remove("_default")
+        for table in list(tables):
+            data = driver.db.table(table).all()
+            result['exceptions'].append({table: data})
+        return jsonify(result)
+
+    table = driver.db.table(uri)
+    table_all = table.all()
+    driver.stop()
+
+    return jsonify({"exceptions": table_all,
+                    "driver": driver_name,
+                    "uri": uri})

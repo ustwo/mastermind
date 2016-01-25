@@ -1,0 +1,22 @@
+[[rules]]
+name = "foo"
+url = "https://api.github.com/users/octocat/orgs"
+response = {body = "fake.json"}
+
+[[rules]]
+name = "bar"
+url = "https://api.github.com/users/arnau/orgs"
+schema = "github-orgs-schema.json"
+
+[rules.request.headers]
+remove = ["If-None-Match"]
+
+[rules.response]
+body = "arnau-orgs.json"
+
+[rules.response.headers]
+remove = ["ETag"]
+
+[rules.response.headers.add]
+Cache-Control = "no-cache"
+X-ustwo-intercepted = true

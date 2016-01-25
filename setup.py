@@ -41,7 +41,9 @@ setup(
     install_requires=['mitmproxy==0.15',
                       'Flask==0.10',
                       'pyYAML==3.11',
-                      'requests==2.9'],
+                      'requests==2.9',
+                      'jsonschema==2.5',
+                      'tinydb==3.1'],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,
