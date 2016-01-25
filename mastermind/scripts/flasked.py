@@ -1,5 +1,6 @@
 import os
 import subprocess
+import time
 from libmproxy.models import decoded
 from libmproxy import filt
 from mastermind.proxyswitch import enable, disable
@@ -32,6 +33,10 @@ def response(context, flow):
     if driver.name:
         rule = flow.mastermind['rule']
         if rule:
+            delay = rules.delay(rule)
+            if delay:
+                time.sleep(delay)
+
             with decoded(flow.response):
                 status_code = rules.status_code(rule)
                 status_message = http.status_message(status_code)

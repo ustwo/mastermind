@@ -15,6 +15,11 @@ test-api-call2:
         -XGET https://api.github.com/users/arnau/orgs
 	@$(call driver_stop)
 
+test-delay:
+	@$(call driver_start, skip)
+	@curl -i --proxy http://localhost:8080 \
+           -XGET http://localhost:8000/slow/
+	@$(call driver_stop)
 
 test-200:
 	@$(call driver_start, skip)

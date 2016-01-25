@@ -41,6 +41,12 @@ def body_filename(rule):
 def url(rule):
     return rule['url']
 
+def delay(rule):
+    if 'response' in rule:
+        if 'delay' in rule['response']:
+            return int(rule['response']['delay'])
+    return None
+
 def skip(rule):
     if 'request' in rule:
         if 'skip' in rule['request']:
