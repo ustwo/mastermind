@@ -28,7 +28,7 @@ mastermind-reverse-access:
                               --with-driver \
                               --with-reverse-access \
                               --source-dir $(shell pwd)/test/records
-.PHONY: mastermind-access
+.PHONY: mastermind-reverse-access
 
 
 mastermind-error:
