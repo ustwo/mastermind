@@ -2,6 +2,7 @@
 
 ## Next
 
+* Add slow responses via `delay` property.
 * Add JSON Schema validation.
 * Add flag to customise the proxy host.
 * Add flag to customise the proxy port.
