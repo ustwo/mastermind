@@ -18,6 +18,7 @@ mastermind-script:
 
 mastermind-driver:
 	@$(shell pwd)/mastermind.py --quiet \
+                              --without-proxy-settings \
                               --with-driver \
                               --source-dir $(shell pwd)/test/records
 .PHONY: mastermind-driver
