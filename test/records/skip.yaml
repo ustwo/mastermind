@@ -9,6 +9,14 @@
       add:
         X-ustwo-intercepted: 'Yes'
 
+- name: slow
+  url: http://localhost:8000/slow/
+  request:
+    skip: true
+  response:
+    delay: 10
+    body: ok200.json
+
 - name: error400
   url: http://localhost:8000/400/
   request:
