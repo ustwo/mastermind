@@ -19,9 +19,11 @@ def start(context, argv):
     context.url = argv[1]
     context.filepath = argv[2]
     context.without_proxy_settings = argv[3] == "True"
+    context.port = argv[4]
+    context.host = argv[5]
 
     if not context.without_proxy_settings:
-        enable('127.0.0.1', '8080')
+        enable(context.host, context.port)
 
     context.log(context.url)
     context.log(context.filepath)

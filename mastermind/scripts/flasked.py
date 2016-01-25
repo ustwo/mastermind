@@ -52,12 +52,14 @@ def start(context, argv):
     context.source_dir = argv[1]
     context.reverse_access = argv[2] == "True"
     context.without_proxy_settings = argv[3] == "True"
+    context.port = argv[4]
+    context.host = argv[5]
 
     register(context)
 
     if not context.without_proxy_settings:
         context.log("No OS proxy settings")
-        enable('127.0.0.1', '8080')
+        enable(context.host, context.port)
 
     if context.reverse_access:
         reverse_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '../reverse.py')

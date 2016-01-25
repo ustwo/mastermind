@@ -23,6 +23,15 @@ mastermind-driver:
                               --source-dir $(shell pwd)/test/records
 .PHONY: mastermind-driver
 
+mastermind-driver2:
+	@$(shell pwd)/mastermind.py --quiet \
+                              --with-driver \
+                              --port 9090 \
+                              --host 0.0.0.0 \
+                              --source-dir $(shell pwd)/test/records
+.PHONY: mastermind-driver2
+
+
 mastermind-reverse-access:
 	@$(shell pwd)/mastermind.py --quiet \
                               --with-driver \

@@ -40,13 +40,12 @@ def main():
                         help = '''A mitmproxy Python script filepath.
                                   When passed, --response-body and --url are ignored''')
 
-    # TODO: Implement port, host and no-settings
-    # parser.add_argument('--port',
-    #                     help = 'Default port 8080',
-    #                     default = "8080")
-    # parser.add_argument('--host',
-    #                     help = 'Default host 127.0.0.1',
-    #                     default = "127.0.0.1")
+    parser.add_argument('--port',
+                        help = 'Default port 8080',
+                        default = "8080")
+    parser.add_argument('--host',
+                        help = 'Default host 127.0.0.1',
+                        default = "127.0.0.1")
     parser.add_argument('--without-proxy-settings',
                         action='store_true',
                         help='Skips changing the OS proxy settings')
@@ -56,7 +55,7 @@ def main():
                         help='Makes mitmproxy quiet')
 
     args, extra_arguments = parser.parse_known_args()
-    mitm_args = ['--host']
+    mitm_args = ["--host"]
 
     if args.with_driver:
         if args.script or args.response_body or args.url:
@@ -66,10 +65,12 @@ def main():
             parser.error("--source-dir is required with the Driver mode")
 
         mitm_args = ['--script',
-                     "{}/scripts/flasked.py {} {} {}".format(os.path.dirname(os.path.realpath(__file__)),
-                                                          args.source_dir,
-                                                          args.with_reverse_access,
-                                                          args.without_proxy_settings)]
+                     "{}/scripts/flasked.py {} {} {} {} {}".format(os.path.dirname(os.path.realpath(__file__)),
+                                                                   args.source_dir,
+                                                                   args.with_reverse_access,
+                                                                   args.without_proxy_settings,
+                                                                   args.port,
+                                                                   args.host)]
     elif args.script:
         if args.response_body or args.url:
             parser.error("The Script mode does not allow a response body or a URL.")
@@ -78,13 +79,17 @@ def main():
         mitm_args.append(args.script)
     elif args.response_body:
         mitm_args = ['--script',
-                     "{}/scripts/simple.py {} {} {}".format(os.path.dirname(os.path.realpath(__file__)),
-                                                         args.url,
-                                                         args.response_body,
-                                                         args.without_proxy_settings)]
+                     "{}/scripts/simple.py {} {} {} {} {}".format(os.path.dirname(os.path.realpath(__file__)),
+                                                                  args.url,
+                                                                  args.response_body,
+                                                                  args.without_proxy_settings,
+                                                                  args.port,
+                                                                  args.host)]
 
     if args.quiet:
         mitm_args.append('--quiet')
+
+    mitm_args = mitm_args + ["--port", args.port, "--bind-address", args.host]
 
     try:
         mitmdump(mitm_args)
