@@ -2,6 +2,9 @@
 
 ## Next
 
+* Add JSON Schema validation.
+* Add flag to customise the proxy host.
+* Add flag to customise the proxy port.
 * Add code property to the response definition.
 * Add skip property to the response definition.
 * Add flag to disable proxy settings switch.
