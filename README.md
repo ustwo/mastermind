@@ -14,23 +14,26 @@ pip install "git+https://github.com/ustwo/mastermind.git@v0.6.0#egg=mastermind"
 
 ## Mastermind
 
-Mastermind is a CLI using `libmproxy` that offers an easy way to define rules
+Mastermind is a CLI using `mitmproxy` that offers an easy way to define rules
 to intercept HTTP(S) requests and mock its responses.  By default it makes sure
 the OSX proxy settings are enabled only when the proxy is running.
 
 The proxy runs by default on `http://localhost:8080`.
 
-There are three forms you can use, "Driver", "Simple" and "Script".  They can't
+There are three modes you can use, "Driver", "Simple" and "Script".  They can't
 be mixed.
 
 **Note** Examples using `sudo` indicate you need high privileges to let
-mastermind change the *system* proxy configuration.  If you run it
+mastermind change the *system* proxy configuration.  If you run it with
 `--without-proxy-settings` there is no need for special privileges.
 
 ### Driver
 
 The driver mode will mount a thin HTTP server listening for actions at
 `http://proxapp:5000` and a set of rules to apply.
+
+Check the [Driver rules](./docs/rules.md) for a full list of properties.
+
 
 ```sh
 sudo mastermind --with-driver \
@@ -40,8 +43,9 @@ sudo mastermind --with-driver \
 In the example above, `mastermind` will expect to find one or more YAML ruleset
 files.  [Check the example](test/records).
 
-A ruleset file is an array of rules.  Each rule is composed by at least a `url`
-and a `response.body`.  The body must be a _relative_ path to an existing file.
+A ruleset file is an array of rules and each rule is composed by at least a `url`.
+The basic form will have a `body` as well.
+
 
 ```yaml
 ---
@@ -122,55 +126,7 @@ In one picture:
 When a `schema` is present at the driver level the original resopnse will be
 validated against the given JSON schema file.
 
-The mocked response will be sent even if the validation fails.  This ensures
-you get the information when the API contract is broken without making your
-test cycle suffer.
-
-
-```yaml
----
-- name: baz
-  url: https://api.github.com/users/arnau/orgs
-  schema: github-orgs-schema.json
-  response:
-    body: arnau-orgs.json
-```
-
-The driver above will check that the _original_ response from Github is valid
-according to `github-orgs-schema.json`.  You can access the exception list via
-the `/<driver_name>/exceptions/` endpoint:
-
-```sh
-$ curl --proxy http://localhost:8080 \
-       -XGET "http://proxapp:5000/fake/exceptions/?uri=https://api.github.com/users/arnau/orgs"
-{"driver": "baz",
- "uri": "https://api.github.com/users/arnau/orgs",
- "exceptions": [...]}
-```
-
-If you don't specify a `uri` parameter it will return all URIs recorded:
-
-```sh
-$ curl --proxy http://localhost:8080 \
-       -XGET "http://proxapp:5000/fake/exceptions/"
-{"driver": "baz",
- "exceptions": [{"https://api.github.com/users/arnau/orgs": [...]}]}
-```
-
-An exception has the following shape:
-
-```json
-{
-  "cause": null,
-  "context": [],
-  "message": "'descriptionn' is a required property",
-  "path": [0],
-  "schema_path": ["items", "required"],
-  "timestamp": "2016-01-19T14:32:19.424100"
-}
-```
-
-**Warning** The exception shape is not stable.
+See the [Driver validation](./docs/validation.md) documentation.
 
 
 ### Simple
