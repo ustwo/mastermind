@@ -14,23 +14,26 @@ pip install "git+https://github.com/ustwo/mastermind.git@v0.6.0#egg=mastermind"
 
 ## Mastermind
 
-Mastermind is a CLI using `libmproxy` that offers an easy way to define rules
+Mastermind is a CLI using `mitmproxy` that offers an easy way to define rules
 to intercept HTTP(S) requests and mock its responses.  By default it makes sure
 the OSX proxy settings are enabled only when the proxy is running.
 
 The proxy runs by default on `http://localhost:8080`.
 
-There are three forms you can use, "Driver", "Simple" and "Script".  They can't
+There are three modes you can use, "Driver", "Simple" and "Script".  They can't
 be mixed.
 
 **Note** Examples using `sudo` indicate you need high privileges to let
-mastermind change the *system* proxy configuration.  If you run it
+mastermind change the *system* proxy configuration.  If you run it with
 `--without-proxy-settings` there is no need for special privileges.
 
 ### Driver
 
 The driver mode will mount a thin HTTP server listening for actions at
 `http://proxapp:5000` and a set of rules to apply.
+
+Check the [Driver rules](./docs/rules.md) for a full list of properties.
+
 
 ```sh
 sudo mastermind --with-driver \
@@ -40,8 +43,9 @@ sudo mastermind --with-driver \
 In the example above, `mastermind` will expect to find one or more YAML ruleset
 files.  [Check the example](test/records).
 
-A ruleset file is an array of rules.  Each rule is composed by at least a `url`
-and a `response.body`.  The body must be a _relative_ path to an existing file.
+A ruleset file is an array of rules and each rule is composed by at least a `url`.
+The basic form will have a `body` as well.
+
 
 ```yaml
 ---
