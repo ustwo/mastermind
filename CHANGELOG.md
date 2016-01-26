@@ -1,7 +1,8 @@
 # Changelog
 
-## Next
+## 0.7.0
 
+* Add documentation for rule properties.
 * Add slow responses via `delay` property.
 * Add JSON Schema validation.
 * Add flag to customise the proxy host.
