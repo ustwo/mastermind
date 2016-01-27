@@ -1,9 +1,10 @@
 %% Mastermind architecture
 graph LR
+  testrunner[Test Runner]
   subgraph Host
-    XCode --- Mastermind
+    testrunner --- Mastermind
   end
   %%style API fill:#f9f,stroke:#333,stroke-width:4px;
   style Mastermind fill:#fbe983,stroke:#333;
   Mastermind -- HTTP/S --- API
-  Device --- XCode
+  Device --- testrunner
