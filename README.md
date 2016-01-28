@@ -5,6 +5,12 @@ to allow an easy way to intercept specific HTTP requests and mock its responses.
 
 It has a complementary tool to easily switch the **OSX** proxy configuration.
 
+## Requirements
+
+* Python (tested with version 2.7).
+* [pip](https://pypi.python.org/pypi/pip/).
+* OSX if you want to use the proxyswitch.
+
 
 ## Install
 
