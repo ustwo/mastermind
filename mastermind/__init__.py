@@ -44,8 +44,8 @@ def main():
                         help = 'Default port 8080',
                         default = "8080")
     parser.add_argument('--host',
-                        help = 'Default host 127.0.0.1',
-                        default = "127.0.0.1")
+                        help = 'Default host 0.0.0.0',
+                        default = "0.0.0.0")
     parser.add_argument('--without-proxy-settings',
                         action='store_true',
                         help='Skips changing the OS proxy settings')
