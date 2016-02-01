@@ -20,7 +20,7 @@ If you plan to intercept HTTPS connections, check the [mitmproxy docs](http://do
 pip install "git+https://github.com/ustwo/mastermind.git@v0.7.0#egg=mastermind"
 ```
 
-## Mastermind
+## Getting started
 
 Mastermind is a CLI using `mitmproxy` that offers an easy way to define rules
 to intercept HTTP(S) requests and mock its responses.  By default it makes sure
