@@ -2,7 +2,7 @@
 
 This document describe the rule properties and the expected behaviour.
 
-Check the [examples](./test/records) to have an idea of how a ruleset file looks
+Check the [examples](../test/records) to have an idea of how a ruleset file looks
 like.
 
 
