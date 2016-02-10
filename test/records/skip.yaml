@@ -31,3 +31,8 @@
     skip: true
   response:
     code: 500
+
+- name: skip-cert
+  url: "https://ustwo.com/what-we-do/?bar=baz&foo=1"
+  request:
+    skip: true

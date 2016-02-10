@@ -89,7 +89,10 @@ def main():
     if args.quiet:
         mitm_args.append('--quiet')
 
+    mitm_args = mitm_args + extra_arguments
     mitm_args = mitm_args + ["--port", args.port, "--bind-address", args.host]
+
+    print(mitm_args)
 
     try:
         mitmdump(mitm_args)

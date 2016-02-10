@@ -20,7 +20,9 @@ mastermind-driver:
 	@$(shell pwd)/mastermind.py --quiet \
                               --without-proxy-settings \
                               --with-driver \
+                              --no-upstream-cert \
                               --source-dir $(shell pwd)/test/records
+
 .PHONY: mastermind-driver
 
 mastermind-driver2:
