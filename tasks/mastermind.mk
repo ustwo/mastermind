@@ -21,6 +21,7 @@ mastermind-driver:
                               --without-proxy-settings \
                               --with-driver \
                               --source-dir $(shell pwd)/test/records
+
 .PHONY: mastermind-driver
 
 mastermind-driver2:

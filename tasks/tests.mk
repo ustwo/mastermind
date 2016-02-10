@@ -44,6 +44,14 @@ test-400:
            -XGET http://localhost:8000/400/
 	@$(call driver_stop)
 
+test-skipcert:
+	@$(call driver_start, skip)
+	@curl -I \
+        --cacert ~/.mitmproxy/mitmproxy-ca-cert.pem \
+        --proxy http://localhost:8080 \
+        -XGET "https://ustwo.com/what-we-do/?foo=1&bar=baz"
+	@$(call driver_stop)
+
 
 define driver_start
   curl -L --proxy http://localhost:8080 \

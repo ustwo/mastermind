@@ -3,6 +3,7 @@ import yaml
 import datetime
 import jsonschema
 from jsonschema import Draft4Validator, exceptions
+from urlparse import urlparse, urlsplit, parse_qs
 
 
 def load(filename, base_path):
@@ -20,6 +21,69 @@ def urls(ruleset):
 def find_by_url(url, ruleset):
     return head(filter(lambda x: x['url'] == url,
                        ruleset))
+
+##
+# Actual: The current url checked from the ruleset.
+# Expected: The url from the request.
+# 
+# TODO: Fragments are discarded.
+def match_url(expected):
+    def match(url):
+        actual = urlsplit(url)
+
+        if match_host(actual, expected) and \
+           match_schema(actual, expected) and \
+           match_path(actual, expected) and \
+           match_querystring(actual, expected):
+            print("same querystring")
+
+    return match
+
+def match_host(actual, expected):
+    return expected.host == actual.hostname
+
+def match_path(actual, expected):
+    rq = urlsplit(expected.path)
+    return rq.path == actual.path
+
+def match_querystring(actual, expected):
+    rq = urlsplit(expected.path)
+    return parse_qs(rq.query) == parse_qs(actual.query)
+
+# Matches any combination of schema + port (variants with and without
+# `--no-upstream-cert` flag in mitmproxy.
+def match_schema(actual, expected):
+    return (explicit_match(actual, expected) or \
+            implicit_match(actual, expected) or \
+            implicit_nocert(actual, expected) or \
+            explicit_nocert(actual, expected))
+
+# TODO: If the proxy is set to `no-upstream-cert` this rule will catch the
+#       following as true:
+#
+#           Actual: https://foo.com:9443 (converted to http://foo.com:9443)
+#           Expected: http://foo.com:9443
+#
+def explicit_match(actual, expected):
+    return expected.scheme == actual.scheme and \
+           expected.port == actual.port
+
+def implicit_match(actual, expected):
+    return (expected.scheme == actual.scheme and \
+            (expected.port == 80 or expected.port == 443) and \
+            actual.port == None)
+
+def implicit_nocert(actual, expected):
+    return expected.scheme == 'http' and expected.port == 443 and \
+           actual.scheme == 'https' and actual.port == None
+
+def explicit_nocert(actual, expected):
+    return expected.scheme == 'http' and expected.scheme == 'https' and \
+           expected.port == expected.port
+
+
+def any_url(request, urls):
+    return filter(match_url(request), urls)
 
 def head(collection):
     try:

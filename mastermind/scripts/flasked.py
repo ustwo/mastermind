@@ -1,8 +1,10 @@
 import os
 import subprocess
 import time
+from urlparse import urlparse
 from libmproxy.models import decoded
 from libmproxy import filt
+
 from mastermind.proxyswitch import enable, disable
 from mastermind.driver import driver, register
 import mastermind.rules as rules
@@ -17,50 +19,68 @@ def request(context, flow):
                              context.source_dir)
         urls = rules.urls(ruleset)
 
+        print(rules.any_url(flow.request, urls))
+        flow.reply(http.response(204))
+
         if flow.request.url in urls:
             rule = rules.find_by_url(flow.request.url,
                                      ruleset)
             flow.mastermind['rule'] = rule
 
-            rules.process_headers('request',
-                                  rule,
-                                  flow.request.headers)
-
+            print("hi")
             if rule and rules.skip(rule):
                 flow.reply(http.response(204))
 
-def response(context, flow):
-    if driver.name:
-        rule = flow.mastermind['rule']
-        if rule:
-            delay = rules.delay(rule)
-            if delay:
-                time.sleep(delay)
+    # if driver.name:
+    #     flow.mastermind = {}
+    #     ruleset = rules.load(driver.name,
+    #                          context.source_dir)
+    #     urls = rules.urls(ruleset)
 
-            with decoded(flow.response):
-                status_code = rules.status_code(rule)
-                status_message = http.status_message(status_code)
-                body_filename = rules.body_filename(rule)
-                schema = rules.schema(rule,
-                                      context.source_dir)
+    #     if flow.request.url in urls:
+    #         rule = rules.find_by_url(flow.request.url,
+    #                                  ruleset)
+    #         flow.mastermind['rule'] = rule
 
-                flow.response.status_code = status_code
-                flow.response.msg = status_message
+    #         rules.process_headers('request',
+    #                               rule,
+    #                               flow.request.headers)
 
-                if schema:
-                    table = driver.db.table(flow.request.url)
-                    schema_result = rules.check(flow.response.content,
-                                                schema)
-                    table.insert_multiple(schema_result)
-                    print(schema_result)
+    #         if rule and rules.skip(rule):
+    #             flow.reply(http.response(204))
 
-                rules.process_headers('response',
-                                      rule,
-                                      flow.response.headers)
+# def response(context, flow):
+#     if driver.name:
+#         rule = flow.mastermind['rule']
+#         if rule:
+#             delay = rules.delay(rule)
+#             if delay:
+#                 time.sleep(delay)
 
-                if body_filename:
-                    flow.response.content = rules.body(body_filename,
-                                                       context.source_dir)
+#             with decoded(flow.response):
+#                 status_code = rules.status_code(rule)
+#                 status_message = http.status_message(status_code)
+#                 body_filename = rules.body_filename(rule)
+#                 schema = rules.schema(rule,
+#                                       context.source_dir)
+
+#                 flow.response.status_code = status_code
+#                 flow.response.msg = status_message
+
+#                 if schema:
+#                     table = driver.db.table(flow.request.url)
+#                     schema_result = rules.check(flow.response.content,
+#                                                 schema)
+#                     table.insert_multiple(schema_result)
+#                     print(schema_result)
+
+#                 rules.process_headers('response',
+#                                       rule,
+#                                       flow.response.headers)
+
+#                 if body_filename:
+#                     flow.response.content = rules.body(body_filename,
+#                                                        context.source_dir)
 
 
 def start(context, argv):
