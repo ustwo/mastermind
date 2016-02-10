@@ -89,8 +89,6 @@ def main():
     if args.quiet:
         mitm_args.append('--quiet')
 
-    # --noapp to stop onboarding app
-    mitm_args = mitm_args + ["--no-upstream-cert"]
     mitm_args = mitm_args + extra_arguments
     mitm_args = mitm_args + ["--port", args.port, "--bind-address", args.host]
 

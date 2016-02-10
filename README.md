@@ -35,6 +35,10 @@ be mixed.
 mastermind change the *system* proxy configuration.  If you run it with
 `--without-proxy-settings` there is no need for special privileges.
 
+### Troubleshooting
+
+We collect non-obvious use cases at the [troubleshooting](./docs/troubleshooting.md) document.
+
 ### Driver
 
 The driver mode will mount a thin HTTP server listening for actions at
