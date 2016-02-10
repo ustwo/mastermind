@@ -55,10 +55,10 @@ test-skipcert:
 
 define driver_start
   curl -L --proxy http://localhost:8080 \
-          -XGET http://proxapp:5000/$(strip $1)/start/
+          -XGET http://proxapp:5000/$(strip $1)/start/ > /dev/null 2>&1
 endef
 
 define driver_stop
   curl -L --proxy http://localhost:8080 \
-          -XGET http://proxapp:5000/stop/
+          -XGET http://proxapp:5000/stop/ > /dev/null 2>&1
 endef

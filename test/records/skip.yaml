@@ -1,36 +1,36 @@
 ---
-# - name: ok200
-#   url: http://localhost:8000/
-#   request:
-#     skip: true
-#   response:
-#     body: ok200.json
-#     headers:
-#       add:
-#         X-ustwo-intercepted: 'Yes'
+- name: ok200
+  url: http://localhost:8000/
+  request:
+    skip: true
+  response:
+    body: ok200.json
+    headers:
+      add:
+        X-ustwo-intercepted: 'Yes'
 
-# - name: slow
-#   url: http://localhost:8000/slow/
-#   request:
-#     skip: true
-#   response:
-#     delay: 10
-#     body: ok200.json
+- name: slow
+  url: http://localhost:8000/slow/
+  request:
+    skip: true
+  response:
+    delay: 10
+    body: ok200.json
 
-# - name: error400
-#   url: http://localhost:8000/400/
-#   request:
-#     skip: true
-#   response:
-#     code: 400
-#     body: error400.json
+- name: error400
+  url: http://localhost:8000/400/
+  request:
+    skip: true
+  response:
+    code: 400
+    body: error400.json
 
-# - name: error500
-#   url: http://localhost:8000/500/
-#   request:
-#     skip: true
-#   response:
-#     code: 500
+- name: error500
+  url: http://localhost:8000/500/
+  request:
+    skip: true
+  response:
+    code: 500
 
 - name: skip-cert
   url: "https://ustwo.com/what-we-do/?bar=baz&foo=1"

@@ -22,6 +22,9 @@ def find_by_url(url, ruleset):
     return head(filter(lambda x: x['url'] == url,
                        ruleset))
 
+def filter_urls(request, urls):
+    return filter(match_url(request), urls)
+
 ##
 # Actual: The current url checked from the ruleset.
 # Expected: The url from the request.
@@ -35,7 +38,9 @@ def match_url(expected):
            match_schema(actual, expected) and \
            match_path(actual, expected) and \
            match_querystring(actual, expected):
-            print("same querystring")
+            return True
+
+        return False
 
     return match
 
@@ -80,10 +85,6 @@ def implicit_nocert(actual, expected):
 def explicit_nocert(actual, expected):
     return expected.scheme == 'http' and expected.scheme == 'https' and \
            expected.port == expected.port
-
-
-def any_url(request, urls):
-    return filter(match_url(request), urls)
 
 def head(collection):
     try:
@@ -141,7 +142,7 @@ def status_code(rule):
     if 'response' in rule:
         if 'code' in rule['response']:
             return int(rule['response']['code'])
-    return 200
+    return None
 
 def schema(rule, base_path):
     if not 'schema' in rule: return
