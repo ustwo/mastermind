@@ -36,3 +36,8 @@
   url: "https://ustwo.com/what-we-do/?bar=baz&foo=1"
   request:
     skip: true
+
+- name: template
+  url: "http://localhost:8000/{collection}/{id}{?q,p}"
+  request:
+    skip: true
