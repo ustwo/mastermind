@@ -49,10 +49,6 @@ def path_segments(path):
 def query_pairs(query):
     return parse_qsl(query, keep_blank_values=True)
 
-def expand(uri, data):
-    # return uritemplate.expand(uri, data)
-    return x_expand(uri, data)
-
 
 # TODO: mitmproxy 0.16 will fix the flow.response.url anomaly so the match_*
 # functions will be removed.
