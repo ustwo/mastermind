@@ -85,3 +85,7 @@ def test_partial_pairs():
     assert rfc.expand_pairs("{;x,y}", [("y", y)], partial=True) == ";y=768{;x}"
     assert rfc.expand_pairs("{;x,y,empty}", [("y", y)], partial=True) == ";y=768{;x,empty}"
     assert rfc.expand_pairs("{;x,y,empty}", [("y", y), ("x", x)], partial=True) == ";y=768;x=1024{;empty}"
+
+def test_combined():
+    assert rfc.expand_pairs(rfc.expand_sequence("http://example.com/{var}{+path}{?x,y}", [var, path]),
+                            [("x", x), ("y", y)]) == "http://example.com/value/foo/bar?x=1024&y=768"
