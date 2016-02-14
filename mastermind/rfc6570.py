@@ -6,13 +6,18 @@ import uritemplate
 import re
 from collections import deque
 
-RESERVED = ":/?#[]@!$&'()*+,;="
-OPERATOR = "+#./;?&|!@"
-MODIFIER = ":^"
+SEQ_TPL = re.compile("{([/+.#]?)([^+#./;?&|!@}]+)}")
+PAIRS_TPL = re.compile("{([?;&])([^+#./;?&|!@}]+)}")
 
 ##
-# Sequence templates is a generalisation to apply in order a list of templates.
+# This RFC 6570 implementation implements Level 1, 2 and 3. Level 4 is not
+# implemented as it is not useful for Mastermind.
 #
+# Levels 1, 2 and 3 are implemented with specialised functions based on the
+# expected input, a list of values or a list of tuples.  The first case applies
+# values in strict order, the second by key.
+
+##
 # When partial is False and there are no seguments left it follows the RFC
 # so the result is empty.  But, when partial is True, the expression is kept
 # intact so you can apply multiple times the function with different
@@ -22,10 +27,13 @@ MODIFIER = ":^"
 #   expand_sequence("{var}", [], partial=True) # => "{var}"
 #   expand_sequence("{foo}/{bar}", ["a"], partial=True) # => "a/{bar}"
 #
-SEQ_TPL = re.compile("{([/+.#]?)([^+#./;?&|!@}]+)}")
 def expand_sequence(tpl, segments, partial=False):
     queue = deque(segments)
     operators = "/.#"
+    reserved = ":/?#[]@!$&'()*+,;="
+
+    def take_varlist(variable_list, limit):
+        return (variable_list[0:limit], variable_list[limit:])
 
     def sub(m):
         if len(queue) == 0 and partial: return m.group(0)
@@ -33,138 +41,68 @@ def expand_sequence(tpl, segments, partial=False):
 
         operator = m.group(1)
         expression = m.group(2)
+        variable_list, leftovers = take_varlist(expression.split(","), len(queue))
         prefix = operator if (operator in operators) else ""
         infix = operator if operator == "/" else ","
-        safe = RESERVED if operator else ""
+        safe = reserved if operator else ""
 
-        variable_list = map(lambda _: quote(queue.popleft(), safe=safe),
-                            expression.split(","))
+        tokens = map(lambda _: quote(queue.popleft(), safe=safe), variable_list)
 
-        return "{}{}".format(prefix, infix.join(variable_list))
+        leftovers_tpl = ""
+        if len(leftovers) > 0 and partial:
+            leftovers_tpl = "{{{}{}}}".format(operator, ",".join(leftovers))
+
+        return "{}{}{}".format(prefix, infix.join(tokens), leftovers_tpl)
 
     r = SEQ_TPL.sub(sub, tpl)
     print(tpl,r)
     return r
 
 
-PAIRS_TPL = re.compile("{([?;&])([^+#./;?&|!@}]+)}")
-def expand_pairs(tpl, pairs):
-
+##
+# When partial is False and there are no matching pairs it follows the RFC
+# so the result is empty.  But, when partial is True, the expression is kept
+# intact so you can apply multiple times the function with different
+# sequences:
+#
+#   expand_pair("{?x}", []) # => ""
+#   expand_pair("{?x}", [], partial=True) # => "{?x}"
+#
+def expand_pairs(tpl, pairs, partial=False):
     def join_query_pair(x, y):
         return "=".join([x, y])
 
     def join_param_pair(x, y):
         return "=".join([x, y]) if y else x
 
+    def take_leftovers(varlist, pairs):
+        return filter(lambda v: not any(map(lambda (x, _): v == x, pairs)), varlist)
+
+    def take_tokens(varlist, pairs, operator):
+        join_pair = join_param_pair if operator == ";" else join_query_pair
+        return [join_pair(x, y) for x, y in pairs
+                                if any(map(lambda v: x == v, varlist))]
+
     def sub(m):
+        if len(pairs) == 0 and partial: return m.group(0)
+        if len(pairs) == 0: return ""
+
         operator = m.group(1)
         expression = m.group(2)
         prefix = operator
         infix = operator if operator == ";" else "&"
-        join_pair = join_param_pair if operator == ";" else join_query_pair
 
-        keys = map(lambda x: x.strip(), expression.split(","))
-        variable_list = [join_pair(x, y) for x, y in pairs
-                                         if any(map(lambda k: x == k, keys))]
+        variable_list = map(lambda x: x.strip(), expression.split(","))
 
-        print("vl", variable_list)
-        if len(variable_list) == 0: return ""
+        tokens = take_tokens(variable_list, pairs, operator)
+        leftovers = take_leftovers(variable_list, pairs)
 
-        return "{}{}".format(prefix, infix.join(variable_list))
+        leftovers_tpl = ""
+        if len(leftovers) > 0 and partial:
+            leftovers_tpl = "{{{}{}}}".format(operator, ",".join(leftovers))
+
+        return "{}{}{}".format(prefix, infix.join(tokens), leftovers_tpl)
 
     r = PAIRS_TPL.sub(sub, tpl)
-    print(tpl,r)
+    # print(tpl,r)
     return r
-
-
-# Extracted from uritemplate-py
-def x_expand(template, variables):
-    TOSTRING = {
-        "" : uritemplate._tostring,
-        "+": uritemplate._tostring,
-        "#": uritemplate._tostring,
-        ";": uritemplate._tostring_semi,
-        "?": uritemplate._tostring_query,
-        "&": uritemplate._tostring_query,
-        "/": uritemplate._tostring_path,
-        ".": uritemplate._tostring_path,
-    }
-    RESERVED = ":/?#[]@!$&'()*+,;="
-    OPERATOR = "+#./;?&|!@"
-    MODIFIER = ":^"
-    TEMPLATE = re.compile("{([^\}]+)}")
-    """
-    Expand template as a URI Template using variables.
-    """
-    def _sub(match):
-        expression = match.group(1)
-        operator = ""
-        if expression[0] in OPERATOR:
-            operator = expression[0]
-            varlist = expression[1:]
-        else:
-            varlist = expression
-
-        safe = ""
-        if operator in ["+", "#"]:
-            safe = RESERVED
-        varspecs = varlist.split(",")
-        varnames = []
-        defaults = {}
-        for varspec in varspecs:
-            default = None
-            explode = False
-            prefix = None
-            if "=" in varspec:
-                varname, default = tuple(varspec.split("=", 1))
-            else:
-                varname = varspec
-            if varname[-1] == "*":
-                explode = True
-                varname = varname[:-1]
-            elif ":" in varname:
-                try:
-                    prefix = int(varname[varname.index(":")+1:])
-                except ValueError:
-                    raise ValueError("non-integer prefix '{0}'".format(
-                       varname[varname.index(":")+1:]))
-                varname = varname[:varname.index(":")]
-            if default:
-                defaults[varname] = default
-            varnames.append((varname, explode, prefix))
-
-        retval = []
-        joiner = operator
-        start = operator
-        if operator == "+":
-            start = ""
-            joiner = ","
-        if operator == "#":
-            joiner = ","
-        if operator == "?":
-            joiner = "&"
-        if operator == "&":
-            start = "&"
-        if operator == "":
-            joiner = ","
-        for varname, explode, prefix in varnames:
-            if varname in variables:
-                value = variables[varname]
-                if not value and value != "" and varname in defaults:
-                    value = defaults[varname]
-            elif varname in defaults:
-                value = defaults[varname]
-            else:
-                continue
-            expanded = TOSTRING[operator](
-              varname, value, explode, prefix, operator, safe=safe)
-            if expanded is not None:
-                retval.append(expanded)
-        if len(retval) > 0:
-            return start + joiner.join(retval)
-        else:
-            return ""
-
-    return TEMPLATE.sub(_sub, template)
-
-

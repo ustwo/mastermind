@@ -69,25 +69,20 @@ def test_form_style_query_continuation():
     assert rfc.expand_pairs("{&x,y,empty}", [("x", x), ("y", y), ("empty", empty)]) == "&x=1024&y=768&empty="
 
 
+def test_partial_sequence():
+    assert rfc.expand_sequence("{var}", []) == ""
+    assert rfc.expand_sequence("{var}", [], partial=True) == "{var}"
+    assert rfc.expand_sequence("{+path}/{var}", [path], partial=True) == "/foo/bar/{var}"
+    assert rfc.expand_sequence("{x,y}", [x], partial=True) == "1024{y}"
+    assert rfc.expand_sequence("{/var,x}", [var], partial=True) == "/value{/x}"
+    assert rfc.expand_sequence("{/var,x,empty}", [var], partial=True) == "/value{/x,empty}"
 
-# TODO: Review
-# def test_expand_sequence():
-#     assert rfc.expand_sequence("{var}", []) == ""
-#     assert rfc.expand_sequence("{var}", [], partial=True) == "{var}"
-
-#     assert rfc.expand_sequence("http://example.com", []) == "http://example.com"
-#     assert rfc.expand_sequence("http://example.com/{x}", ["a"]) == "http://example.com/a"
-#     assert rfc.expand_sequence("http://example.com/{x}/{y}", ["a", "b"]) == "http://example.com/a/b"
-#     assert rfc.expand_sequence("http://example.com/{x}?q=1", ["a", "b"]) == "http://example.com/a?q=1"
-#     assert rfc.expand_sequence("http://example.com/foo?q={x}", ["1"]) == "http://example.com/foo?q=1"
-#     assert rfc.expand_sequence("http://example.com{+path}/here", ["/foo/bar"]) == "http://example.com/foo/bar/here"
-#     assert rfc.expand_sequence("http://example.com/here?ref={+path}", ["/foo/bar"]) == "http://example.com/here?ref=/foo/bar"
-
-
-
-# def test_expand_query():
-#     assert rfc.expand_query("http://example.com", []) == "http://example.com"
-#     assert rfc.expand_query("http://example.com/{?xyz}", [("xyz", "a")]) == "http://example.com/?xyz=a"
-#     assert rfc.expand_query("http://example.com{?q,p}", [("q", "1"), ("p", "2"), ("r", 3)]) == "http://example.com?q=1&p=2"
-#     assert rfc.expand_query("http://example.com{?p,q}", [("q", "1"), ("p", "2")]) == "http://example.com?q=1&p=2"
-#     assert rfc.expand_query("http://example.com{?q}", [("q", "1"), ("p", "2")]) == "http://example.com?q=1"
+def test_partial_pairs():
+    assert rfc.expand_pairs("{;x}", []) == ""
+    assert rfc.expand_pairs("{;x,y}", []) == ""
+    assert rfc.expand_pairs("{;x}", [], partial=True) == "{;x}"
+    assert rfc.expand_pairs("{;x,y}", [("x", x)]) == ";x=1024"
+    assert rfc.expand_pairs("{;x,y}", [("x", x)], partial=True) == ";x=1024{;y}"
+    assert rfc.expand_pairs("{;x,y}", [("y", y)], partial=True) == ";y=768{;x}"
+    assert rfc.expand_pairs("{;x,y,empty}", [("y", y)], partial=True) == ";y=768{;x,empty}"
+    assert rfc.expand_pairs("{;x,y,empty}", [("y", y), ("x", x)], partial=True) == ";y=768;x=1024{;empty}"
