@@ -53,10 +53,15 @@ def test_path_segments():
 # TODO: implement via pairs or named
 def test_path_style_parameters():
     assert rfc.expand_sequence("{;x,y}", [x, y]) == "{;x,y}"
-#     assert rfc.expand_sequence("{;x,y}", [x, y]) == ";x=1024;y=768"
-#     assert rfc.expand_sequence("{;x,y}", [x, y, empty]) == ";x=1024;y=768;empty"
+    assert rfc.expand_pairs("{;x,y}", [("x", x), ("y", y)]) == ";x=1024;y=768"
+    assert rfc.expand_pairs("{;x,y,empty}", [("x", x), ("y", y), ("empty", empty)]) == ";x=1024;y=768;empty"
 
 # Form-style query, ampersand-separated         (Sec 3.2.8)
+def test_form_style_query():
+    assert rfc.expand_sequence("{?x,y}", [x, y]) == "{?x,y}"
+    assert rfc.expand_pairs("{?x,y}", [("x", x), ("y", y)]) == "?x=1024&y=768"
+    assert rfc.expand_pairs("{?x,y,empty}", [("x", x), ("y", y), ("empty", empty)]) == "?x=1024&y=768&empty="
+
 
 
 # TODO: Review

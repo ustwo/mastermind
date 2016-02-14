@@ -10,13 +10,8 @@ RESERVED = ":/?#[]@!$&'()*+,;="
 OPERATOR = "+#./;?&|!@"
 MODIFIER = ":^"
 
+##
 # Sequence templates is a generalisation to apply in order a list of templates.
-# If an expression contains `{x,y}` it will expand x and y in order too.
-# Level 1 `{var}`
-# Level 1 TODO `{foo,bar}`
-# Level 2 `{+var}`
-# Level 2 TODO `{+foo,bar}`
-# Level 2 `{#var}`
 #
 # When partial is False and there are no seguments left it follows the RFC
 # so the result is empty.  But, when partial is True, the expression is kept
@@ -52,23 +47,34 @@ def expand_sequence(tpl, segments, partial=False):
     return r
 
 
-QUERY_TPL = re.compile("{\?([^}]+)}")
-# Level 4 `{?q,p}`
-def expand_query(tpl, pairs):
+PAIRS_TPL = re.compile("{([?;])([^+#./;?&|!@}]+)}")
+def expand_pairs(tpl, pairs):
+
+    def join_query_pair(x, y):
+        return "=".join([x, y])
+
+    def join_param_pair(x, y):
+        return "=".join([x, y]) if y else x
 
     def sub(m):
-        expression = m.group(1)
-        prefix = "?"
-        infix = "&"
+        operator = m.group(1)
+        expression = m.group(2)
+        prefix = operator
+        infix = operator if operator == ";" else "&"
+        join_pair = join_param_pair if operator == ";" else join_query_pair
+
         keys = map(lambda x: x.strip(), expression.split(","))
-        tokens = ["{}={}".format(x, y) for x, y in pairs
-                                       if any(map(lambda k: x == k, keys))]
+        variable_list = [join_pair(x, y) for x, y in pairs
+                                         if any(map(lambda k: x == k, keys))]
 
-        if len(tokens) == 0: return ""
+        print("vl", variable_list)
+        if len(variable_list) == 0: return ""
 
-        return "{}{}".format(prefix, infix.join(tokens))
+        return "{}{}".format(prefix, infix.join(variable_list))
 
-    return QUERY_TPL.sub(sub, tpl)
+    r = PAIRS_TPL.sub(sub, tpl)
+    print(tpl,r)
+    return r
 
 
 # Extracted from uritemplate-py
