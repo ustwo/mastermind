@@ -44,6 +44,11 @@ def test_label_expansion():
     assert rfc.expand_sequence("X{.var}", [var]) == "X.value"
     assert rfc.expand_sequence("X{.x,y}", [x, y]) == "X.1024,768"
 
+# Path segments, slash-prefixed                 (Sec 3.2.6)
+def test_path_segments():
+    assert rfc.expand_sequence("{/var}", [var]) == "/value"
+    assert rfc.expand_sequence("{/var,x}/here", [var, x]) == "/value/1024/here"
+
 
 
 # TODO: Review
