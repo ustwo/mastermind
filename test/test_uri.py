@@ -12,17 +12,30 @@ def test_eq():
     assert not uri.eq("http://localhost/foo", "http://localhost/foo?q=1")
 
 
-def test_expand_path_level_1():
-    assert uri.expand_path("http://foo.co", []) == "http://foo.co"
-    assert uri.expand_path("http://foo.co/{x}", ["a"]) == "http://foo.co/a"
-    assert uri.expand_path("http://foo.co/{x}/{y}", ["a", "b"]) == "http://foo.co/a/b"
-    assert uri.expand_path("http://foo.co/{x}?q=1", ["a", "b"]) == "http://foo.co/a?q=1"
+def test_expand_sequence():
+    assert uri.expand_sequence("{var}", ["value"]) == "value"
+    assert uri.expand_sequence("{hello}", ["Hello World!"]) == "Hello%20World%21"
 
-def test_expand_path_level_2():
-    assert uri.expand_path("http://foo.co/{+var}", ["value"]) == "http://foo.co/value"
-    # assert uri.expand_path("http://foo.co/{+hello}", ["Hello World!"]) == "http://foo.co/Hello%20World!"
-    assert uri.expand_path("http://foo.co{+path}/here", ["/foo/bar"]) == "http://foo.co/foo/bar/here"
-    assert uri.expand_path("http://foo.co/here?ref={+path}", ["/foo/bar"]) == "http://foo.co/here?ref=/foo/bar"
+    assert uri.expand_sequence("{var}", [], partial=True) == "{var}"
+
+    assert uri.expand_sequence("http://example.com", []) == "http://example.com"
+    assert uri.expand_sequence("http://example.com/{x}", ["a"]) == "http://example.com/a"
+    assert uri.expand_sequence("http://example.com/{x}/{y}", ["a", "b"]) == "http://example.com/a/b"
+    assert uri.expand_sequence("http://example.com/{x}?q=1", ["a", "b"]) == "http://example.com/a?q=1"
+    assert uri.expand_sequence("http://example.com/foo?q={x}", ["1"]) == "http://example.com/foo?q=1"
+
+def test_expand_plus():
+    assert uri.expand_sequence("{+var}", ["value"]) == "value"
+    assert uri.expand_sequence("{+hello}", ["Hello World!"]) == "Hello%20World!"
+    assert uri.expand_sequence("{+path}/here", ["/foo/bar"]) == "/foo/bar/here"
+    assert uri.expand_sequence("here?ref={+path}", ["/foo/bar"]) == "here?ref=/foo/bar"
+
+    assert uri.expand_sequence("http://example.com{+path}/here", ["/foo/bar"]) == "http://example.com/foo/bar/here"
+    assert uri.expand_sequence("http://example.com/here?ref={+path}", ["/foo/bar"]) == "http://example.com/here?ref=/foo/bar"
+
+def test_expand_crosshatch():
+    assert uri.expand_sequence("X{#var}", ["value"]) == "X#value"
+    assert uri.expand_sequence("X{#hello}", ["Hello World!"]) == "X#Hello%20World!"
 
 def test_expand_path_level_3():
     pass
@@ -31,8 +44,8 @@ def test_expand_path_level_4():
     pass
 
 def test_expand_query():
-    assert uri.expand_query("http://foo.co", []) == "http://foo.co"
-    assert uri.expand_query("http://foo.co/{?xyz}", [("xyz", "a")]) == "http://foo.co/?xyz=a"
-    assert uri.expand_query("http://foo.co{?q,p}", [("q", "1"), ("p", "2"), ("r", 3)]) == "http://foo.co?q=1&p=2"
-    assert uri.expand_query("http://foo.co{?p,q}", [("q", "1"), ("p", "2")]) == "http://foo.co?q=1&p=2"
-    assert uri.expand_query("http://foo.co{?q}", [("q", "1"), ("p", "2")]) == "http://foo.co?q=1"
+    assert uri.expand_query("http://example.com", []) == "http://example.com"
+    assert uri.expand_query("http://example.com/{?xyz}", [("xyz", "a")]) == "http://example.com/?xyz=a"
+    assert uri.expand_query("http://example.com{?q,p}", [("q", "1"), ("p", "2"), ("r", 3)]) == "http://example.com?q=1&p=2"
+    assert uri.expand_query("http://example.com{?p,q}", [("q", "1"), ("p", "2")]) == "http://example.com?q=1&p=2"
+    assert uri.expand_query("http://example.com{?q}", [("q", "1"), ("p", "2")]) == "http://example.com?q=1"

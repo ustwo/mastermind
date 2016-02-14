@@ -1,5 +1,9 @@
 from collections import deque
 from urlparse import urlparse, urlsplit, parse_qs, parse_qsl
+try:
+   from urllib.parse import quote
+except ImportError:
+  from urllib import quote
 import uritemplate
 import re
 
@@ -58,17 +62,51 @@ def foo(a, b):
                "query": query_pairs(expanded.query)})
 
 
-PATH_TPL = re.compile("({[/+]?[^#.?}]+})")
-# Level 1 (ish)
-def expand_path(tpl, segments):
+RESERVED = ":/?#[]@!$&'()*+,;="
+OPERATOR = "+#./;?&|!@"
+MODIFIER = ":^"
+
+SEQ_TPL = re.compile("{([/;+#]?)([^/;+.?&#]+)}")
+# Sequence templates is a generalisation to apply in order a list of templates.
+# If an expression contains `{x,y}` it will expand x and y in order too.
+# Level 1 `{var}`
+# Level 1 TODO `{foo,bar}`
+# Level 2 `{+var}`
+# Level 2 TODO `{+foo,bar}`
+# Level 2 `{#var}`
+#
+# When partial is False and there are no seguments left it follows the RFC
+# so the result is empty.  But, when partial is True, the expression is kept
+# intact so you can apply multiple times the function with different
+# sequences:
+#
+#   expand_sequence("{var}", []) # => ""
+#   expand_sequence("{var}", [], partial=True) # => "{var}"
+#   expand_sequence("{foo}/{bar}", ["a"], partial=True) # => "a/{bar}"
+#
+def expand_sequence(tpl, segments, partial=False):
     queue = deque(segments)
+    operators = "/#"
+    print("tpl", tpl)
 
     def sub(m):
-        expression = m.group(1)
+        if len(queue) == 0 and partial: return m.group(0)
+        if len(queue) == 0: return ""
 
-        return "/".join([queue.popleft()])
+        operator = m.group(1)
+        expression = m.group(2)
+        prefix = operator if (operator in operators) else ""
+        infix = "/"
+        safe = RESERVED if operator else ""
 
-    return PATH_TPL.sub(sub, tpl)
+        variable_list = map(lambda _: quote(queue.popleft(), safe=safe),
+                            expression.split(","))
+
+        return "{}{}".format(prefix, infix.join(variable_list))
+
+    r = SEQ_TPL.sub(sub, tpl)
+    print(r)
+    return r
 
 
 QUERY_TPL = re.compile("{\?([^}]+)}")
