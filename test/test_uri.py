@@ -24,6 +24,18 @@ def test_expand_sequence():
     assert uri.expand_sequence("http://example.com/{x}?q=1", ["a", "b"]) == "http://example.com/a?q=1"
     assert uri.expand_sequence("http://example.com/foo?q={x}", ["1"]) == "http://example.com/foo?q=1"
 
+def test_expand_sequence_multiple():
+    var = "value"
+    hello = "Hello World!"
+    empty = ""
+    path = "/foo/bar"
+    x = "1024"
+    y = "768"
+
+    assert uri.expand_sequence("map?{x,y}", [x, y]) == "map?1024,768"
+    assert uri.expand_sequence("{x,hello,y}", [x, hello, y]) == "1024,Hello%20World%21,768"
+
+
 def test_expand_plus():
     assert uri.expand_sequence("{+var}", ["value"]) == "value"
     assert uri.expand_sequence("{+hello}", ["Hello World!"]) == "Hello%20World!"

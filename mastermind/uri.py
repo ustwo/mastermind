@@ -96,7 +96,7 @@ def expand_sequence(tpl, segments, partial=False):
         operator = m.group(1)
         expression = m.group(2)
         prefix = operator if (operator in operators) else ""
-        infix = "/"
+        infix = operator if operator == "/" else ","
         safe = RESERVED if operator else ""
 
         variable_list = map(lambda _: quote(queue.popleft(), safe=safe),
@@ -115,13 +115,15 @@ def expand_query(tpl, pairs):
 
     def sub(m):
         expression = m.group(1)
+        prefix = "?"
+        infix = "&"
         keys = map(lambda x: x.strip(), expression.split(","))
         tokens = ["{}={}".format(x, y) for x, y in pairs
                                        if any(map(lambda k: x == k, keys))]
 
         if len(tokens) == 0: return ""
 
-        return "?{}".format("&".join(tokens))
+        return "{}{}".format(prefix, infix.join(tokens))
 
     return QUERY_TPL.sub(sub, tpl)
 
