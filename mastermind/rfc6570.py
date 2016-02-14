@@ -27,7 +27,7 @@ MODIFIER = ":^"
 #   expand_sequence("{var}", [], partial=True) # => "{var}"
 #   expand_sequence("{foo}/{bar}", ["a"], partial=True) # => "a/{bar}"
 #
-SEQ_TPL = re.compile("{([/;+.#]?)([^/;+.?&#]+)}")
+SEQ_TPL = re.compile("{([/+.#]?)([^/;+.?&#]+)}")
 def expand_sequence(tpl, segments, partial=False):
     queue = deque(segments)
     operators = "/.#"
