@@ -50,7 +50,6 @@ def test_path_segments():
     assert rfc.expand_sequence("{/var,x}/here", [var, x]) == "/value/1024/here"
 
 # Path-style parameters, semicolon-prefixed     (Sec 3.2.7)
-# TODO: implement via pairs or named
 def test_path_style_parameters():
     assert rfc.expand_sequence("{;x,y}", [x, y]) == "{;x,y}"
     assert rfc.expand_pairs("{;x,y}", [("x", x), ("y", y)]) == ";x=1024;y=768"

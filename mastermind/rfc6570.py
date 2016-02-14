@@ -54,9 +54,8 @@ def expand_sequence(tpl, segments, partial=False):
 
         return "{}{}{}".format(prefix, infix.join(tokens), leftovers_tpl)
 
-    r = SEQ_TPL.sub(sub, tpl)
-    print(tpl,r)
-    return r
+    result = SEQ_TPL.sub(sub, tpl)
+    return result
 
 
 ##
@@ -103,6 +102,5 @@ def expand_pairs(tpl, pairs, partial=False):
 
         return "{}{}{}".format(prefix, infix.join(tokens), leftovers_tpl)
 
-    r = PAIRS_TPL.sub(sub, tpl)
-    # print(tpl,r)
-    return r
+    result = PAIRS_TPL.sub(sub, tpl)
+    return result
