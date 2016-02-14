@@ -22,7 +22,7 @@ MODIFIER = ":^"
 #   expand_sequence("{var}", [], partial=True) # => "{var}"
 #   expand_sequence("{foo}/{bar}", ["a"], partial=True) # => "a/{bar}"
 #
-SEQ_TPL = re.compile("{([/+.#]?)([^/;+.?&#]+)}")
+SEQ_TPL = re.compile("{([/+.#]?)([^+#./;?&|!@}]+)}")
 def expand_sequence(tpl, segments, partial=False):
     queue = deque(segments)
     operators = "/.#"
@@ -47,7 +47,7 @@ def expand_sequence(tpl, segments, partial=False):
     return r
 
 
-PAIRS_TPL = re.compile("{([?;])([^+#./;?&|!@}]+)}")
+PAIRS_TPL = re.compile("{([?;&])([^+#./;?&|!@}]+)}")
 def expand_pairs(tpl, pairs):
 
     def join_query_pair(x, y):
