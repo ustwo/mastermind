@@ -6,6 +6,8 @@ import re
 from collections import deque
 
 GENERIC_PATTERN = re.compile("{[+#./;?&|!@}]?([^\}]+)}")
+PAIRS_PATTERN = re.compile("{[?;&]([^+#./;?&|!@}]+)}")
+SEGMENTS_PATTERN = re.compile("{[/+.#]?([^+#./;?&|!@}]+)}")
 SEQ_TPL = re.compile("{([/+.#]?)([^+#./;?&|!@}]+)}")
 PAIRS_TPL = re.compile("{([?;&])([^+#./;?&|!@}]+)}")
 
@@ -21,21 +23,34 @@ PAIRS_TPL = re.compile("{([?;&])([^+#./;?&|!@}]+)}")
 ##
 # Returns the ordered list of all variables in a template.  It discards any
 # operator knowledge from each expression.
-def variable_list(template):
+def varlist(template):
     return [x for x in GENERIC_PATTERN.findall(template)
               for x in x.split(",")]
+
+def segments_varlist(template):
+    return [x for x in SEGMENTS_PATTERN.findall(template)
+              for x in x.split(",")]
+
+def pairs_varlist(template):
+    return [x for x in PAIRS_PATTERN.findall(template)
+              for x in x.split(",")]
+
+
+def expand(template, segments, pairs, partial=True):
+    return expand_segments(expand_pairs(template, pairs, partial=True),
+                           segments, partial=partial)
 
 ##
 # When partial is False and there are no seguments left it follows the RFC
 # so the result is empty.  But, when partial is True, the expression is kept
 # intact so you can apply multiple times the function with different
-# sequences:
+# segments:
 #
-#   expand_sequence("{var}", []) # => ""
-#   expand_sequence("{var}", [], partial=True) # => "{var}"
-#   expand_sequence("{foo}/{bar}", ["a"], partial=True) # => "a/{bar}"
+#   expand_segments("{var}", []) # => ""
+#   expand_segments("{var}", [], partial=True) # => "{var}"
+#   expand_segments("{foo}/{bar}", ["a"], partial=True) # => "a/{bar}"
 #
-def expand_sequence(tpl, segments, partial=False):
+def expand_segments(tpl, segments, partial=False):
     queue = deque(segments)
     operators = "/.#"
     reserved = ":/?#[]@!$&'()*+,;="
@@ -69,8 +84,7 @@ def expand_sequence(tpl, segments, partial=False):
 ##
 # When partial is False and there are no matching pairs it follows the RFC
 # so the result is empty.  But, when partial is True, the expression is kept
-# intact so you can apply multiple times the function with different
-# sequences:
+# intact so you can apply multiple times the function with different pairs:
 #
 #   expand_pair("{?x}", []) # => ""
 #   expand_pair("{?x}", [], partial=True) # => "{?x}"
