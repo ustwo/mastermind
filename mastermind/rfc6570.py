@@ -5,7 +5,7 @@ except ImportError:
 import re
 from collections import deque
 
-GENERIC_PATTERN = re.compile("{([^\}]+)}")
+GENERIC_PATTERN = re.compile("{[+#./;?&|!@}]?([^\}]+)}")
 SEQ_TPL = re.compile("{([/+.#]?)([^+#./;?&|!@}]+)}")
 PAIRS_TPL = re.compile("{([?;&])([^+#./;?&|!@}]+)}")
 
@@ -18,6 +18,9 @@ PAIRS_TPL = re.compile("{([?;&])([^+#./;?&|!@}]+)}")
 # values in strict order, the second by key.
 
 
+##
+# Returns the ordered list of all variables in a template.  It discards any
+# operator knowledge from each expression.
 def variable_list(template):
     return [x for x in GENERIC_PATTERN.findall(template)
               for x in x.split(",")]

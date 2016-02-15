@@ -94,3 +94,4 @@ def test_variable_list():
     assert rfc.variable_list("http://example.org/foo") == []
     assert rfc.variable_list("{var}") == ["var"]
     assert rfc.variable_list("{var,x,y}") == ["var", "x", "y"]
+    assert rfc.variable_list("{?x,y}") == ["x", "y"]
