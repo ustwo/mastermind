@@ -13,8 +13,9 @@ import mastermind.http as http
 # TODO: Allow smarter URL pattern matching,
 #       e.g. flow.request.pretty_url.endswith
 def request(context, flow):
+    flow.mastermind = {"rule": None}
+
     if driver.name:
-        flow.mastermind = {"rule": None}
         ruleset = rules.load(driver.name,
                              context.source_dir)
         urls = rules.urls(ruleset)
