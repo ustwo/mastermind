@@ -10,8 +10,6 @@ from mastermind.driver import driver, register
 import mastermind.rules as rules
 import mastermind.http as http
 
-# TODO: Allow smarter URL pattern matching,
-#       e.g. flow.request.pretty_url.endswith
 def request(context, flow):
     flow.mastermind = {"rule": None}
 

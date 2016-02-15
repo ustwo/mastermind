@@ -5,13 +5,16 @@ import rfc6570
 def is_template(url):
     return len(rfc6570.varlist(url)) > 0
 
+##
+# Checks for equality based on different URI components and expands templates
+# if any.
 def eq(a, b):
-    if is_template(a): a = expand_template(a, b)
-    if is_template(b): b = expand_template(b, a)
+    is_a_tpl = is_template(a)
+    is_b_tpl = is_template(b)
 
-    # NOTE: Template equality is out of the scope of Mastermind. In fact, this
-    # case will not happen as long as mitmproxy handles the request.
-    if is_template(a) and is_template(b): return False
+    if is_a_tpl and is_b_tpl: False
+    if is_a_tpl: a = expand_template(a, b)
+    if is_b_tpl: b = expand_template(b, a)
 
     actual = parse(a)
     expected = parse(b)

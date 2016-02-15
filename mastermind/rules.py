@@ -28,8 +28,6 @@ def filter_urls(request_url, urls):
 ##
 # Actual: The current url checked from the ruleset.
 # Expected: The url from the request.
-#
-# TODO: Fragments are discarded.
 def match_url(expected):
     return lambda actual: uri.eq(actual, expected)
 
