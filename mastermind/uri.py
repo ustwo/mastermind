@@ -29,11 +29,8 @@ def eq(a, b):
 def expand_template(template, reference):
     reference_split = parse(reference)
     segments = path_segments(reference_split.path)
-    print(segments)
     pairs = query_pairs(reference_split.query)
-    print(pairs)
 
-    print(rfc6570.expand(template, pairs, segments))
     return rfc6570.expand(template, pairs, segments)
 
 ##
