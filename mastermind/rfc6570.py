@@ -36,8 +36,8 @@ def pairs_varlist(template):
               for x in x.split(",")]
 
 
-def expand(template, segments, pairs, partial=True):
-    return expand_segments(expand_pairs(template, pairs, partial=True),
+def expand(template, pairs, segments, partial=False):
+    return expand_segments(expand_pairs(template, pairs, partial=partial),
                            segments, partial=partial)
 
 ##

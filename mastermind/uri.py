@@ -1,48 +1,49 @@
-from urlparse import urlparse, urlsplit, parse_qs, parse_qsl
+from urlparse import urlsplit, parse_qsl
 import rfc6570
 
 # If a URL has variables it is assumed to be a URI Template (RFC 6570)
 def is_template(url):
-    return len(rfc6570.variable_list(url)) > 0
+    return len(rfc6570.varlist(url)) > 0
 
 def eq(a, b):
-    # TODO: Implement templates
-    # if is_template(a): foo(a, b)
+    if is_template(a): a = expand_template(a, b)
+    if is_template(b): b = expand_template(b, a)
 
-    if is_template(a) or is_template(b): return False
+    # NOTE: Template equality is out of the scope of Mastermind. In fact, this
+    # case will not happen as long as mitmproxy handles the request.
+    if is_template(a) and is_template(b): return False
 
-    actual = urlsplit(a)
-    expected = urlsplit(b)
+    actual = parse(a)
+    expected = parse(b)
 
     return match_host(actual, expected) and \
            match_schema(actual, expected) and \
            match_path(actual, expected) and \
            match_querystring(actual, expected)
 
-# def foo(a, b):
-#     actual = a
-#     expected = b
+##
+# Receives a template and a URI reference. Decomposes the reference into
+# pairs and segments and returns a valid URI result of expanding the template.
+#
+# TODO: fragments (#) are ignored.
+def expand_template(template, reference):
+    reference_split = parse(reference)
+    segments = path_segments(reference_split.path)
+    print(segments)
+    pairs = query_pairs(reference_split.query)
+    print(pairs)
 
-#     if is_template(actual):
-#         ks = ["collection", "id", "q"]
-#         vs = ["people", "123", "1"]
-#         x = expand(actual, dict(zip(ks, vs)))
-#         expanded = urlsplit(x)
+    print(rfc6570.expand(template, pairs, segments))
+    return rfc6570.expand(template, pairs, segments)
 
-#         print("x", x)
-#         print("p", expand_path(actual, vs))
-#         print("q", expand_query(actual, [("q", "1"), ("p", "2")]))
-#         print("pq", expand_path(expand_query(actual,
-#                                              [("q", "1"), ("p", "2")]),
-#                                 vs))
-
-#         print({"path": path_segments(expanded.path),
-#                "query": query_pairs(expanded.query)})
-
+##
+# Thin wrapper to decouple from urlsplit a bit.
+def parse(uri):
+    return urlsplit(uri)
 
 # Receives a URI path (str) and returns its segments.
 def path_segments(path):
-    return path.split("/")
+    return filter(lambda x: len(x) > 0, path.split("/"))
 
 # Receives a URI querystring (str) and returns its pairs as tuples.
 def query_pairs(query):
@@ -58,7 +59,7 @@ def match_path(actual, expected):
     return expected.path == actual.path
 
 def match_querystring(actual, expected):
-    return parse_qs(expected.query) == parse_qs(actual.query)
+    return parse_qsl(expected.query) == parse_qsl(actual.query)
 
 # Matches any combination of schema + port (variants with and without
 # `--no-upstream-cert` flag in mitmproxy.

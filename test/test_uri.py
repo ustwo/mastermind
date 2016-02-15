@@ -10,3 +10,8 @@ def test_eq():
     assert uri.eq("https://localhost", "http://localhost:443")
     assert not uri.eq("https://localhost:9443", "http://localhost:9443")
     assert not uri.eq("http://localhost/foo", "http://localhost/foo?q=1")
+
+def test_expand_template():
+    assert uri.expand_template("http://example.org/{var}", "http://example.org/value") == "http://example.org/value"
+    assert uri.expand_template("http://example.org/{var}{?q}", "http://example.org/value?q=1") == "http://example.org/value?q=1"
+    assert uri.expand_template("http://example.org/{?q,p}", "http://example.org?q=1") == "http://example.org/?q=1"
