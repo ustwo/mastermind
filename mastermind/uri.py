@@ -1,5 +1,4 @@
 from urlparse import urlparse, urlsplit, parse_qs, parse_qsl
-import uritemplate
 import rfc6570
 
 # If a URL has variables it is assumed to be a URI Template (RFC 6570)
