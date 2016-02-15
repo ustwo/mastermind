@@ -4,7 +4,7 @@ import rfc6570
 
 # If a URL has variables it is assumed to be a URI Template (RFC 6570)
 def is_template(url):
-    return len(uritemplate.variables(url)) > 0
+    return len(rfc6570.variable_list(url)) > 0
 
 def eq(a, b):
     # TODO: Implement templates

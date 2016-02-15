@@ -5,6 +5,7 @@ except ImportError:
 import re
 from collections import deque
 
+GENERIC_PATTERN = re.compile("{([^\}]+)}")
 SEQ_TPL = re.compile("{([/+.#]?)([^+#./;?&|!@}]+)}")
 PAIRS_TPL = re.compile("{([?;&])([^+#./;?&|!@}]+)}")
 
@@ -15,6 +16,11 @@ PAIRS_TPL = re.compile("{([?;&])([^+#./;?&|!@}]+)}")
 # Levels 1, 2 and 3 are implemented with specialised functions based on the
 # expected input, a list of values or a list of tuples.  The first case applies
 # values in strict order, the second by key.
+
+
+def variable_list(template):
+    return [x for x in GENERIC_PATTERN.findall(template)
+              for x in x.split(",")]
 
 ##
 # When partial is False and there are no seguments left it follows the RFC

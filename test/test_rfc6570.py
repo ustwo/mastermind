@@ -89,3 +89,8 @@ def test_partial_pairs():
 def test_combined():
     assert rfc.expand_pairs(rfc.expand_sequence("http://example.com/{var}{+path}{?x,y}", [var, path]),
                             [("x", x), ("y", y)]) == "http://example.com/value/foo/bar?x=1024&y=768"
+
+def test_variable_list():
+    assert rfc.variable_list("http://example.org/foo") == []
+    assert rfc.variable_list("{var}") == ["var"]
+    assert rfc.variable_list("{var,x,y}") == ["var", "x", "y"]
