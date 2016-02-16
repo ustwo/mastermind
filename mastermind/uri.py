@@ -1,14 +1,17 @@
 from urlparse import urlsplit, parse_qsl
 import rfc6570
 
-# If a URL has variables it is assumed to be a URI Template (RFC 6570)
 def is_template(url):
+    """
+        If a URL has variables it is assumed to be a URI Template (RFC 6570)
+    """
     return len(rfc6570.varlist(url)) > 0
 
-##
-# Checks for equality based on different URI components and expands templates
-# if any.
 def eq(a, b):
+    """
+        Checks for equality based on different URI components and expands
+        templates if any.
+    """
     a_is_tpl = is_template(a)
     b_is_tpl = is_template(b)
 
@@ -24,34 +27,42 @@ def eq(a, b):
            match_path(actual, expected) and \
            match_querystring(actual, expected)
 
-##
-# Receives a template and a URI reference. Decomposes the reference into
-# pairs and segments and returns a valid URI result of expanding the template.
-#
 # TODO: fragments (#) are ignored.
 def expand_template(template, reference):
+    """
+        Receives a template and a URI reference. Decomposes the reference into
+        pairs and segments and returns a valid URI result of expanding the
+        template.
+    """
+
     reference_split = parse(reference)
     segments = path_segments(reference_split.path)
     pairs = query_pairs(reference_split.query)
 
     return rfc6570.expand(template, pairs, segments)
 
-##
-# Thin wrapper to decouple from urlsplit a bit.
+
 def parse(uri):
     return urlsplit(uri)
 
-# Receives a URI path (str) and returns its segments.
 def path_segments(path):
+    """
+        Receives a URI path (str) and returns its segments.
+    """
     return filter(lambda x: len(x) > 0, path.split("/"))
 
-# Receives a URI querystring (str) and returns its pairs as tuples.
 def query_pairs(query):
+    """
+        Receives a URI querystring (str) and returns its pairs as tuples.
+    """
     return parse_qsl(query, keep_blank_values=True)
 
 
+###############################################################################
 # TODO: mitmproxy 0.16 will fix the flow.response.url anomaly so the match_*
 # functions will be removed.
+###############################################################################
+
 def match_host(actual, expected):
     return expected.hostname == actual.hostname
 
