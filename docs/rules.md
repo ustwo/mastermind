@@ -1,6 +1,6 @@
 # Driver rules
 
-This document describe the rule properties and the expected behaviour.
+This document describes the rule properties and the expected behaviour.
 
 Check the [examples](../test/records) to have an idea of how a ruleset file looks
 like.
@@ -8,15 +8,19 @@ like.
 
 ## URL
 
-The `url` property is the only one required in a rule.  It lets the driver
-look up for a match for the current request.
+The `url` property is the only one required in a rule.  It lets Mastermind
+look up for a match for the current request.  If two rules could match a URL
+Mastermind will always pick the first one defined.
+
+The value can be a valid URL ([RFC 3986](https://tools.ietf.org/html/rfc3986))
+or a pattern as a valid URI Template ([RFC 6570, Level 3](https://tools.ietf.org/html/rfc6570)).
+Check the [URL pattern document](./url-patterns.md) for some examples.
 
 ### Caveats
 
-* It acts as the rule ID and it **must** be unique per _ruleset_ file.
-* It's expected to match exactly.  Most of the time it will mean the URL ends
-with a trailing `/`.  For example, given a request to `http://localhost:8000`
-will be represented by Mastermind as `http://localhost:8000/`.
+Trailing slashes (`/`) are treated strictly.  For example, given a request to
+`http://localhost:8000`, a rule with `url: http://localhost:8000/` will not
+match but `url: http://localhost:8000` will.
 
 
 ## Name

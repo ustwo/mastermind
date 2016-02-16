@@ -10,21 +10,21 @@ from mastermind.driver import driver, register
 import mastermind.rules as rules
 import mastermind.http as http
 
-# TODO: Allow smarter URL pattern matching,
-#       e.g. flow.request.pretty_url.endswith
 def request(context, flow):
+    flow.mastermind = {"rule": None}
+
     if driver.name:
-        flow.mastermind = {}
         ruleset = rules.load(driver.name,
                              context.source_dir)
         urls = rules.urls(ruleset)
-        filtered_urls = rules.filter_urls(flow.request, urls)
+        filtered_urls = rules.filter_urls(flow.request.url, urls)
         matched_url = rules.head(filtered_urls)
 
         if len(filtered_urls) > 1:
             print("Too many rules apply. Picking the first one", filtered_urls)
 
         if matched_url:
+            print("Intercepted:", matched_url)
             rule = rules.find_by_url(matched_url, ruleset)
             flow.mastermind['rule'] = rule
 

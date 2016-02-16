@@ -52,6 +52,14 @@ test-skipcert:
         -XGET "https://ustwo.com/what-we-do/?foo=1&bar=baz"
 	@$(call driver_stop)
 
+test-templ:
+	@$(call driver_start, skip)
+	@curl -i \
+        --proxy http://localhost:8080 \
+        -XGET http://localhost:8000/people/123?q=1
+	@$(call driver_stop)
+
+
 
 define driver_start
   curl -L --proxy http://localhost:8080 \
