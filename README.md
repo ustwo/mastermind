@@ -10,6 +10,7 @@ It has a complementary tool to easily switch the **OSX** proxy configuration.
 * Python (tested with version 2.7).
 * [pip](https://pypi.python.org/pypi/pip/).
 * OSX if you want to use the proxyswitch.
+* `xcode-select --install` if you use OSX.
 
 If you plan to intercept HTTPS connections, check the [mitmproxy docs](http://docs.mitmproxy.org/en/stable/certinstall.html).
 
