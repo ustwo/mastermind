@@ -96,6 +96,11 @@ Assuming the two examples above were named `foo.yaml` and `bar.yaml` a running
 ```sh
 $ curl --proxy http://localhost:8080 \
        -XGET http://proxapp:5000/foo/start/
+```
+
+Results in:
+
+```json
 {"driver": "foo", "state": "started"}
 ```
 
@@ -104,6 +109,11 @@ The second with:
 ```sh
 $ curl --proxy http://localhost:8080 \
        -XGET http://proxapp:5000/bar/start/
+```
+
+Results in:
+
+```json
 {"driver": "bar", "state": "started"}
 ```
 
@@ -112,6 +122,11 @@ And cleaning any ruleset with:
 ```sh
 $ curl --proxy http://localhost:8080 \
        -XGET http://proxapp:5000/stop/
+```
+
+Results in:
+
+```json
 {"driver": "bar", "state": "stopped"}
 ```
 
@@ -120,6 +135,11 @@ If you want to check what driver is being used, use `/state/`:
 ```sh
 $ curl --proxy http://localhost:8080 \
        -XGET http://proxapp:5000/state/
+```
+
+Results in:
+
+```json
 {"driver": "bar", "state": "running"}
 ```
 
