@@ -9,12 +9,12 @@ def is_template(url):
 # Checks for equality based on different URI components and expands templates
 # if any.
 def eq(a, b):
-    is_a_tpl = is_template(a)
-    is_b_tpl = is_template(b)
+    a_is_tpl = is_template(a)
+    b_is_tpl = is_template(b)
 
-    if is_a_tpl and is_b_tpl: False
-    if is_a_tpl: a = expand_template(a, b)
-    if is_b_tpl: b = expand_template(b, a)
+    if a_is_tpl and b_is_tpl: False
+    if a_is_tpl: a = expand_template(a, b)
+    if b_is_tpl: b = expand_template(b, a)
 
     actual = parse(a)
     expected = parse(b)
