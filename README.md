@@ -5,6 +5,8 @@ to allow an easy way to intercept specific HTTP requests and mock its responses.
 
 It has a complementary tool to easily switch the **OSX** proxy configuration.
 
+[![Circle CI](https://circleci.com/gh/ustwo/mastermind.svg?style=svg)](https://circleci.com/gh/ustwo/mastermind)
+
 ## Requirements
 
 * Python (tested with version 2.7).
