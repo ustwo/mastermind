@@ -5,6 +5,7 @@
 * Change URL matcher to match HTTPS requests when using `--no-upstream-certs`.
 * Add a troubleshooting document to collect non-obvious use cases.
 * Fix empty bodies.  Ensures `204 No Content`.
+* Add URL patterns in rules.
 
 ## 0.7.0
 
