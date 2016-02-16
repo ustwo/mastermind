@@ -6,6 +6,7 @@
 * Add a troubleshooting document to collect non-obvious use cases.
 * Fix empty bodies.  Ensures `204 No Content`.
 * Add URL patterns in rules.
+* Add the `method` property to define a specific method for a rule.
 
 ## 0.7.0
 
