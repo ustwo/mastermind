@@ -15,21 +15,24 @@ def load(filename, base_path):
 def read_file(filepath):
     return open(filepath).read()
 
-def urls(ruleset):
-    return map(url, ruleset)
+def select(request_method, request_url, ruleset):
+    return filter(match_rule(request_method, request_url), ruleset)
 
-def find_by_url(url, ruleset):
-    return head(filter(lambda x: x['url'] == url,
-                       ruleset))
+def match_rule(request_method, request_url):
+    """
+        When `method` is not defined, any should apply.
+    """
 
-def filter_urls(request_url, urls):
-    return filter(match_url(request_url), urls)
+    def handler(rule):
+        rule_method = method(rule)
+        rule_url = url(rule)
 
-##
-# Actual: The current url checked from the ruleset.
-# Expected: The url from the request.
-def match_url(expected):
-    return lambda actual: uri.eq(actual, expected)
+        if not rule_method:
+            return uri.eq(rule_url, request_url)
+
+        return uri.eq(rule_url, request_url) and (rule_method == request_method)
+
+    return handler
 
 
 def head(collection):
@@ -57,6 +60,12 @@ def delay(rule):
         if 'delay' in rule['response']:
             return int(rule['response']['delay'])
     return None
+
+def method(rule):
+    if not 'method' in rule: return None
+
+    return rule['method'].upper()
+
 
 def skip(rule):
     if 'request' in rule:

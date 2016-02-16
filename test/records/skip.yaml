@@ -1,6 +1,7 @@
 ---
 - name: ok200
   url: http://localhost:8000/
+  method: GET
   request:
     skip: true
   response:
@@ -11,6 +12,7 @@
 
 - name: slow
   url: http://localhost:8000/slow/
+  method: GET
   request:
     skip: true
   response:
@@ -19,6 +21,7 @@
 
 - name: error400
   url: http://localhost:8000/400/
+  method: GET
   request:
     skip: true
   response:
@@ -27,10 +30,20 @@
 
 - name: error500
   url: http://localhost:8000/500/
+  method: GET
   request:
     skip: true
   response:
     code: 500
+
+- name: ok201
+  url: http://localhost:8000/
+  method: POST
+  request:
+    skip: true
+  response:
+    code: 201
+
 
 - name: skip-cert
   url: "https://ustwo.com/what-we-do/?bar=baz&foo=1"

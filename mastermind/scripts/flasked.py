@@ -16,19 +16,19 @@ def request(context, flow):
     if driver.name:
         ruleset = rules.load(driver.name,
                              context.source_dir)
-        urls = rules.urls(ruleset)
-        filtered_urls = rules.filter_urls(flow.request.url, urls)
-        matched_url = rules.head(filtered_urls)
+        filtered_rules = rules.select(flow.request.method,
+                                      flow.request.url,
+                                      ruleset)
+        rule = rules.head(filtered_rules)
 
-        if len(filtered_urls) > 1:
-            print("Too many rules apply. Picking the first one", filtered_urls)
+        if len(filtered_rules) > 1:
+            context.log("Too many rules: {}".format(map(rules.url, filtered_rules)))
 
-        if matched_url:
-            print("Intercepted:", matched_url)
-            rule = rules.find_by_url(matched_url, ruleset)
+        if rule:
             flow.mastermind['rule'] = rule
+            context.log("Intercepted URL: {}".format(rules.url(rule)))
 
-            if rule and rules.skip(rule):
+            if rules.skip(rule):
                 return flow.reply(http.response(204))
 
             rules.process_headers('request',

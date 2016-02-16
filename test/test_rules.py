@@ -13,19 +13,6 @@ rule = {'url': 'http://localhost:8000/',
                      'headers': {'add': {'X-ustwo-intercepted': 'Yes'}}}}
 
 
-def test_urls_one():
-    assert r.urls(ruleset) == ['http://localhost:8000/']
-
-def test_urls_none():
-    assert r.urls([]) == []
-
-def test_find_by_url_exact_match():
-    assert r.find_by_url('http://localhost:8000/', ruleset) == rule
-
-def test_find_by_url_exact_no_match():
-    assert r.find_by_url('http://foo/', ruleset) == None
-
-
 def test_url():
     assert r.url(rule) == 'http://localhost:8000/'
 
@@ -42,7 +29,6 @@ def test_delay():
     assert r.delay({}) == None
     assert r.delay({'response': {'delay': 10}}) == 10
 
-
 def test_status_code():
     assert r.status_code({'response': {'code': 500}}) == 500
     assert r.status_code({'response': {}}) == None
@@ -53,3 +39,40 @@ def test_body_filename_exists():
 
 def test_body_filename_not_exists():
     assert r.body_filename({'url': 'http://foo'}) == None
+
+def test_method():
+    assert r.method({"url": "http://example.org"}) == None
+    assert r.method({"url": "http://example.org",
+                     "method": "GET"}) == "GET"
+    assert r.method({"url": "http://example.org",
+                     "method": "post"}) == "POST"
+
+def test_match_rule():
+    assert r.match_rule("GET", "http://example.org")({"url": "http://example.org"})
+    assert not r.match_rule("GET", "http://example.org/")({"url": "http://example.org"})
+    assert r.match_rule("GET", "http://example.org")({"url": "http://example.org",
+                                                      "method": "GET"})
+    assert r.match_rule("DELETE", "http://example.org")({"url": "http://example.org",
+                                                         "method": "delete"})
+
+    assert not r.match_rule("PUT", "http://example.org")({"url": "http://example.org",
+                                                          "method": "delete"})
+
+def test_select():
+    assert r.select("GET", "http://example.org", []) == []
+    assert r.select("GET", "http://example.org",
+                    [{"url": "http://example.org",
+                      "method": "GET"}]) == [{"url": "http://example.org",
+                                              "method": "GET"}]
+    assert r.select("GET", "http://example.org",
+                    [{"url": "http://example.org",
+                      "method": "GET"},
+                     {"url": "http://example.org",
+                      "method": "POST"}]) == [{"url": "http://example.org",
+                                               "method": "GET"}]
+    assert r.select("GET", "http://example.org/foo",
+                    [{"url": "http://example.org",
+                      "method": "GET"}]) == []
+    assert r.select("POST", "http://example.org",
+                    [{"url": "http://example.org",
+                      "method": "GET"}]) == []
