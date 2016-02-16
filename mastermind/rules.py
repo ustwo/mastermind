@@ -22,6 +22,16 @@ def find_by_url(url, ruleset):
     return head(filter(lambda x: x['url'] == url,
                        ruleset))
 
+def select(method, url, ruleset):
+    return filter(match_rule(method, url), ruleset)
+
+def match_rule(method, url):
+    def handler(rule):
+        return False
+
+    return handler
+
+
 def filter_urls(request_url, urls):
     return filter(match_url(request_url), urls)
 
@@ -57,6 +67,16 @@ def delay(rule):
         if 'delay' in rule['response']:
             return int(rule['response']['delay'])
     return None
+
+def method(rule):
+    """
+        When `method` is not defined, any should apply.
+    """
+    if not 'method' in rule: return None
+
+    return rule['method'].upper()
+
+
 
 def skip(rule):
     if 'request' in rule:

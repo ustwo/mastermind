@@ -27,6 +27,7 @@
 
 - name: error500
   url: http://localhost:8000/500/
+  method: GET
   request:
     skip: true
   response:
