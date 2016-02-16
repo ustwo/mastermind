@@ -7,6 +7,7 @@
 * Fix empty bodies.  Ensures `204 No Content`.
 * Add URL patterns in rules.
 * Add the `method` property to define a specific method for a rule.
+* Upgrade to mitmproxy 0.16
 
 ## 0.7.0
 
