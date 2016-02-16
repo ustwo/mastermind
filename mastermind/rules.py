@@ -22,12 +22,22 @@ def find_by_url(url, ruleset):
     return head(filter(lambda x: x['url'] == url,
                        ruleset))
 
-def select(method, url, ruleset):
-    return filter(match_rule(method, url), ruleset)
+def select(request_method, request_url, ruleset):
+    return filter(match_rule(request_method, request_url), ruleset)
 
-def match_rule(method, url):
+def match_rule(request_method, request_url):
+    """
+        When `method` is not defined, any should apply.
+    """
+
     def handler(rule):
-        return False
+        rule_method = method(rule)
+        rule_url = url(rule)
+
+        if not rule_method:
+            return uri.eq(rule_url, request_url)
+
+        return uri.eq(rule_url, request_url) and (rule_method == request_method)
 
     return handler
 
@@ -69,13 +79,9 @@ def delay(rule):
     return None
 
 def method(rule):
-    """
-        When `method` is not defined, any should apply.
-    """
     if not 'method' in rule: return None
 
     return rule['method'].upper()
-
 
 
 def skip(rule):

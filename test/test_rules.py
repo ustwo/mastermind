@@ -54,10 +54,20 @@ def test_body_filename_exists():
 def test_body_filename_not_exists():
     assert r.body_filename({'url': 'http://foo'}) == None
 
-def test_match_rule():
-    assert r.match_rule("GET", "http://localhost:8000/")({}) == False
-
 def test_method():
-    assert r.method({}) == None
-    assert r.method({"method": "GET"}) == "GET"
-    assert r.method({"method": "post"}) == "POST"
+    assert r.method({"url": "http://example.org"}) == None
+    assert r.method({"url": "http://example.org",
+                     "method": "GET"}) == "GET"
+    assert r.method({"url": "http://example.org",
+                     "method": "post"}) == "POST"
+
+def test_match_rule():
+    assert r.match_rule("GET", "http://example.org")({"url": "http://example.org"})
+    assert not r.match_rule("GET", "http://example.org/")({"url": "http://example.org"})
+    assert r.match_rule("GET", "http://example.org")({"url": "http://example.org",
+                                                      "method": "GET"})
+    assert r.match_rule("DELETE", "http://example.org")({"url": "http://example.org",
+                                                         "method": "delete"})
+
+    assert not r.match_rule("PUT", "http://example.org")({"url": "http://example.org",
+                                                          "method": "delete"})
