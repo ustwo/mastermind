@@ -13,6 +13,8 @@ import mastermind.http as http
 def request(context, flow):
     flow.mastermind = {"rule": None}
 
+    print(flow.request.url)
+
     if driver.name:
         ruleset = rules.load(driver.name,
                              context.source_dir)

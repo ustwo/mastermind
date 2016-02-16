@@ -38,7 +38,7 @@ setup(
         'Programming Language :: Python :: 2.7',
     ],
     packages=find_packages(),
-    install_requires=['mitmproxy==0.15',
+    install_requires=['mitmproxy==0.16',
                       'Flask==0.10',
                       'pyYAML==3.11',
                       'requests==2.9',
