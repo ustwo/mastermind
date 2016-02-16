@@ -75,6 +75,7 @@ A more elaborated case will have headers to add or remove:
 ---
 - name: bar
   url: https://api.github.com/users/arnau/orgs
+  method: GET
   request:
     headers:
       remove:

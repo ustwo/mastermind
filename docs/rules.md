@@ -28,6 +28,11 @@ match but `url: http://localhost:8000` will.
 The `name` property is not required nor used internally.  It is just a way for
 you to give a meaninful name to the rule.
 
+## Method
+
+The `method` property defines the HTTP method of the rule. If the method is
+not present, the rule applies to all of them.
+
 
 ## Schema
 
