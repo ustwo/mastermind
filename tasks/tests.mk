@@ -27,6 +27,13 @@ test-200:
            -XGET http://localhost:8000
 	@$(call driver_stop)
 
+test-201:
+	@$(call driver_start, skip)
+	@curl -i --proxy http://localhost:8080 \
+           -XPOST http://localhost:8000/
+	@$(call driver_stop)
+
+
 test-200-2:
 	@curl -i --proxy http://0.0.0.0:9090 \
            -XGET http://localhost:8000

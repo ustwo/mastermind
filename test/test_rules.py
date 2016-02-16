@@ -13,19 +13,6 @@ rule = {'url': 'http://localhost:8000/',
                      'headers': {'add': {'X-ustwo-intercepted': 'Yes'}}}}
 
 
-def test_urls_one():
-    assert r.urls(ruleset) == ['http://localhost:8000/']
-
-def test_urls_none():
-    assert r.urls([]) == []
-
-def test_find_by_url_exact_match():
-    assert r.find_by_url('http://localhost:8000/', ruleset) == rule
-
-def test_find_by_url_exact_no_match():
-    assert r.find_by_url('http://foo/', ruleset) == None
-
-
 def test_url():
     assert r.url(rule) == 'http://localhost:8000/'
 
@@ -41,7 +28,6 @@ def test_delay():
     assert r.delay({'response': {}}) == None
     assert r.delay({}) == None
     assert r.delay({'response': {'delay': 10}}) == 10
-
 
 def test_status_code():
     assert r.status_code({'response': {'code': 500}}) == 500
