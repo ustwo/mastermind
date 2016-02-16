@@ -71,3 +71,22 @@ def test_match_rule():
 
     assert not r.match_rule("PUT", "http://example.org")({"url": "http://example.org",
                                                           "method": "delete"})
+
+def test_select():
+    assert r.select("GET", "http://example.org", []) == []
+    assert r.select("GET", "http://example.org",
+                    [{"url": "http://example.org",
+                      "method": "GET"}]) == [{"url": "http://example.org",
+                                              "method": "GET"}]
+    assert r.select("GET", "http://example.org",
+                    [{"url": "http://example.org",
+                      "method": "GET"},
+                     {"url": "http://example.org",
+                      "method": "POST"}]) == [{"url": "http://example.org",
+                                               "method": "GET"}]
+    assert r.select("GET", "http://example.org/foo",
+                    [{"url": "http://example.org",
+                      "method": "GET"}]) == []
+    assert r.select("POST", "http://example.org",
+                    [{"url": "http://example.org",
+                      "method": "GET"}]) == []
