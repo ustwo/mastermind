@@ -1,5 +1,7 @@
 dependencies:
   pre:
+      - pip uninstall enum34
+      - pip install enum34==1.0.4
       - pip install --upgrade -r requirements.txt
 test:
   override:
