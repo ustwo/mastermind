@@ -6,8 +6,10 @@ machine:
 
 dependencies:
   override:
+    - pip install -r requirements.txt
     - make docker-build
 
 test:
   override:
+    - make raw-test
     - make test
