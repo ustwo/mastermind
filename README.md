@@ -14,7 +14,13 @@ It has a complementary tool to easily switch the **OSX** proxy configuration.
 * OSX if you want to use the proxyswitch.
 * `xcode-select --install` if you use OSX.
 
-If you plan to intercept HTTPS connections, check the [mitmproxy docs](http://docs.mitmproxy.org/en/stable/certinstall.html).
+### HTTPS Connections
+
+If you plan to intercept HTTPS connections, check the [mitmproxy docs](http://docs.mitmproxy.org/en/stable/certinstall.html) to install their CA certificates. **If you don't install them in _every_ device you want to use, your HTTPS requests will not be properly intercepted.**
+
+Even with that in place, keep in mind there are issues with [Certificate Pinning](http://docs.mitmproxy.org/en/stable/certinstall.html#certificate-pinning). In depth: [TACK](http://tack.io/).
+
+If you are able to provide proper certificates for the domain you are intercepting, use [the `--cert` or `--cadir flags](http://docs.mitmproxy.org/en/stable/certinstall.html#using-a-custom-certificate) as suggested by mitmproxy.
 
 
 ## Install
