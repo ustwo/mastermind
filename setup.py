@@ -7,7 +7,8 @@ https://github.com/ustwo/mastermind
 from setuptools import setup, find_packages
 from codecs import open
 from os import path
-from mastermind.version import *
+
+VERSION = "0.8.0"
 
 here = path.abspath(path.dirname(__file__))
 
