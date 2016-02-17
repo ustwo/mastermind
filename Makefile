@@ -19,6 +19,9 @@ install:
 
 test: docker-test
 
+raw-test:
+	nosetests -s
+
 
 include tasks/*.mk
 
