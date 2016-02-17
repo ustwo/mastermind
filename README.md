@@ -1,11 +1,11 @@
 # Mastermind
 
+Status: [![Circle CI](https://circleci.com/gh/ustwo/mastermind.svg?style=svg)](https://circleci.com/gh/ustwo/mastermind)
+
 Mastermind is written on top of the great [mitmproxy](https://mitmproxy.org)
 to allow an easy way to intercept specific HTTP requests and mock its responses.
 
 It has a complementary tool to easily switch the **OSX** proxy configuration.
-
-[![Circle CI](https://circleci.com/gh/ustwo/mastermind.svg?style=svg)](https://circleci.com/gh/ustwo/mastermind)
 
 ## Requirements
 
@@ -16,11 +16,17 @@ It has a complementary tool to easily switch the **OSX** proxy configuration.
 
 ### HTTPS Connections
 
-If you plan to intercept HTTPS connections, check the [mitmproxy docs](http://docs.mitmproxy.org/en/stable/certinstall.html) to install their CA certificates. **If you don't install them in _every_ device you want to use, your HTTPS requests will not be properly intercepted.**
+If you plan to intercept HTTPS connections, check the [mitmproxy docs](http://docs.mitmproxy.org/en/stable/certinstall.html)
+to install their CA certificates. **If you don't install them in _every_ device
+you want to use, your HTTPS requests will not be properly intercepted.**
 
-Even with that in place, keep in mind there are issues with [Certificate Pinning](http://docs.mitmproxy.org/en/stable/certinstall.html#certificate-pinning). In depth: [TACK](http://tack.io/).
+Even with that in place, keep in mind there are issues with
+[Certificate Pinning](http://docs.mitmproxy.org/en/stable/certinstall.html#certificate-pinning).
+In depth: [TACK](http://tack.io/).
 
-If you are able to provide proper certificates for the domain you are intercepting, use [the `--cert` or `--cadir flags](http://docs.mitmproxy.org/en/stable/certinstall.html#using-a-custom-certificate) as suggested by mitmproxy.
+If you are able to provide proper certificates for the domain you are
+intercepting, use [the `--cert` or `--cadir flags](http://docs.mitmproxy.org/en/stable/certinstall.html#using-a-custom-certificate)
+as suggested by mitmproxy.
 
 
 ## Install
