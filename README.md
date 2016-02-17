@@ -20,7 +20,7 @@ If you plan to intercept HTTPS connections, check the [mitmproxy docs](http://do
 ## Install
 
 ```sh
-pip install "git+https://github.com/ustwo/mastermind.git@v0.8.1#egg=mastermind"
+pip install "git+https://github.com/ustwo/mastermind.git@v0.8.2#egg=mastermind"
 ```
 
 ## Getting started
