@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.2
+
+* Revert to mitmproxy 0.15 due dependency nightmare with HTTP2 and mitmproxy 0.16.
+
 ## 0.8.0
 
 * Change URL matcher to match HTTPS requests when using `--no-upstream-certs`.
