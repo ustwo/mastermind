@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## 0.8.0
 
 * Change URL matcher to match HTTPS requests when using `--no-upstream-certs`.
 * Add a troubleshooting document to collect non-obvious use cases.
