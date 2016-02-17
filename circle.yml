@@ -1,8 +1,9 @@
-dependencies:
-  pre:
-      - pip uninstall enum34
-      - pip install enum34==1.0.4
-      - pip install --upgrade -r requirements.txt
+machine:
+  environment:
+    VERSION: $CIRCLE_SHA1
+  services:
+    - docker
+
 test:
   override:
     - make test

@@ -17,8 +17,7 @@ endif
 install:
 	$(PIP) install -r requirements.txt
 
-test:
-	nosetests -s
+test: docker-test
 
 
 include tasks/*.mk
