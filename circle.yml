@@ -4,6 +4,10 @@ machine:
   services:
     - docker
 
+dependencies:
+  override:
+    - make docker-build
+
 test:
   override:
     - make test
