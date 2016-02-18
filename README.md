@@ -25,7 +25,7 @@ Even with that in place, keep in mind there are issues with
 In depth: [TACK](http://tack.io/).
 
 If you are able to provide proper certificates for the domain you are
-intercepting, use [the `--cert` or `--cadir flags](http://docs.mitmproxy.org/en/stable/certinstall.html#using-a-custom-certificate)
+intercepting, use [the `--cert` or `--cadir` flags](http://docs.mitmproxy.org/en/stable/certinstall.html#using-a-custom-certificate)
 as suggested by mitmproxy.
 
 
