@@ -22,3 +22,25 @@ $ mastermind --with-driver --source-dir ./foo/bar/ --no-upstream-cert
 ```
 
 You can find more details with `mitmproxy --help`.
+
+
+## Mastermind fails to install complaining about `clang`
+
+```
+[...]
+
+1 error generated.
+*********************************************************************************
+Could not find function xmlCheckVersion in library libxml2. Is libxml2 installed?
+Perhaps try: xcode-select --install
+*********************************************************************************
+error: command 'clang' failed with exit status 1
+
+----------------------------------------
+Rolling back uninstall of lxml
+
+[...]
+```
+
+This usually means something is not right with your command line developer
+tools. So, as suggested by the error message, try `xcode-select --install`.
