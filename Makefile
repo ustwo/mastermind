@@ -19,6 +19,8 @@ install:
 
 test: docker-test
 
+local-test: docker-local-test
+
 raw-test:
 	nosetests -s
 
