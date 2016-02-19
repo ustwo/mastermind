@@ -9,6 +9,7 @@ from mastermind.proxyswitch import enable, disable
 from mastermind.driver import driver, register
 import mastermind.rules as rules
 import mastermind.http as http
+import mastermind.validator as validator
 
 def request(context, flow):
     flow.mastermind = {"rule": None}
@@ -59,8 +60,8 @@ def response(context, flow):
 
                 if schema:
                     table = driver.db.table(flow.request.url)
-                    schema_result = rules.check(flow.response.content,
-                                                schema)
+                    schema_result = validator.check(flow.response.content,
+                                                    schema)
                     table.insert_multiple(schema_result)
                     print(schema_result)
 
