@@ -26,4 +26,7 @@ RUN pip install -r requirements.txt \
  && rm -rf ~/.cache/pip /tmp/pip_build_root
 
 COPY . /usr/local/mastermind
-CMD ["./mastermind.py", "--version"]
+
+RUN python setup.py install
+
+CMD ["mastermind", "--version"]
