@@ -1,9 +1,5 @@
 import os
 import subprocess
-import time
-from urlparse import urlparse
-from libmproxy.models import decoded
-from libmproxy import filt
 
 from mastermind.proxyswitch import enable, disable
 from mastermind.driver import register

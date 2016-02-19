@@ -1,7 +1,4 @@
-import os
-import subprocess
 import time
-from urlparse import urlparse
 from libmproxy.models import decoded
 
 from driver import driver
