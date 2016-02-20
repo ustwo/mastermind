@@ -2,8 +2,7 @@ import os
 import subprocess
 
 from mastermind.proxyswitch import enable, disable
-from mastermind.driver import register
-import mastermind.handlers as handlers
+from mastermind import handlers, driver
 
 def request(context, flow):
     handlers.request(context, flow)
@@ -18,7 +17,7 @@ def start(context, argv):
     context.port = argv[4]
     context.host = argv[5]
 
-    register(context)
+    driver.register(context)
 
     if not context.without_proxy_settings:
         context.log("No OS proxy settings")

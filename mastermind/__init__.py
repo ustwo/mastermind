@@ -1,3 +1,5 @@
+from __future__ import (absolute_import, print_function, division)
+
 from . import proxyswitch
 from . import version
 from libmproxy.main import mitmdump
