@@ -1,5 +1,10 @@
 # Changelog
 
+## Next
+
+* Move storage files up to the user scope: `~/.mastermind/<dir>`.
+
+
 ## 0.8.2
 
 * Revert to mitmproxy 0.15 due dependency nightmare with HTTP2 and mitmproxy 0.16.
