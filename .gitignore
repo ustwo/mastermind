@@ -2,6 +2,8 @@
 sandbox/
 .cache
 __pycache__
+dist
+*.egg-info
 xcuserdata/
 project.xcworkspace/
 *-store.json
