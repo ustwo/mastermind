@@ -9,13 +9,6 @@ mastermind-help:
 .PHONY: mastermind-help
 
 
-mastermind-script:
-	@$(shell pwd)/mastermind.py --quiet \
-                              --script "$(shell pwd)/scripts/simple.py \
-                                        https://api.github.com/users/octocat/orgs \
-                                        $(shell pwd)/test/records/fake.json"
-.PHONY: mastermind-script
-
 mastermind-driver:
 	@$(shell pwd)/mastermind.py --quiet \
                               --without-proxy-settings \
