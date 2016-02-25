@@ -25,10 +25,6 @@ def main():
     driver.add_argument('--source-dir',
                         metavar = 'DIR',
                         help = 'An absolute path used as a source directory to lookup for mock rules')
-    driver.add_argument('--with-reverse-access',
-                        action = 'store_true',
-                        help = 'Activates the reverse proxy to drive from the outside via port 5001')
-
 
     single.add_argument('--response-body',
                         metavar = 'FILEPATH',
@@ -70,12 +66,11 @@ def main():
         if not os.path.isdir(storage_dir):
             os.makedirs(storage_dir)
 
-        script_path = "{}/scripts/flasked.py {} {} {} {} {} {}"
+        script_path = "{}/scripts/flasked.py {} {} {} {} {}"
 
         mitm_args = ['--script',
                      script_path.format(os.path.dirname(os.path.realpath(__file__)),
                                                         args.source_dir,
-                                                        args.with_reverse_access,
                                                         args.without_proxy_settings,
                                                         args.port,
                                                         args.host,
@@ -101,8 +96,6 @@ def main():
 
     mitm_args = mitm_args + extra_arguments
     mitm_args = mitm_args + ["--port", args.port, "--bind-address", args.host]
-
-    print(mitm_args)
 
     try:
         mitmdump(mitm_args)

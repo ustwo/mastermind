@@ -9,13 +9,6 @@ mastermind-help:
 .PHONY: mastermind-help
 
 
-mastermind-script:
-	@$(shell pwd)/mastermind.py --quiet \
-                              --script "$(shell pwd)/scripts/simple.py \
-                                        https://api.github.com/users/octocat/orgs \
-                                        $(shell pwd)/test/records/fake.json"
-.PHONY: mastermind-script
-
 mastermind-driver:
 	@$(shell pwd)/mastermind.py --quiet \
                               --without-proxy-settings \
@@ -32,14 +25,6 @@ mastermind-driver2:
                               --host 0.0.0.0 \
                               --source-dir $(shell pwd)/test/records
 .PHONY: mastermind-driver2
-
-mastermind-reverse-access:
-	@$(shell pwd)/mastermind.py --quiet \
-                              --with-driver \
-                              --with-reverse-access \
-                              --source-dir $(shell pwd)/test/records
-.PHONY: mastermind-reverse-access
-
 
 mastermind-error:
 	@$(shell pwd)/mastermind.py --quiet \
