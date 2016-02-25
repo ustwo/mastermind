@@ -1,0 +1,42 @@
+---
+- name: ok200
+  url: http://example.org:8000/
+  method: GET
+  request:
+    skip: true
+  response:
+    body: ok200.json
+    headers:
+      add:
+        X-ustwo-intercepted: 'Yes'
+
+- name: error400
+  url: http://localhost:8000/400/
+  method: GET
+  request:
+    skip: true
+  response:
+    code: 400
+    body: error400.json
+
+- name: error500
+  url: http://localhost:8000/500/
+  method: GET
+  request:
+    skip: true
+  response:
+    code: 500
+
+- name: ok201
+  url: http://localhost:8000/
+  method: POST
+  request:
+    skip: true
+  response:
+    code: 201
+
+# Requires --no-upstream-cert to fully skip connecting to the server.
+- name: skip-cert
+  url: "https://ustwo.com/what-we-do/?bar=baz&foo=1"
+  request:
+    skip: true

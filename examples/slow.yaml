@@ -1,0 +1,9 @@
+---
+- name: slow
+  url: http://example.org
+  method: GET
+  request:
+    skip: true
+  response:
+    delay: 10
+    body: ok200.json

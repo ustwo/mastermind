@@ -1,0 +1,5 @@
+---
+- name: template
+  url: "http://example.org/{collection}/{id}{?q,p}"
+  request:
+    skip: true
