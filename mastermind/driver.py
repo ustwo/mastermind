@@ -23,19 +23,19 @@ class Driver:
                                 "{}.yaml".format(name))
 
         if not os.path.exists(filename):
-            return {"state": "error", "message": "Driver {} not found".format(filename)}
+            return {"state": "error", "message": "Ruleset {} not found".format(filename)}
 
         self.name = name
         self.db = TinyDB(os.path.join(self.storage_path,
                                       "{}-store.json".format(name)))
 
-        return {"driver": self.name, "state": "started"}
+        return {"ruleset": self.name, "state": "started"}
 
     def stop(self):
         if self.name == None:
-            return {"driver": None, "state": None}
+            return {"ruleset": None, "state": None}
 
-        message = {"driver": self.name, "state": "stopped"}
+        message = {"ruleset": self.name, "state": "stopped"}
         self.name = None
         self.db.close()
         self.db = None
@@ -43,9 +43,9 @@ class Driver:
 
     def state(self):
         if self.name == None:
-            return {"driver": None, "state": None}
+            return {"ruleset": None, "state": None}
 
-        return {"driver": self.name, "state": "running"}
+        return {"ruleset": self.name, "state": "running"}
 
 driver_host = "proxapp"
 driver_port = 5000
@@ -65,10 +65,10 @@ def register(context):
 @app.route('/', defaults={"path": ""})
 @app.route('/<path:path>/')
 def index(path):
-    return jsonify({"links": {"start": "/{driver}/start/",
+    return jsonify({"links": {"start": "/{ruleset}/start/",
                               "stop": "/stop/",
                               "state": "/state/",
-                              "exceptions": "/{driver}/exceptions/"}})
+                              "exceptions": "/{ruleset}/exceptions/"}})
 
 @app.route('/state/')
 def state():
@@ -82,21 +82,21 @@ def stop_driver():
     print(message)
     return jsonify(message)
 
-@app.route('/<driver_name>/start/')
-def start_driver(driver_name):
-    message = driver.start(driver_name)
+@app.route('/<ruleset>/start/')
+def start_driver(ruleset):
+    message = driver.start(ruleset)
     print(message)
     return jsonify(message)
 
-@app.route('/<driver_name>/exceptions/')
-def exceptions(driver_name):
-    message = driver.start(driver_name)
+@app.route('/<ruleset>/exceptions/')
+def exceptions(ruleset):
+    message = driver.start(ruleset)
     uri = request.args.get('uri')
 
     if not driver.name: return jsonify(message)
     if not uri:
         result = {"exceptions": [],
-               "driver": driver_name}
+               "ruleset": ruleset}
         tables = driver.db.tables()
         tables.remove("_default")
         for table in list(tables):
@@ -109,5 +109,5 @@ def exceptions(driver_name):
     driver.stop()
 
     return jsonify({"exceptions": table_all,
-                    "driver": driver_name,
+                    "ruleset": ruleset,
                     "uri": uri})

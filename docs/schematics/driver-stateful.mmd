@@ -6,7 +6,7 @@ sequenceDiagram
 
   Test Runner->>Mastermind: http://proxapp:5000/github/start/
   Note right of Mastermind: Mastermind applies github rules from now on
-  Mastermind-->>Test Runner: {"driver": "github", "state": "started"}
+  Mastermind-->>Test Runner: {"ruleset": "github", "state": "started"}
   Test Runner->>Device: Start test
   Device->>Mastermind: https://api.github.com/...
   Mastermind->>Mastermind: Apply rules
@@ -16,7 +16,7 @@ sequenceDiagram
   Mastermind-->>Device: {...}
   Test Runner->>Mastermind: http://proxapp:5000/stop/
   Note right of Mastermind: Mastermind stops applying rules
-  Mastermind-->>Test Runner: {"driver": "github", "state": "stopped"}
+  Mastermind-->>Test Runner: {"ruleset": "github", "state": "stopped"}
   Test Runner->>Device: Start test
   Device->>Mastermind: https://api.github.com/...
   Mastermind->>API: https://api.github.com/...

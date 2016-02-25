@@ -4,6 +4,7 @@
 
 * Move storage files up to the user scope: `~/.mastermind/<dir>`.
 * Remove reverse access.
+* Unify the ruleset concept and keep "driver" as the piece that deals with rulesets.
 
 
 ## 0.8.2

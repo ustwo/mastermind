@@ -1,4 +1,4 @@
-# Driver rules
+# Ruleset
 
 This document describes the rule properties and the expected behaviour.
 

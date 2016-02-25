@@ -17,14 +17,14 @@ test cycle suffer.
     body: arnau-orgs.json
 ```
 
-The driver above will check that the _original_ response from Github is valid
+The rule above will check that the _original_ response from Github is valid
 according to `github-orgs-schema.json`.  You can access the exception list via
-the `/<driver_name>/exceptions/` endpoint:
+the `/<ruleset_name>/exceptions/` endpoint:
 
 ```sh
 $ curl --proxy http://localhost:8080 \
        -XGET "http://proxapp:5000/fake/exceptions/?uri=https://api.github.com/users/arnau/orgs"
-{"driver": "baz",
+{"ruleset": "baz",
  "uri": "https://api.github.com/users/arnau/orgs",
  "exceptions": [...]}
 ```
@@ -34,7 +34,7 @@ If you don't specify a `uri` parameter it will return all URIs recorded:
 ```sh
 $ curl --proxy http://localhost:8080 \
        -XGET "http://proxapp:5000/fake/exceptions/"
-{"driver": "baz",
+{"ruleset": "baz",
  "exceptions": [{"https://api.github.com/users/arnau/orgs": [...]}]}
 ```
 

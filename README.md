@@ -59,16 +59,16 @@ We collect non-obvious use cases at the [troubleshooting](./docs/troubleshooting
 The driver mode will mount a thin HTTP server listening for actions at
 `http://proxapp:5000` and a set of rules to apply.
 
-Check the [Driver rules](./docs/rules.md) for a full list of properties.
+Check the full list of [Rule properties](./docs/rules.md).
 
 
 ```sh
 sudo mastermind --with-driver \
-                --source-dir $(pwd)/test/records
+                --source-dir $(pwd)/examples
 ```
 
 In the example above, `mastermind` will expect to find one or more YAML ruleset
-files.  [Check the example](test/records).
+files.  [Check the example](./examples).
 
 A ruleset file is an array of rules and each rule is composed by at least a `url`.
 The basic form will have a `body` as well.
@@ -117,7 +117,7 @@ $ curl --proxy http://localhost:8080 \
 Results in:
 
 ```json
-{"driver": "foo", "state": "started"}
+{"ruleset": "foo", "state": "started"}
 ```
 
 The second with:
@@ -130,7 +130,7 @@ $ curl --proxy http://localhost:8080 \
 Results in:
 
 ```json
-{"driver": "bar", "state": "started"}
+{"ruleset": "bar", "state": "started"}
 ```
 
 And cleaning any ruleset with:
@@ -143,10 +143,10 @@ $ curl --proxy http://localhost:8080 \
 Results in:
 
 ```json
-{"driver": "bar", "state": "stopped"}
+{"ruleset": "bar", "state": "stopped"}
 ```
 
-If you want to check what driver is being used, use `/state/`:
+If you want to check what ruleset is being used, use `/state/`:
 
 ```sh
 $ curl --proxy http://localhost:8080 \
@@ -156,10 +156,10 @@ $ curl --proxy http://localhost:8080 \
 Results in:
 
 ```json
-{"driver": "bar", "state": "running"}
+{"ruleset": "bar", "state": "running"}
 ```
 
-When no driver is running the response is `{"driver": null, "state": null}`.
+When no ruleset is loaded the response is `{"ruleset": null, "state": null}`.
 
 **Note** URI without a trailing slash (`/`) will be redirected (301) to the
 canonical ones with trailing slash.  If you use curl you might want to use the
@@ -171,10 +171,10 @@ In one picture:
 
 #### Validation with JSON Schema
 
-When a `schema` is present at the driver level the original resopnse will be
+When a `schema` is present in a rule, the original resopnse will be
 validated against the given JSON schema file.
 
-See the [Driver validation](./docs/validation.md) documentation.
+See the [Payload validation](./docs/validation.md) documentation.
 
 
 ### Simple
