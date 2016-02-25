@@ -9,7 +9,11 @@ class Driver:
     '''
     name = None
     base_path = None
+    storage_path = None
     db = None
+
+    def storage(self, storage_path):
+        self.storage_path = storage_path
 
     def root(self, base_path):
         self.base_path = base_path
@@ -22,7 +26,7 @@ class Driver:
             return {"state": "error", "message": "Driver {} not found".format(filename)}
 
         self.name = name
-        self.db = TinyDB(os.path.join(self.base_path,
+        self.db = TinyDB(os.path.join(self.storage_path,
                                       "{}-store.json".format(name)))
 
         return {"driver": self.name, "state": "started"}
@@ -52,6 +56,7 @@ driver = Driver()
 
 def register(context):
     driver.root(context.source_dir)
+    driver.storage(context.storage_dir)
     context.app_registry.add(app, driver_host, driver_port)
     return context
 

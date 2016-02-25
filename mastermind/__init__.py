@@ -66,13 +66,20 @@ def main():
         if not args.source_dir:
             parser.error("--source-dir is required with the Driver mode")
 
+        storage_dir = os.path.expanduser("~/.mastermind/{}".format(os.getcwd().split("/")[-1]))
+        if not os.path.isdir(storage_dir):
+            os.makedirs(storage_dir)
+
+        script_path = "{}/scripts/flasked.py {} {} {} {} {} {}"
+
         mitm_args = ['--script',
-                     "{}/scripts/flasked.py {} {} {} {} {}".format(os.path.dirname(os.path.realpath(__file__)),
-                                                                   args.source_dir,
-                                                                   args.with_reverse_access,
-                                                                   args.without_proxy_settings,
-                                                                   args.port,
-                                                                   args.host)]
+                     script_path.format(os.path.dirname(os.path.realpath(__file__)),
+                                                        args.source_dir,
+                                                        args.with_reverse_access,
+                                                        args.without_proxy_settings,
+                                                        args.port,
+                                                        args.host,
+                                                        storage_dir)]
     elif args.script:
         if args.response_body or args.url:
             parser.error("The Script mode does not allow a response body or a URL.")
@@ -80,13 +87,14 @@ def main():
         mitm_args.append('--script')
         mitm_args.append(args.script)
     elif args.response_body:
+        script_path = "{}/scripts/simple.py {} {} {} {} {}"
         mitm_args = ['--script',
-                     "{}/scripts/simple.py {} {} {} {} {}".format(os.path.dirname(os.path.realpath(__file__)),
-                                                                  args.url,
-                                                                  args.response_body,
-                                                                  args.without_proxy_settings,
-                                                                  args.port,
-                                                                  args.host)]
+                     script_path.format(os.path.dirname(os.path.realpath(__file__)),
+                                                        args.url,
+                                                        args.response_body,
+                                                        args.without_proxy_settings,
+                                                        args.port,
+                                                        args.host)]
 
     if args.quiet:
         mitm_args.append('--quiet')

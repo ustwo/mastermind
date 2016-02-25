@@ -16,6 +16,7 @@ def start(context, argv):
     context.without_proxy_settings = argv[3] == "True"
     context.port = argv[4]
     context.host = argv[5]
+    context.storage_dir = argv[6]
 
     driver.register(context)
 
