@@ -34,4 +34,4 @@ help:
 	@$(mitmcmd) --help | $(LESS)
 
 system-install:
-	pip install --no-cache-dir -v "/Users/arnau/kitchen/ustwo/proxyswitch"
+	python setup.py install

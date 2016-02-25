@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## 0.9.0.b0
 
 * Move storage files up to the user scope: `~/.mastermind/<dir>`.
 
