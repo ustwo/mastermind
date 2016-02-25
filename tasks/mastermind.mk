@@ -34,18 +34,24 @@ mastermind-error:
                                         $(shell pwd)/test/records/fake.json"
 .PHONY: mastermind-error
 
+schematics: schematics-architecture schematics-driver schematics-driver-state
+.PHONY: schematics
+
 schematics-architecture:
 	@docker run --rm -it \
               -v $(PWD)/docs:/data \
               arnau/mermaid mermaid --png \
                                     -o schematics/ \
                                     schematics/architecture.mmd
+.PHONY: schematics-architecture
+
 schematics-driver:
 	@docker run --rm -it \
               -v $(PWD)/docs:/data \
               arnau/mermaid mermaid --png \
                                     -o schematics/ \
                                     schematics/driver-sequence.mmd
+.PHONY: schematics-driver
 
 schematics-driver-state:
 	@docker run --rm -it \
@@ -53,3 +59,4 @@ schematics-driver-state:
               arnau/mermaid mermaid --png \
                                     -o schematics/ \
                                     schematics/driver-stateful.mmd
+.PHONY: schematics-driver-state
