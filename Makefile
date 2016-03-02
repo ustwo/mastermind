@@ -1,37 +1,39 @@
 PS := ps
 GREP := grep
-MITMPROXY := mitmproxy
-MITMDUMP := mitmdump
 PIP := pip
+PYTHON := python
+NOSE := nosetests
 LESS := less
 CURL := curl
 
-
-mitmcmd = $(MITMDUMP)
-ifeq ($(INTERACTIVE), true)
-  mitmcmd = $(MITMPROXY)
-endif
-
-.PHONY: test
-
 install:
 	$(PIP) install -r requirements.txt
-
-test: docker-test
-
-local-test: docker-local-test
-
-raw-test:
-	nosetests -s
-
-
-include tasks/*.mk
-
-ps:
-	@$(PS) -ef | $(GREP) $(mitmcmd) | $(LESS)
-
-help:
-	@$(mitmcmd) --help | $(LESS)
+.PHONY: install
 
 system-install:
-	python setup.py install
+	$(PYTHON) setup.py install
+.PHONY: system-install
+
+bundle: bundle-mastermind bundle-proxyswitch
+.PHONY: bundle
+
+bundle-mastermind:
+	pyinstaller --onefile mastermind.spec
+	rm -rf build
+.PHONY: bundle-mastermind
+
+bundle-proxyswitch:
+	pyinstaller proxyswitch.spec
+.PHONY: bundle-proxyswitch
+
+test: docker-test
+.PHONY: test
+
+local-test: docker-local-test
+.PHONY: local-test
+
+raw-test:
+	$(NOSE) -s
+.PHONY: raw-test
+
+include tasks/*.mk
