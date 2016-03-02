@@ -1,7 +1,8 @@
 # -*- mode: python -*-
 
-block_cipher = None
+from mastermind.version import VERSION
 
+block_cipher = None
 
 a = Analysis(['proxyswitch.py'],
              pathex=['/Users/arnau/kitchen/ustwo/mastermind'],
@@ -21,7 +22,7 @@ exe = EXE(pyz,
           a.binaries,
           a.zipfiles,
           a.datas,
-          name='proxyswitch',
+          name="proxyswitch-{}".format(VERSION),
           debug=False,
           strip=False,
           upx=True,

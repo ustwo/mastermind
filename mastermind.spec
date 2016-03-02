@@ -1,6 +1,7 @@
 # -*- mode: python -*-
 
 from PyInstaller.utils.hooks import collect_data_files
+from mastermind.version import VERSION
 
 block_cipher = None
 
@@ -25,7 +26,7 @@ exe = EXE(pyz,
           a.binaries,
           a.zipfiles,
           a.datas,
-          name='mastermind',
+          name="mastermind-{}".format(VERSION),
           debug=False,
           strip=False,
           upx=True,

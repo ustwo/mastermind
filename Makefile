@@ -14,12 +14,19 @@ system-install:
 	$(PYTHON) setup.py install
 .PHONY: system-install
 
-bundle: bundle-mastermind bundle-proxyswitch
-.PHONY: bundle
+release: bundle-mastermind bundle-proxyswitch
+	rm -rf build
+	ln -sf $(shell ls -LArt dist \
+               | grep mastermind \
+               | tail -1) dist/mastermind
+	ln -sf $(shell ls -LArt dist \
+               | grep proxyswitch \
+               | tail -1) dist/proxyswitch
+	git tag v$(shell python mastermind/version.py)
+.PHONY: release
 
 bundle-mastermind:
-	pyinstaller --onefile mastermind.spec
-	rm -rf build
+	pyinstaller mastermind.spec
 .PHONY: bundle-mastermind
 
 bundle-proxyswitch:
