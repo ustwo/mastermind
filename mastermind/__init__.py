@@ -1,11 +1,13 @@
 from __future__ import (absolute_import, print_function, division)
 
-from . import proxyswitch
-from . import version
-from libmproxy.main import mitmdump
+import sys
 import argparse
 import os
 import thread
+
+from . import proxyswitch
+from . import version
+from libmproxy.main import mitmdump
 
 def main():
     parser = argparse.ArgumentParser(prog = 'mastermind',
@@ -66,15 +68,18 @@ def main():
         if not os.path.isdir(storage_dir):
             os.makedirs(storage_dir)
 
-        script_path = "{}/scripts/flasked.py {} {} {} {} {}"
+        script_path_template = "{}/scripts/flasked.py {} {} {} {} {}"
+        script_path = os.path.dirname(os.path.realpath(__file__))
+        if getattr( sys, 'frozen', False ):
+            script_path = sys._MEIPASS
 
         mitm_args = ['--script',
-                     script_path.format(os.path.dirname(os.path.realpath(__file__)),
-                                                        args.source_dir,
-                                                        args.without_proxy_settings,
-                                                        args.port,
-                                                        args.host,
-                                                        storage_dir)]
+                     script_path_template.format(script_path,
+                                                 args.source_dir,
+                                                 args.without_proxy_settings,
+                                                 args.port,
+                                                 args.host,
+                                                 storage_dir)]
     elif args.script:
         if args.response_body or args.url:
             parser.error("The Script mode does not allow a response body or a URL.")
@@ -82,14 +87,18 @@ def main():
         mitm_args.append('--script')
         mitm_args.append(args.script)
     elif args.response_body:
-        script_path = "{}/scripts/simple.py {} {} {} {} {}"
+        script_path_template = "{}/scripts/simple.py {} {} {} {} {}"
+        script_path = os.path.dirname(os.path.realpath(__file__))
+        if getattr( sys, 'frozen', False ):
+            script_path = sys._MEIPASS
+
         mitm_args = ['--script',
-                     script_path.format(os.path.dirname(os.path.realpath(__file__)),
-                                                        args.url,
-                                                        args.response_body,
-                                                        args.without_proxy_settings,
-                                                        args.port,
-                                                        args.host)]
+                     script_path_template.format(script_path,
+                                                 args.url,
+                                                 args.response_body,
+                                                 args.without_proxy_settings,
+                                                 args.port,
+                                                 args.host)]
 
     if args.quiet:
         mitm_args.append('--quiet')

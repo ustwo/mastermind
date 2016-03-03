@@ -18,6 +18,25 @@ mastermind-driver:
 
 .PHONY: mastermind-driver
 
+mastermind-bundle:
+	@$(shell pwd)/dist/mastermind/mastermind --quiet \
+                                           --without-proxy-settings \
+                                           --with-driver \
+                                           --no-upstream-cert \
+                                           --source-dir $(shell pwd)/test/records
+
+.PHONY: mastermind-bundle
+
+mastermind-onefile:
+	@$(shell pwd)/dist/mastermind --quiet \
+                                --without-proxy-settings \
+                                --with-driver \
+                                --no-upstream-cert \
+                                --source-dir $(shell pwd)/test/records
+
+.PHONY: mastermind-onefile
+
+
 mastermind-driver2:
 	@$(shell pwd)/mastermind.py --quiet \
                               --with-driver \
