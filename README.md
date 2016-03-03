@@ -232,6 +232,10 @@ the help:
 proxyswitch --help
 ```
 
+## Contributing
+
+Check our [contributing guidelines](./CONTRIBUTING.md)
+
 
 ## Maintainers
 

@@ -5,6 +5,8 @@ PYTHON := python
 NOSE := nosetests
 LESS := less
 CURL := curl
+GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD 2>/dev/null)
+# VERSION ?= $(subst /,.,$(GIT_BRANCH))
 
 install:
 	$(PIP) install -r requirements.txt
@@ -20,6 +22,21 @@ release: bundle-mastermind bundle-proxyswitch
 	cp dist/mastermind dist/mastermind-$(version)
 	cp dist/proxyswitch dist/proxyswitch-$(version)
 	git tag $(version)
+	git push origin $(GIT_BRANCH)
+	github-release release --user ustwo \
+                         --repo mastermind \
+                         --tag $(version) \
+                         --pre-release
+	github-release upload --user ustwo \
+                        --repo mastermind \
+                        --tag $(version) \
+                        --name "mastermind-osx-amd64" \
+                        --file dist/mastermind
+	github-release upload --user ustwo \
+                        --repo mastermind \
+                        --tag $(version) \
+                        --name "proxyswitch-osx-amd64" \
+                        --file dist/proxyswitch
 .PHONY: release
 
 bundle-mastermind:
