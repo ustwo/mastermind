@@ -31,8 +31,21 @@ as suggested by mitmproxy.
 
 ## Install
 
+The preferred way for OSX is to use the Homebrew tap. The first time:
+
 ```sh
-pip install "git+https://github.com/ustwo/mastermind.git@v0.8.2#egg=mastermind"
+brew tap ustwo/tools
+brew install mastermind
+```
+
+Then just `brew update` and `brew upgrade mastermind`.
+
+
+You can install Mastermind via `pip` but you might want to consider using
+virtualenv to avoid dependency clashes.
+
+```sh
+pip install "git+https://github.com/ustwo/mastermind.git@v0.9.0#egg=mastermind"
 ```
 
 ## Getting started
