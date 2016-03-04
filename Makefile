@@ -77,6 +77,9 @@ bundle-proxyswitch:
 	pyinstaller proxyswitch.spec
 .PHONY: bundle-proxyswitch
 
+homebrew-create:
+	brew create tar --set-name mastermind
+
 test: docker-test
 .PHONY: test
 

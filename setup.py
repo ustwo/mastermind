@@ -41,7 +41,6 @@ setup(
     install_requires=['mitmproxy==0.15',
                       'Flask==0.10',
                       'pyYAML==3.11',
-                      'requests==2.9',
                       'jsonschema==2.5',
                       'tinydb==3.1'],
 
