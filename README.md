@@ -246,4 +246,4 @@ Check our [contributing guidelines](./CONTRIBUTING.md)
 
 This is a proof of concept with no guarantee of active maintenance.
 
-See [License](./LICENSE)
+See [License](./LICENSE) and [Notice](./NOTICE).

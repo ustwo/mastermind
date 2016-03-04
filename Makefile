@@ -52,6 +52,7 @@ dist/$(artifact_osx):
 	@tar -zcvf $@ -C dist/ mastermind \
                          proxyswitch \
                          LICENSE \
+                         NOTICE \
                          README.md
 	@shasum -a 256 $@
 	@du -sh $@
