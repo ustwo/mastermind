@@ -56,8 +56,10 @@ dist/$(artifact_osx):
                          LICENSE \
                          NOTICE \
                          README.md
+	@echo "****************************************************************"
 	@shasum -a 256 $@
 	@du -sh $@
+	@echo "****************************************************************"
 
 release-expand:
 	cd dist
@@ -82,6 +84,12 @@ bundle-proxyswitch:
 
 homebrew-create:
 	brew create tar --set-name mastermind
+
+homebrew-install:
+	brew install mastermind
+
+homebrew-flush:
+	rm -f /Library/Cache/Homebrew/mastermind*
 
 test: docker-test
 .PHONY: test
