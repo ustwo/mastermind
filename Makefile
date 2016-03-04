@@ -49,6 +49,8 @@ artifacts: bundle-mastermind bundle-proxyswitch dist/$(artifact_osx)
 dist/$(artifact_osx):
 	@echo "Compressing"
 	@cp LICENSE dist/LICENSE
+	@cp NOTICE dist/NOTICE
+	@cp README.md dist/README.md
 	@tar -zcvf $@ -C dist/ mastermind \
                          proxyswitch \
                          LICENSE \
