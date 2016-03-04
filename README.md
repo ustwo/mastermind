@@ -38,7 +38,7 @@ brew tap ustwo/tools
 brew install mastermind
 ```
 
-Then just `brew update` and `brew upgrade mastermind`.
+For upgrade just `brew update` and `brew upgrade mastermind`.
 
 
 You can install Mastermind via `pip` but you might want to consider using
