@@ -22,14 +22,13 @@ system-install:
 
 release: release-create release-artifacts
 	git tag $(version)
-	git push --tags origin $(GIT_BRANCH)
+	# git push --tags origin $(GIT_BRANCH)
 .PHONY: release
 
 release-create:
 	github-release release --user ustwo \
                          --repo mastermind \
-                         --tag $(version) \
-                         --pre-release
+                         --tag $(version)
 .PHONY: release-create
 
 release-artifacts: artifacts
