@@ -3,7 +3,6 @@ from __future__ import (absolute_import, print_function, division)
 import sys
 import argparse
 import os
-import thread
 
 from . import proxyswitch
 from . import version
