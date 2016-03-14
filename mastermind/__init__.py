@@ -115,4 +115,5 @@ def main():
     try:
         mitmdump(mitm_args)
     except:
-        proxyswitch.disable()
+        if not args.without_proxy_settings:
+            proxyswitch.disable()
