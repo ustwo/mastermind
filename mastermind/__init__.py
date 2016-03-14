@@ -113,6 +113,9 @@ def main():
     if args.verbose > 3:
         mitm_args + list(repeat("-v", args.verbose - 3))
 
+    if args.quiet:
+        args.verbose = 0
+
     say.level(args.verbose)
 
     mitm_args = mitm_args + extra_arguments

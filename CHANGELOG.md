@@ -1,6 +1,11 @@
 # Changelog
 
-## 0.9.0.b0
+## Next
+
+* Add logging system.
+* Add verbosity. Close #23.
+
+## 0.9.0
 
 * Move storage files up to the user scope: `~/.mastermind/<dir>`.
 * Remove reverse access.
