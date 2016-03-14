@@ -42,6 +42,7 @@ setup(
                       'Flask==0.10',
                       'pyYAML==3.11',
                       'jsonschema==2.5',
+                      'coloredlogs==5.0',
                       'tinydb==3.1'],
 
     # List additional groups of dependencies here (e.g. development

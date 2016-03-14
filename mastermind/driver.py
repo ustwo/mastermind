@@ -2,6 +2,8 @@ import os
 from flask import Flask, jsonify, request
 from tinydb import TinyDB, where
 
+from say import logger
+
 class Driver:
     '''
         Holds the driver state so the flasked script can change behaviour based
@@ -73,7 +75,9 @@ def index(path):
 @app.route('/state/')
 def state():
     message = driver.state()
-    print(message)
+    logger.warning("foo")
+    logger.warning(message)
+    logger.info("foo")
     return jsonify(message)
 
 @app.route('/stop/')
