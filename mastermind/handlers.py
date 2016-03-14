@@ -5,11 +5,12 @@ from driver import driver
 import rules
 import http
 import validator
+from say import logger
 
 def request(context, flow):
     flow.mastermind = {"rule": None}
 
-    print(flow.request.url)
+    logger.info(flow.request.url)
 
     if driver.name:
         ruleset = rules.load(driver.name,
@@ -58,7 +59,7 @@ def response(context, flow):
                     schema_result = validator.check(flow.response.content,
                                                     schema)
                     table.insert_multiple(schema_result)
-                    print(schema_result)
+                    logger.info(schema_result)
 
                 rules.process_headers('response',
                                       rule,

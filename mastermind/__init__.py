@@ -1,10 +1,12 @@
 from __future__ import (absolute_import, print_function, division)
 
+from itertools import repeat
 import sys
 import argparse
 import os
 
 from . import proxyswitch
+from . import say
 from . import version
 from libmproxy.main import mitmdump
 
@@ -12,8 +14,7 @@ from libmproxy.main import mitmdump
 def main():
     parser = argparse.ArgumentParser(prog = 'mastermind',
                                      description = 'Helper tool to orchestrate OS X proxy settings and mitmproxy.')
-    parser.add_argument('-v',
-                        '--version',
+    parser.add_argument('--version',
                         action='version',
                         version="%(prog)s" + " " + version.VERSION)
 
@@ -50,9 +51,15 @@ def main():
                         action='store_true',
                         help='Skips changing the OS proxy settings')
 
-    parser.add_argument('--quiet',
-                        action='store_true',
-                        help='Makes mitmproxy quiet')
+
+    verbosity_group = parser.add_mutually_exclusive_group()
+    verbosity_group.add_argument('--quiet',
+                                 action='store_true',
+                                 help='Makes Mastermind quiet')
+
+    verbosity_group.add_argument('-v','--verbose',
+                                 action='count',
+                                 help='Makes Mastermind verbose')
 
     args, extra_arguments = parser.parse_known_args()
     mitm_args = ["--host"]
@@ -100,8 +107,13 @@ def main():
                                                  args.port,
                                                  args.host)]
 
-    if args.quiet:
-        mitm_args.append('--quiet')
+    if args.verbose <= 3:
+        mitm_args.append("--quiet")
+
+    if args.verbose > 3:
+        mitm_args + list(repeat("-v", args.verbose - 3))
+
+    say.level(args.verbose)
 
     mitm_args = mitm_args + extra_arguments
     mitm_args = mitm_args + ["--port", args.port, "--bind-address", args.host]

@@ -2,6 +2,7 @@ import os
 
 from mastermind.proxyswitch import enable, disable
 from mastermind import handlers, driver
+from mastermind.say import logger
 
 def request(context, flow):
     handlers.request(context, flow)
@@ -28,4 +29,4 @@ def done(context):
         if not context.without_proxy_settings:
             disable()
     except TypeError:
-        print("mitmproxy has crashed")
+        logger.error("mitmproxy has crashed")
