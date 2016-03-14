@@ -19,7 +19,6 @@ def start(context, argv):
     driver.register(context)
 
     if not context.without_proxy_settings:
-        context.log("No OS proxy settings")
         enable(context.host, context.port)
 
     context.log('Source dir: {}'.format(context.source_dir))
