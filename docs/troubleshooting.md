@@ -44,3 +44,15 @@ Rolling back uninstall of lxml
 
 This usually means something is not right with your command line developer
 tools. So, as suggested by the error message, try `xcode-select --install`.
+
+
+## Mastermind crashes without cleaning the proxy settings
+
+Reported as #24.  Thus far when this happens it has to be disabled with:
+
+```sh
+sudo proxyswitch --disable
+```
+
+The symptoms appear when killing (`SIGKILL`) the process. A simple `SIGTERM`
+(e.g. `sudo kill <pid>`) should be enough.

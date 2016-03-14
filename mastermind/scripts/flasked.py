@@ -24,5 +24,8 @@ def start(context, argv):
     context.log('Source dir: {}'.format(context.source_dir))
 
 def done(context):
-    if not context.without_proxy_settings:
-        disable()
+    try:
+        if not context.without_proxy_settings:
+            disable()
+    except TypeError:
+        print("mitmproxy has crashed")
