@@ -75,21 +75,19 @@ def index(path):
 @app.route('/state/')
 def state():
     message = driver.state()
-    logger.warning("foo")
-    logger.warning(message)
-    logger.info("foo")
+    logger.info(message)
     return jsonify(message)
 
 @app.route('/stop/')
 def stop_driver():
     message = driver.stop()
-    print(message)
+    logger.info(message)
     return jsonify(message)
 
 @app.route('/<ruleset>/start/')
 def start_driver(ruleset):
     message = driver.start(ruleset)
-    print(message)
+    logger.info(message)
     return jsonify(message)
 
 @app.route('/<ruleset>/exceptions/')
