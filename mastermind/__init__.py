@@ -8,11 +8,6 @@ from . import proxyswitch
 from . import version
 from libmproxy.main import mitmdump
 
-import signal
-
-def handler(signum, frame):
-    print("Signal handler called with signal", signum)
-
 
 def main():
     parser = argparse.ArgumentParser(prog = 'mastermind',
