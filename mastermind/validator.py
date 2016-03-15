@@ -2,22 +2,20 @@ from jsonschema import Draft4Validator, exceptions
 import os
 import datetime
 import yaml
+from say import logger
 
 def check(instance, schema):
     v = Draft4Validator(schema)
     timestamp = datetime.datetime.utcnow().isoformat()
+    errors = [to_hashmap(x, timestamp) for x in sorted(v.iter_errors(instance),
+                                                       key=exceptions.relevance)]
 
-    return [to_hashmap(x, timestamp) for x in sorted(v.iter_errors(yaml.safe_load(instance)),
-                                                     key=exceptions.relevance)]
+    if len(errors) > 0: logger.warning(errors)
 
-# FIXME: Consider merging with check()
+    return errors
+
 def is_valid(instance, schema):
-    v = Draft4Validator(schema)
-    timestamp = datetime.datetime.utcnow().isoformat()
-    errors = sorted(v.iter_errors(instance),
-                    key=exceptions.relevance)
-    if len(errors) != 0: print(errors)
-    return len(errors) == 0
+    return len(check(instance, schema)) == 0
 
 
 def to_hashmap(item, timestamp):
@@ -137,8 +135,5 @@ ruleset_schema = {
   "id": "/",
   "type": "array",
   "name": "/",
-  "items": {
-    "type": "object",
-    "properties": rule_schema,
-  }
+  "items":  rule_schema,
 }

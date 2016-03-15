@@ -1,4 +1,5 @@
 import time
+import yaml
 from libmproxy.models import decoded
 
 from driver import driver
@@ -56,7 +57,7 @@ def response(context, flow):
 
                 if schema:
                     table = driver.db.table(flow.request.url)
-                    schema_result = validator.check(flow.response.content,
+                    schema_result = validator.check(yaml.safe_load(flow.response.content),
                                                     schema)
                     table.insert_multiple(schema_result)
                     logger.info(schema_result)

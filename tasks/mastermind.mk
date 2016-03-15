@@ -10,7 +10,7 @@ mastermind-help:
 
 
 mastermind-driver:
-	@$(shell pwd)/mastermind.py --quiet \
+	@$(shell pwd)/mastermind.py  \
                               --without-proxy-settings \
                               --with-driver \
                               --no-upstream-cert \
