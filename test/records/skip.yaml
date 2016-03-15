@@ -30,6 +30,7 @@
 
 - name: error500
   url: http://localhost:8000/500/
+  unexpected: x
   method: GET
   request:
     skip: true

@@ -113,10 +113,14 @@ def main():
     if args.verbose > 3:
         mitm_args + list(repeat("-v", args.verbose - 3))
 
-    if args.quiet:
-        args.verbose = 0
+    verbose = 2
 
-    say.level(args.verbose)
+    if args.quiet:
+        verbose = 0
+    if args.verbose:
+        verbose = args.verbose
+
+    say.level(verbose)
 
     mitm_args = mitm_args + extra_arguments
     mitm_args = mitm_args + ["--port", args.port, "--bind-address", args.host]

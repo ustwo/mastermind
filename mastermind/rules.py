@@ -1,13 +1,17 @@
 import os
 import yaml
 import uri
+import validator
+from say import logger
 
 
 def load(filename, base_path):
-    file = read_file(os.path.join(base_path,
-                                  '{}.yaml'.format(filename)))
+    data = yaml.safe_load(read_file(os.path.join(base_path,
+                                  '{}.yaml'.format(filename))))
 
-    return yaml.safe_load(file)
+    validator.is_valid(data, validator.ruleset_schema)
+
+    return data
 
 def read_file(filepath):
     return open(filepath).read()
