@@ -5,6 +5,7 @@
 * Add logging system.
 * Add verbosity. Close #23.
 * Add ruleset validations (via JSON Schema).
+* Add config file. Close #22.
 
 ## 0.9.0
 
