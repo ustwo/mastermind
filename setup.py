@@ -43,6 +43,7 @@ setup(
                       'pyYAML==3.11',
                       'jsonschema==2.5',
                       'coloredlogs==5.0',
+                      'pytoml==0.1',
                       'tinydb==3.1'],
 
     # List additional groups of dependencies here (e.g. development

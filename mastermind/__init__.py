@@ -4,7 +4,9 @@ from itertools import repeat
 import sys
 import argparse
 import os
+import pytoml as toml
 
+from . import cli
 from . import proxyswitch
 from . import say
 from . import version
@@ -12,66 +14,82 @@ from libmproxy.main import mitmdump
 
 
 def main():
-    parser = argparse.ArgumentParser(prog = 'mastermind',
-                                     description = 'Helper tool to orchestrate OS X proxy settings and mitmproxy.')
-    parser.add_argument('--version',
-                        action='version',
+    parser = argparse.ArgumentParser(prog = "mastermind",
+                                     description = "Man in the middle testing tool")
+    parser.add_argument("--version",
+                        action="version",
                         version="%(prog)s" + " " + version.VERSION)
 
-    driver = parser.add_argument_group('Driver')
-    single = parser.add_argument_group('Single')
-    script = parser.add_argument_group('Script')
+    driver = parser.add_argument_group("Driver")
+    single = parser.add_argument_group("Single")
+    script = parser.add_argument_group("Script")
 
-    driver.add_argument('--with-driver',
-                        action = 'store_true',
-                        help = 'Activates the driver')
-    driver.add_argument('--source-dir',
-                        metavar = 'DIR',
-                        help = 'An absolute path used as a source directory to lookup for mock rules')
+    driver.add_argument("--with-driver",
+                        action = "store_true",
+                        help = "Activates the driver")
+    driver.add_argument("--source-dir",
+                        metavar = "DIR",
+                        help = "An absolute path used as a source directory to lookup for mock rules")
 
-    single.add_argument('--response-body',
-                        metavar = 'FILEPATH',
-                        help = 'A file containing the mocked response body')
-    single.add_argument('--url',
-                        metavar = 'URL',
-                        help = 'A URL to mock its response')
+    driver.add_argument("--config",
+                        metavar = "CONFIG_FILE",
+                        help = "A valid config file. See https://github.com/ustwo/mastermind/tree/master/docs/config.md")
 
-    script.add_argument('--script',
-                        metavar = 'FILEPATH',
+    single.add_argument("--response-body",
+                        metavar = "FILEPATH",
+                        help = "A file containing the mocked response body")
+    single.add_argument("--url",
+                        metavar = "URL",
+                        help = "A URL to mock its response")
+
+    script.add_argument("--script",
+                        metavar = "FILEPATH",
                         help = '''A mitmproxy Python script filepath.
                                   When passed, --response-body and --url are ignored''')
 
-    parser.add_argument('--port',
-                        help = 'Default port 8080',
-                        default = "8080")
-    parser.add_argument('--host',
-                        help = 'Default host 0.0.0.0',
-                        default = "0.0.0.0")
-    parser.add_argument('--without-proxy-settings',
-                        action='store_true',
-                        help='Skips changing the OS proxy settings')
+    parser.add_argument("--port",
+                        help = "Default port 8080")
+    parser.add_argument("--host",
+                        help = "Default host 0.0.0.0")
+    parser.add_argument("--without-proxy-settings",
+                        action="store_true",
+                        help="Skips changing the OS proxy settings")
 
 
     verbosity_group = parser.add_mutually_exclusive_group()
-    verbosity_group.add_argument('--quiet',
-                                 action='store_true',
-                                 help='Makes Mastermind quiet')
+    verbosity_group.add_argument("--quiet",
+                                 action="store_true",
+                                 help="Makes Mastermind quiet")
 
-    verbosity_group.add_argument('-v','--verbose',
-                                 action='count',
-                                 help='Makes Mastermind verbose')
+    verbosity_group.add_argument("-v", "--verbose",
+                                 action="count",
+                                 help="Makes Mastermind verbose")
 
     args, extra_arguments = parser.parse_known_args()
     mitm_args = ["--host"]
 
-    if args.with_driver:
-        if args.script or args.response_body or args.url:
-            parser.error("The Driver mode does not allow a script, a response body or a URL.")
+    config = {"core": {"verbose": 2,
+                       "host": "0.0.0.0",
+                       "port": 8080},
+              "driver": {},
+              "mitm": {},
+              "os": {"proxy-settings": True}}
 
-        if not args.source_dir:
-            parser.error("--source-dir is required with the Driver mode")
+    if args.config:
+        try:
+            with open(args.config) as config_file:
+                config.update(toml.loads(config_file.read()))
+        except toml.core.TomlError as err:
+            parser.error("Errors found in the config file:\n\n", err)
+
+    config = cli.merge(config, args)
+
+    if "source-dir" in config["core"]:
+        cli.check_driver_mode(config, parser)
 
         storage_dir = os.path.expanduser("~/.mastermind/{}".format(os.getcwd().split("/")[-1]))
+        config["core"]["storage-dir"] = storage_dir
+
         if not os.path.isdir(storage_dir):
             os.makedirs(storage_dir)
 
@@ -82,51 +100,46 @@ def main():
 
         mitm_args = ['--script',
                      script_path_template.format(script_path,
-                                                 args.source_dir,
-                                                 args.without_proxy_settings,
-                                                 args.port,
-                                                 args.host,
-                                                 storage_dir)]
-    elif args.script:
-        if args.response_body or args.url:
+                                                 config["core"]["source-dir"],
+                                                 config["os"]["proxy-settings"],
+                                                 config["core"]["port"],
+                                                 config["core"]["host"],
+                                                 config["core"]["storage-dir"])]
+    elif "script" in config["core"]:
+        if ("response-body" in config["core"]) or ("url" in config["core"]):
             parser.error("The Script mode does not allow a response body or a URL.")
 
         mitm_args.append('--script')
-        mitm_args.append(args.script)
-    elif args.response_body:
+        mitm_args.append(config["core"]["script"])
+    elif "response-body" in config["core"]:
         script_path_template = "{}/scripts/simple.py {} {} {} {} {}"
         script_path = os.path.dirname(os.path.realpath(__file__))
-        if getattr( sys, 'frozen', False ):
+
+        if getattr(sys, 'frozen', False):
             script_path = sys._MEIPASS
 
         mitm_args = ['--script',
                      script_path_template.format(script_path,
-                                                 args.url,
-                                                 args.response_body,
-                                                 args.without_proxy_settings,
-                                                 args.port,
-                                                 args.host)]
+                                                 config["core"]["url"],
+                                                 config["core"]["response-body"],
+                                                 config["os"]["proxy-settings"],
+                                                 config["core"]["port"],
+                                                 config["core"]["host"])]
 
-    if args.verbose <= 3:
+    say.level(config["core"]["verbose"])
+
+    if config["core"]["verbose"] <= 3:
         mitm_args.append("--quiet")
 
-    if args.verbose > 3:
-        mitm_args + list(repeat("-v", args.verbose - 3))
-
-    verbose = 2
-
-    if args.quiet:
-        verbose = 0
-    if args.verbose:
-        verbose = args.verbose
-
-    say.level(verbose)
+    if config["core"]["verbose"] > 3:
+        mitm_args + list(repeat("-v", config["core"]["verbose"] - 3))
 
     mitm_args = mitm_args + extra_arguments
-    mitm_args = mitm_args + ["--port", args.port, "--bind-address", args.host]
+    mitm_args = mitm_args + ["--port", str(config["core"]["port"]), "--bind-address", config["core"]["host"]]
 
     try:
         mitmdump(mitm_args)
+        print(mitm_args)
     except:
-        if not args.without_proxy_settings:
+        if config["os"]["proxy-settings"]:
             proxyswitch.disable()

@@ -7,3 +7,4 @@ jsonschema==2.5
 tinydb==3.1
 PyInstaller==3.1
 coloredlogs==5.0
+pytoml==0.1

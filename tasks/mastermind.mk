@@ -10,11 +10,8 @@ mastermind-help:
 
 
 mastermind-driver:
-	@$(shell pwd)/mastermind.py  \
-                              --without-proxy-settings \
-                              --with-driver \
-                              --no-upstream-cert \
-                              --source-dir $(shell pwd)/test/records
+	@$(shell pwd)/mastermind.py --config $(shell pwd)/examples/config/verbose.toml \
+                              --no-upstream-cert
 
 .PHONY: mastermind-driver
 
