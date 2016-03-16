@@ -6,6 +6,7 @@ mastermind:
 
 mastermind-simple:
 	@$(shell pwd)/mastermind.py --quiet \
+                              --without-proxy-settings \
                               --response-body $(shell pwd)/test/records/fake.json \
                               --url https://api.github.com/users/octocat/orgs
 .PHONY: mastermind-simple
