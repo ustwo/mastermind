@@ -74,6 +74,9 @@ The driver mode will mount a thin HTTP server listening for actions at
 
 Check the full list of [Rule properties](./docs/rules.md).
 
+Check the [configuration](./docs/config.md) to avoid writing the same flags
+over and over.
+
 
 ```sh
 sudo mastermind --with-driver \
