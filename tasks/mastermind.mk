@@ -1,49 +1,20 @@
+CONF = $(shell pwd)/examples/config/verbose.toml
 mastermind:
-	@$(shell pwd)/mastermind.py --quiet \
-                              --response-body $(shell pwd)/test/records/fake.json \
-                              --url https://api.github.com/users/octocat/orgs
+	@$(shell pwd)/mastermind.py --config $(CONF) \
+                              --no-upstream-cert
 .PHONY: mastermind
 
-mastermind-help:
-	@$(shell pwd)/mastermind.py --help | $(LESS)
-.PHONY: mastermind-help
-
-
-mastermind-driver:
-	@$(shell pwd)/mastermind.py  \
-                              --without-proxy-settings \
-                              --with-driver \
-                              --no-upstream-cert \
-                              --source-dir $(shell pwd)/test/records
-
-.PHONY: mastermind-driver
-
-mastermind-bundle:
-	@$(shell pwd)/dist/mastermind/mastermind --quiet \
-                                           --without-proxy-settings \
-                                           --with-driver \
-                                           --no-upstream-cert \
-                                           --source-dir $(shell pwd)/test/records
-
-.PHONY: mastermind-bundle
-
-mastermind-onefile:
-	@$(shell pwd)/dist/mastermind --quiet \
-                                --without-proxy-settings \
-                                --with-driver \
-                                --no-upstream-cert \
-                                --source-dir $(shell pwd)/test/records
-
-.PHONY: mastermind-onefile
-
-
-mastermind-driver2:
+mastermind-simple:
 	@$(shell pwd)/mastermind.py --quiet \
-                              --with-driver \
-                              --port 9090 \
-                              --host 0.0.0.0 \
-                              --source-dir $(shell pwd)/test/records
-.PHONY: mastermind-driver2
+                              --without-proxy-settings \
+                              --response-body $(shell pwd)/test/records/fake.json \
+                              --url https://api.github.com/users/octocat/orgs
+.PHONY: mastermind-simple
+
+mastermind-bin:
+	@$(shell pwd)/dist/mastermind --config $(CONF) \
+                                --no-upstream-cert
+.PHONY: mastermind-bin
 
 mastermind-error:
 	@$(shell pwd)/mastermind.py --quiet \
