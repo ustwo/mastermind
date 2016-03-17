@@ -1,5 +1,7 @@
 CONF = $(shell pwd)/examples/config/verbose.toml
+
 mastermind:
+	@echo $(CONF)
 	@$(shell pwd)/mastermind.py --config $(CONF) \
                               --no-upstream-cert
 .PHONY: mastermind

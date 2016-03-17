@@ -67,6 +67,11 @@ test-templ:
 	@$(call driver_stop)
 
 
+skip-start:
+	@$(call driver_start, skip)
+
+skip-stop:
+	@$(call driver_stop, skip)
 
 define driver_start
   curl -L --proxy http://localhost:8080 \

@@ -1,11 +1,26 @@
 # Mastermind
 
-Status: [![Circle CI](https://circleci.com/gh/ustwo/mastermind.svg?style=svg)](https://circleci.com/gh/ustwo/mastermind)
+Status: [![Circle CI](https://circleci.com/gh/ustwo/mastermind.svg?style=svg)](#circle)
 
-Mastermind is written on top of the great [mitmproxy](https://mitmproxy.org)
-to allow an easy way to intercept specific HTTP requests and mock its responses.
+Mastermind is a CLI using [mitmproxy] that offers an easy way to mock a service
+(e.g. API, Website) defining rules per URL or [URL patterns](#url-patterns).
+defining rules to intercept HTTP(S) requests and mock its responses.  By default it makes sure
+the OSX proxy settings are enabled only when the proxy is running.
 
-It has a complementary tool to easily switch the **OSX** proxy configuration.
+
+## ToC
+
+* [Requirements](#requirements)
+* [HTTPS Connections](#http-connections) **Don't skip this one**
+* [Install](#install)
+* [Getting started](#getting-started)
+* [Configuration](#config)
+* [Rules](#rules)
+* [URL Patterns](#url-patterns)
+* [JSON Schema Validation](#validation)
+* [Examples](#examples)
+* [Troubleshooting](#troubleshooting)
+
 
 ## Requirements
 
@@ -13,6 +28,7 @@ It has a complementary tool to easily switch the **OSX** proxy configuration.
 * [pip](https://pypi.python.org/pypi/pip/).
 * OSX if you want to use the proxyswitch.
 * `xcode-select --install` if you use OSX.
+
 
 ### HTTPS Connections
 
@@ -31,14 +47,14 @@ as suggested by mitmproxy.
 
 ## Install
 
-The preferred way for OSX is to use the Homebrew tap. The first time:
+The preferred way for **OSX** is to use the Homebrew tap. The first time:
 
 ```sh
 brew tap ustwo/tools
 brew install mastermind
 ```
 
-For upgrade just `brew update` and `brew upgrade mastermind`.
+To upgrade just `brew update` and `brew upgrade mastermind`.
 
 
 You can install Mastermind via `pip` but you might want to consider using
@@ -48,34 +64,86 @@ virtualenv to avoid dependency clashes.
 pip install "git+https://github.com/ustwo/mastermind.git@v0.9.0#egg=mastermind"
 ```
 
+
 ## Getting started
 
-Mastermind is a CLI using `mitmproxy` that offers an easy way to define rules
-to intercept HTTP(S) requests and mock its responses.  By default it makes sure
-the OSX proxy settings are enabled only when the proxy is running.
-
-The proxy runs by default on `http://localhost:8080`.
-
 There are three modes you can use, "Driver", "Simple" and "Script".  They can't
-be mixed.
+be mixed. The proxy runs by default on `http://localhost:8080`.
 
 **Note** Examples using `sudo` indicate you need high privileges to let
 mastermind change the *system* proxy configuration.  If you run it with
 `--without-proxy-settings` there is no need for special privileges.
 
-### Troubleshooting
+### When to use de Driver mode
 
-We collect non-obvious use cases at the [troubleshooting](./docs/troubleshooting.md) document.
+The **driver** mode could have been named _normal mode_ given it is the way you
+will take advantage of all features Mastermind has to offer.
+
+So, why would you use it anyway? Well, Mastermind lets you approach service
+mocking by intercepting the requests you are making based on a set of rules
+you define and return a custom response.
+
+Let's intercept a request to `http://localhost:8000/foo.png` and return a
+mocked response from our filesystem:
+
+First, create a file named `test.toml` with the following content:
+
+```toml
+source_dir = "./rulesets"
+```
+
+Next, create the directory `rulesets` and create a file inside named
+`local.yaml` with the following content:
+
+```yaml
+- name: foo image
+  url: http://localhost:8000/foo.png
+  request:
+    skip: true
+  response:
+    body: ./myfoo.png
+```
+
+Then create a PNG file with the image you wish and place it inside `rulesets`
+as `rulesets/myfoo.png`.
+
+Finally, start Mastermind:
+
+```sh
+sudo mastermind --config test.toml
+```
+
+**Warning**: We are assuming OSX here. If you are in a different operating system
+make sure you configure your browser to use the proxy `http://localhost:8080`.
+
+Go to your preferred browser and hit `http://localhost:8000/foo.png`. Done!
+
+What just happened? We are intercepting a request to
+`http://localhost:8000/foo.png`, skipping the request to the real
+`localhost:8080` (notice `skip: true`) and return a response where the body
+is the content of `myfoo.png`.
+
+Check the [examples](#examples) for more rulesets and config files.
+
+
+### When to use de Simple mode
+
+Use the **simple** mode when you want to quickly mock a single URL.
+
+### When to use de Script mode
+
+Use the **script** mode if you have an already working mitmproxy inline script
+and you want to transition to Mastermind's Driver mode eventually.
+
 
 ### Driver
 
 The driver mode will mount a thin HTTP server listening for actions at
-`http://proxapp:5000` and a set of rules to apply.
+`http://proxapp:5000` and a set of rules to apply. See the full list of
+[Rule properties](#rules).
 
-Check the full list of [Rule properties](./docs/rules.md).
-
-Check the [configuration](./docs/config.md) to avoid writing the same flags
-over and over.
+See also the [configuration](#config) to avoid writing the same flags over and
+over.
 
 
 ```sh
@@ -84,7 +152,7 @@ sudo mastermind --with-driver \
 ```
 
 In the example above, `mastermind` will expect to find one or more YAML ruleset
-files.  [Check the example](./examples).
+files.  [Check the example](#examples).
 
 A ruleset file is an array of rules and each rule is composed by at least a `url`.
 The basic form will have a `body` as well.
@@ -190,7 +258,7 @@ In one picture:
 When a `schema` is present in a rule, the original resopnse will be
 validated against the given JSON schema file.
 
-See the [Payload validation](./docs/validation.md) documentation.
+See the [Payload validation](#validation) documentation.
 
 
 ### Simple
@@ -206,7 +274,7 @@ sudo mastermind --response-body $(pwd)/test/records/fake.json" \
 
 **Use this option if you *know* what you are doing**.
 
-The script mode expects a mitmproxy Python script:
+The script mode expects a [mitmproxy inline script](#mitm-script):
 
 ```sh
 sudo mastermind --script $(pwd)/myscript.py
@@ -218,25 +286,6 @@ Or pass parameters to your script the same way mitmproxy does:
 sudo mastermind --script "$(pwd)/myscript.py param1 param2"
 ```
 
-If you go for the `--script` approach, you have to explicitly manage proxyswitch
-yourself. Adding the following will do the trick:
-
-```python
-from proxyswitch import enable, disable
-
-def start(context, argv):
-    enable('127.0.0.1', '8080')
-
-def done(context):
-    disable()
-```
-
-
-Check the help for more.
-
-```sh
-mastermind --help
-```
 
 
 ## Proxyswitch
@@ -263,3 +312,15 @@ Check our [contributing guidelines](./CONTRIBUTING.md)
 This is a proof of concept with no guarantee of active maintenance.
 
 See [License](./LICENSE) and [Notice](./NOTICE).
+
+
+[config]: ./docs/config.md
+[rules]: ./docs/rules.md
+[troubleshooting]: ./docs/troubleshooting.md
+[url-patterns]: ./docs/url-patterns.md
+[validation]: ./docs/validation.md
+[examples]: ./examples/
+
+[circle]: https://circleci.com/gh/ustwo/mastermind
+[mitmproxy]: https://mitmproxy.org
+[mitm-script]: http://docs.mitmproxy.org/en/stable/scripting/inlinescripts.html
