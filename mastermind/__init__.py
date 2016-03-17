@@ -78,7 +78,11 @@ def main():
     if args.config:
         try:
             with open(args.config) as config_file:
-                config.update(toml.loads(config_file.read()))
+                data = toml.loads(config_file.read())
+                if "os" in data:
+                    config["os"].update(data["os"])
+                if "core" in data:
+                    config["core"].update(data["core"])
         except toml.core.TomlError as err:
             parser.error("Errors found in the config file:\n\n", err)
 
