@@ -3,7 +3,7 @@
 Status: [![Circle CI](https://circleci.com/gh/ustwo/mastermind.svg?style=svg)][circle]
 
 Mastermind is a CLI using [mitmproxy] that offers an easy way to mock a service
-(e.g. API, Website) defining rules per URL or [URL patterns][url-patterns].
+(e.g. API, Website) defining rules per URL or [URL patterns][url-patterns],
 defining rules to intercept HTTP(S) requests and mock its responses.  By default it makes sure
 the OSX proxy settings are enabled only when the proxy is running.
 
@@ -33,7 +33,7 @@ the OSX proxy settings are enabled only when the proxy is running.
 ### HTTPS Connections
 
 If you plan to intercept HTTPS connections, check the [mitmproxy docs](http://docs.mitmproxy.org/en/stable/certinstall.html)
-to install their CA certificates. **If you don't install them in _every_ device
+to install their CA certificates. **If you don't install them in _every_ device and simulator/emulator
 you want to use, your HTTPS requests will not be properly intercepted.**
 
 Even with that in place, keep in mind there are issues with
@@ -67,14 +67,14 @@ pip install "git+https://github.com/ustwo/mastermind.git@v0.9.0#egg=mastermind"
 
 ## Getting started
 
-There are three modes you can use, "Driver", "Simple" and "Script".  They can't
+There are three modes you can use, "Driver", "Simple", and "Script".  They can't
 be mixed. The proxy runs by default on `http://localhost:8080`.
 
 **Note** Examples using `sudo` indicate you need high privileges to let
 mastermind change the *system* proxy configuration.  If you run it with
 `--without-proxy-settings` there is no need for special privileges.
 
-### When to use de Driver mode
+### When to use Driver mode
 
 The **driver** mode could have been named _normal mode_ given it is the way you
 will take advantage of all features Mastermind has to offer.
@@ -126,11 +126,11 @@ is the content of `myfoo.png`.
 Check the [examples][examples] for more rulesets and config files.
 
 
-### When to use de Simple mode
+### When to use Simple mode
 
 Use the **simple** mode when you want to quickly mock a single URL.
 
-### When to use de Script mode
+### When to use Script mode
 
 Use the **script** mode if you have an already working mitmproxy inline script
 and you want to transition to Mastermind's Driver mode eventually.
@@ -154,7 +154,7 @@ sudo mastermind --with-driver \
 In the example above, `mastermind` will expect to find one or more YAML ruleset
 files.  [Check the example][examples].
 
-A ruleset file is an array of rules and each rule is composed by at least a `url`.
+A ruleset file is an array of rules and each rule is composed by at least one `url`.
 The basic form will have a `body` as well.
 
 
@@ -187,7 +187,7 @@ A more elaborated case will have headers to add or remove:
 ```
 
 **Note**: Examples use `curl` which does not use the system proxy by default.
-This is why the `--proxy` flag is used.  In contexts like Safari or XCode this
+This is why the `--proxy` flag is used.  In contexts like Safari or Xcode this
 is implicit.
 
 Assuming the two examples above were named `foo.yaml` and `bar.yaml` a running
@@ -198,7 +198,7 @@ $ curl --proxy http://localhost:8080 \
        -XGET http://proxapp:5000/foo/start/
 ```
 
-Results in:
+Results in a response of:
 
 ```json
 {"ruleset": "foo", "state": "started"}
@@ -211,7 +211,7 @@ $ curl --proxy http://localhost:8080 \
        -XGET http://proxapp:5000/bar/start/
 ```
 
-Results in:
+Results in a response of:
 
 ```json
 {"ruleset": "bar", "state": "started"}
@@ -224,7 +224,7 @@ $ curl --proxy http://localhost:8080 \
        -XGET http://proxapp:5000/stop/
 ```
 
-Results in:
+Results in a response of:
 
 ```json
 {"ruleset": "bar", "state": "stopped"}
@@ -237,7 +237,7 @@ $ curl --proxy http://localhost:8080 \
        -XGET http://proxapp:5000/state/
 ```
 
-Results in:
+Results in a response of:
 
 ```json
 {"ruleset": "bar", "state": "running"}
