@@ -3,7 +3,7 @@
 Status: [![Circle CI](https://circleci.com/gh/ustwo/mastermind.svg?style=svg)](#circle)
 
 Mastermind is a CLI using [mitmproxy] that offers an easy way to mock a service
-(e.g. API, Website) defining rules per URL or [URL patterns](#url-patterns).
+(e.g. API, Website) defining rules per URL or [URL patterns](url-patterns).
 defining rules to intercept HTTP(S) requests and mock its responses.  By default it makes sure
 the OSX proxy settings are enabled only when the proxy is running.
 
@@ -14,12 +14,12 @@ the OSX proxy settings are enabled only when the proxy is running.
 * [HTTPS Connections](#http-connections) **Don't skip this one**
 * [Install](#install)
 * [Getting started](#getting-started)
-* [Configuration](#config)
-* [Rules](#rules)
-* [URL Patterns](#url-patterns)
-* [JSON Schema Validation](#validation)
-* [Examples](#examples)
-* [Troubleshooting](#troubleshooting)
+* [Configuration](config)
+* [Rules](rules)
+* [URL Patterns](url-patterns)
+* [JSON Schema Validation](validation)
+* [Examples](examples)
+* [Troubleshooting](troubleshooting)
 
 
 ## Requirements
