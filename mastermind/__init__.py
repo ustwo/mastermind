@@ -143,7 +143,6 @@ def main():
 
     try:
         mitmdump(mitm_args)
-        print(mitm_args)
     except:
         if config["os"]["proxy-settings"]:
             proxyswitch.disable()
