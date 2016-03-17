@@ -1,9 +1,9 @@
 # Mastermind
 
-Status: [![Circle CI](https://circleci.com/gh/ustwo/mastermind.svg?style=svg)](#circle)
+Status: [![Circle CI](https://circleci.com/gh/ustwo/mastermind.svg?style=svg)][circle]
 
 Mastermind is a CLI using [mitmproxy] that offers an easy way to mock a service
-(e.g. API, Website) defining rules per URL or [URL patterns](url-patterns).
+(e.g. API, Website) defining rules per URL or [URL patterns][url-patterns].
 defining rules to intercept HTTP(S) requests and mock its responses.  By default it makes sure
 the OSX proxy settings are enabled only when the proxy is running.
 
@@ -14,12 +14,12 @@ the OSX proxy settings are enabled only when the proxy is running.
 * [HTTPS Connections](#http-connections) **Don't skip this one**
 * [Install](#install)
 * [Getting started](#getting-started)
-* [Configuration](config)
-* [Rules](rules)
-* [URL Patterns](url-patterns)
-* [JSON Schema Validation](validation)
-* [Examples](examples)
-* [Troubleshooting](troubleshooting)
+* [Configuration][config]
+* [Rules][rules]
+* [URL Patterns][url-patterns]
+* [JSON Schema Validation][validation]
+* [Examples][examples]
+* [Troubleshooting][troubleshooting]
 
 
 ## Requirements
@@ -123,7 +123,7 @@ What just happened? We are intercepting a request to
 `localhost:8080` (notice `skip: true`) and return a response where the body
 is the content of `myfoo.png`.
 
-Check the [examples](#examples) for more rulesets and config files.
+Check the [examples][examples] for more rulesets and config files.
 
 
 ### When to use de Simple mode
@@ -140,9 +140,9 @@ and you want to transition to Mastermind's Driver mode eventually.
 
 The driver mode will mount a thin HTTP server listening for actions at
 `http://proxapp:5000` and a set of rules to apply. See the full list of
-[Rule properties](#rules).
+[Rule properties][rules].
 
-See also the [configuration](#config) to avoid writing the same flags over and
+See also the [configuration][config] to avoid writing the same flags over and
 over.
 
 
@@ -152,7 +152,7 @@ sudo mastermind --with-driver \
 ```
 
 In the example above, `mastermind` will expect to find one or more YAML ruleset
-files.  [Check the example](#examples).
+files.  [Check the example][examples].
 
 A ruleset file is an array of rules and each rule is composed by at least a `url`.
 The basic form will have a `body` as well.
@@ -258,7 +258,7 @@ In one picture:
 When a `schema` is present in a rule, the original resopnse will be
 validated against the given JSON schema file.
 
-See the [Payload validation](#validation) documentation.
+See the [Payload validation][validation] documentation.
 
 
 ### Simple
@@ -274,7 +274,7 @@ sudo mastermind --response-body $(pwd)/test/records/fake.json" \
 
 **Use this option if you *know* what you are doing**.
 
-The script mode expects a [mitmproxy inline script](#mitm-script):
+The script mode expects a [mitmproxy inline script][mitm-script]:
 
 ```sh
 sudo mastermind --script $(pwd)/myscript.py
