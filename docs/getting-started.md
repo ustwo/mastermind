@@ -4,6 +4,8 @@
 mastermind change the *system* proxy configuration.  If you run it with
 `--without-proxy-settings` there is no need for special privileges.
 
+---
+
 
 The main way to use Mastermind is called **driver mode**.  It  lets you
 approach service mocking by intercepting the requests you are making based on a
