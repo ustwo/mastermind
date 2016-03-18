@@ -113,7 +113,7 @@ canonical ones with trailing slash.  If you use curl you might want to use the
 
 In one picture:
 
-![Driver with state sequence](./docs/schematics/driver-stateful.mmd.png)
+![Driver with state sequence](schematics/driver-stateful.mmd.png)
 
 
 ## Validation with JSON Schema
