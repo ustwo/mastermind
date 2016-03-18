@@ -2,10 +2,11 @@
 
 ## Next
 
-* Add logging system.
+* Add logging system. Close #22.
 * Add verbosity. Close #23.
-* Add ruleset validations (via JSON Schema).
+* Add ruleset validations (via JSON Schema). Close #13.
 * Add config file. Close #22.
+* Improve documentation with more examples and simple use cases. Close #28, #29.
 
 ## 0.9.0
 
