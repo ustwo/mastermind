@@ -37,7 +37,7 @@ to use.  If you don't do it your HTTPS requests will not be properly
 intercepted.**
 
 This section explains how to do the [quick setup to install mitmproxy
-certificates][qiuck-setup].  If you want other certificates, please read
+certificates][quick-setup].  If you want other certificates, please read
 [mitmproxy "About Certificates"][mitm-certinstall].
 
 
