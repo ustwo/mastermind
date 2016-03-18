@@ -17,9 +17,9 @@ only when the proxy is running.
 * [Rules][rules]
 * [URL Patterns][url-patterns]
 * [JSON Schema Validation][validation]
-* [Driver mode](./docs/driver-mode.md)
-* [Script mode](./docs/script-mode.md)
-* [Simple mode](./docs/simple-mode.md)
+* [Driver mode][driver-mode]
+* [Script mode][script-mode]
+* [Simple mode][simple-mode]
 * [Examples][examples]
 * [Troubleshooting][troubleshooting]
 
@@ -46,12 +46,16 @@ See [License](./LICENSE) and [Notice](./NOTICE).
 
 
 [install]: ./docs/install.md
+[getting-started]: ./docs/getting-started.md
 [config]: ./docs/config.md
 [rules]: ./docs/rules.md
 [troubleshooting]: ./docs/troubleshooting.md
 [url-patterns]: ./docs/url-patterns.md
 [validation]: ./docs/validation.md
 [examples]: ./examples/
+[driver-mode]: ./docs/driver-mode.md
+[script-mode]: ./docs/script-mode.md
+[simple-mode]: ./docs/simple-mode.md
 
 [circle]: https://circleci.com/gh/ustwo/mastermind
 [mitmproxy]: https://mitmproxy.org

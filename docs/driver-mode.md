@@ -122,3 +122,10 @@ When a `schema` is present in a rule, the original resopnse will be validated
 against the given JSON schema file.
 
 See the [Payload validation][validation] documentation.
+
+
+[config]: config.md
+[rules]: rules.md
+[url-patterns]: url-patterns.md
+[validation]: validation.md
+[examples]: ../examples/

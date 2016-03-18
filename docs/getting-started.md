@@ -77,3 +77,6 @@ Use the **simple** mode when you want to quickly mock a single URL.
 
 Use the **script** mode if you have an already working mitmproxy inline script
 and you want to transition to Mastermind's Driver mode eventually.
+
+
+[examples]: ../examples/
