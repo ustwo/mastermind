@@ -21,8 +21,8 @@ setup(
     description='CLI to easily intercept and mock HTTP requests',
     long_description=long_description,
     url='https://github.com/ustwo/mastermind',
-    author='Arnau Siches',
-    author_email='arnau@ustwo.com',
+    author='ustwo',
+    author_email='open.source@ustwo.com',
     license='MIT',
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
@@ -30,7 +30,7 @@ setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
         'License :: OSI Approved :: MIT License',

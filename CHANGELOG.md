@@ -1,6 +1,6 @@
 # Changelog
 
-## Next
+## 1.0.0-beta
 
 * Add logging system. Close #22.
 * Add verbosity. Close #23.
