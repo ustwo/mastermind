@@ -22,11 +22,15 @@ only when the proxy is running.
 * [Simple mode][simple-mode]
 * [Examples][examples]
 * [Troubleshooting][troubleshooting]
+* [Changelog](./CHANGELOG.md)
 
 
 ## Contributing
 
 Check our [contributing guidelines](./CONTRIBUTING.md)
+
+Everyone interacting in Mastermind's codebase and issue tracker is expected to
+follow our [code of conduct](./CODE_OF_CONDUCT.md).
 
 
 ## Maintainers
