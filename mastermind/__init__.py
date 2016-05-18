@@ -110,12 +110,12 @@ def main():
                                                  config["core"]["host"],
                                                  config["core"]["storage-dir"])]
     elif "script" in config["core"]:
-        if ("response-body" in config["core"]) or ("url" in config["core"]):
-            parser.error("The Script mode does not allow a response body or a URL.")
+        cli.check_script_mode(parser, config)
 
         mitm_args.append('--script')
         mitm_args.append(config["core"]["script"])
-    elif "response-body" in config["core"]:
+
+    elif ("response-body" in config["core"]) and ("url" in config["core"]):
         script_path_template = "{}/scripts/simple.py {} {} {} {} {}"
         script_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -129,6 +129,10 @@ def main():
                                                  config["os"]["proxy-settings"],
                                                  config["core"]["port"],
                                                  config["core"]["host"])]
+    else:
+        parser.print_help()
+        parser.exit(1, "\n\nThe arguments used don't match any of the possible modes. Please check the help above\n")
+
 
     say.level(config["core"]["verbose"])
 
@@ -139,7 +143,8 @@ def main():
         mitm_args + list(repeat("-v", config["core"]["verbose"] - 3))
 
     mitm_args = mitm_args + extra_arguments
-    mitm_args = mitm_args + ["--port", str(config["core"]["port"]), "--bind-address", config["core"]["host"]]
+    mitm_args = mitm_args + ["--port", str(config["core"]["port"]),
+                             "--bind-address", config["core"]["host"]]
 
     try:
         mitmdump(mitm_args)
