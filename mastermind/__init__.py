@@ -19,16 +19,8 @@ def main():
 
     say.level(config["core"]["verbose"])
 
-    if config["core"]["verbose"] <= 3:
-        mitm_args.append("--quiet")
-
-    if config["core"]["verbose"] > 3:
-        mitm_args + list(repeat("-v", config["core"]["verbose"] - 3))
-
-    mitm_args = mitm_args + extra_arguments
-
     try:
-        mitmdump(mitm_args)
+        mitmdump(mitm_args + extra_arguments)
     except:
         if config["os"]["proxy-settings"]:
             proxyswitch.disable()

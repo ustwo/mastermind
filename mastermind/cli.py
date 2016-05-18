@@ -154,14 +154,7 @@ def simple_mode(config):
                                                               config["core"]["response-body"],
                                                               config["os"]["proxy-settings"],
                                                               config["core"]["port"],
-                                                              config["core"]["host"])]
-
-##
-# Args used in all modes
-def common_args(config):
-    return ["--host",
-            "--port", str(config["core"]["port"]),
-            "--bind-address", config["core"]["host"]]
+                                                              config["core"]["host"])] + verbosity_args(config)
 
 ##
 # Takes arguments from Argparse and composes a set of arguments for mitmproxy.
@@ -170,7 +163,7 @@ def script_mode(config):
                if x in config["core"].keys()]):
         return Exception("The Script mode does not allow a response body or a URL.")
 
-    return common_args(config) + ["--script", config["core"]["script"]]
+    return common_args(config) + ["--script", config["core"]["script"]] + verbosity_args(config)
 
 ##
 # Takes arguments from Argparse and composes a set of arguments for mitmproxy.
@@ -195,5 +188,18 @@ def driver_mode(config):
                                                               config["os"]["proxy-settings"],
                                                               config["core"]["port"],
                                                               config["core"]["host"],
-                                                              config["core"]["storage-dir"])]
+                                                              config["core"]["storage-dir"])] + verbosity_args(config)
+##
+# Args used in all modes
+def common_args(config):
+    return ["--host",
+            "--port", str(config["core"]["port"]),
+            "--bind-address", config["core"]["host"]]
 
+
+def verbosity_args(config):
+    if config["core"]["verbose"] <= 3:
+        return ["--quiet"]
+
+    if config["core"]["verbose"] > 3:
+        return list(repeat("-v", config["core"]["verbose"] - 3))
