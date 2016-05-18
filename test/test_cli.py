@@ -2,9 +2,9 @@ import mastermind.cli as cli
 
 def test_valid_simple_mode():
     base_path = cli.base_path()
-    config = cli.default_config()
-    config["core"]["url"] = "http://localhost"
-    config["core"]["response-body"] = "./foo.json"
+    args = cli.args().parse_args(['--url', 'http://localhost',
+                                  '--response-body', './foo.json'])
+    config = cli.config(args)
 
     assert cli.simple_mode(config) == ["--host",
                                        "--port", "8080",
@@ -12,21 +12,21 @@ def test_valid_simple_mode():
                                        "--script", "{}/scripts/simple.py http://localhost ./foo.json True 8080 0.0.0.0".format(base_path)]
 
 def test_no_url_simple_mode():
-    config = cli.default_config()
-    config["core"]["response-body"] = "./foo.json"
+    args = cli.args().parse_args(['--response-body', './foo.json'])
+    config = cli.config(args)
 
     assert type(cli.simple_mode(config)) == Exception
 
 def test_no_response_body_simple_mode():
-    config = cli.default_config()
-    config["core"]["url"] = "http://localhost"
+    args = cli.args().parse_args(['--url', 'http://localhost'])
+    config = cli.config(args)
 
     assert type(cli.simple_mode(config)) == Exception
 
 
 def test_valid_script_mode():
-    config = cli.default_config()
-    config["core"]["script"] = "/foo.py bar"
+    args = cli.args().parse_args(['--script', '/foo.py bar'])
+    config = cli.config(args)
 
     assert cli.script_mode(config) == ["--host",
                                        "--port", "8080",
@@ -34,8 +34,8 @@ def test_valid_script_mode():
                                        "--script", "/foo.py bar"]
 
 def test_unexpected_flags_script_mode():
-    config = cli.default_config()
-    config["core"]["url"] = "http://localhost"
+    args = cli.args().parse_args(['--url', 'http://localhost'])
+    config = cli.config(args)
 
     assert type(cli.script_mode(config)) == Exception
 
@@ -43,8 +43,8 @@ def test_unexpected_flags_script_mode():
 def test_valid_driver_mode():
     base_path = cli.base_path()
     storage_path = cli.storage_path()
-    config = cli.default_config()
-    config["core"]["source-dir"] = "/foo/bar"
+    args = cli.args().parse_args(['--source-dir', '/foo/bar'])
+    config = cli.config(args)
 
     assert cli.driver_mode(config) == ["--host",
                                        "--port", "8080",
@@ -52,7 +52,7 @@ def test_valid_driver_mode():
                                        "--script", "{}/scripts/flasked.py /foo/bar True 8080 0.0.0.0 {}".format(base_path, storage_path)]
 
 def test_unexpected_flags_driver_mode():
-    config = cli.default_config()
-    config["core"]["url"] = "http://localhost"
+    args = cli.args().parse_args(['--url', 'http://localhost'])
+    config = cli.config(args)
 
     assert type(cli.driver_mode(config)) == Exception
