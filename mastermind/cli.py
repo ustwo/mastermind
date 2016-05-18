@@ -32,8 +32,8 @@ def merge(config, args):
 
 
 def check_driver_mode(config, parser):
-    if bool([x for x in ["script", "response_body", "url"]
-               if x in config.keys()]):
+    if bool([x for x in ["script", "response-body", "url"]
+               if x in config["core"].keys()]):
         parser.error("The Driver mode does not allow a script, a response body or a URL.")
 
 def check_script_mode(config, parser):

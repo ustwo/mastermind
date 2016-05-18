@@ -43,6 +43,13 @@ mastermind-error:
                                         $(shell pwd)/test/records/fake.json"
 .PHONY: mastermind-error
 
+mastermind-error2:
+	@$(shell pwd)/mastermind.py --with-driver \
+                              --without-proxy-settings \
+                              --source-dir $(shell pwd)/test/records \
+                              --response-body $(shell pwd)/test/records/fake.json
+.PHONY: mastermind-error2
+
 schematics: schematics-architecture schematics-driver schematics-driver-state
 .PHONY: schematics
 
