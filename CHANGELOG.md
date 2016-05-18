@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0-beta2
+
+* Fix CLI error handling.
+
 ## 1.0.0-beta
 
 * Add logging system. Close #22.
