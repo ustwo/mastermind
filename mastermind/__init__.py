@@ -110,7 +110,7 @@ def main():
                                                  config["core"]["host"],
                                                  config["core"]["storage-dir"])]
     elif "script" in config["core"]:
-        cli.check_script_mode(parser, config)
+        cli.check_script_mode(config, parser)
 
         mitm_args.append('--script')
         mitm_args.append(config["core"]["script"])
