@@ -18,16 +18,6 @@ def response(context, flow):
 def start(context, argv):
     context.url = argv[1]
     context.filepath = argv[2]
-    context.without_proxy_settings = argv[3] == "False"
-    context.port = argv[4]
-    context.host = argv[5]
-
-    if not context.without_proxy_settings:
-        enable(context.host, context.port)
 
     context.log(context.url)
     context.log(context.filepath)
-
-def done(context):
-    if not context.without_proxy_settings:
-        disable()

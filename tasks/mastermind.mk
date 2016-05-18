@@ -6,6 +6,13 @@ mastermind:
                               --no-upstream-cert
 .PHONY: mastermind
 
+mastermind-driver:
+	@echo $(CONF)
+	@$(shell pwd)/mastermind.py --with-driver \
+                              --source-dir $(shell pwd)/test/records \
+                              --no-upstream-cert
+.PHONY: mastermind-driver
+
 mastermind-simple:
 	@$(shell pwd)/mastermind.py -vvvvvv \
                               --port 8900 \
@@ -13,6 +20,14 @@ mastermind-simple:
                               --response-body $(shell pwd)/test/records/fake.json \
                               --url https://api.github.com/users/octocat/orgs
 .PHONY: mastermind-simple
+
+mastermind-simple-settings:
+	@$(shell pwd)/mastermind.py -vvvvvv \
+                              --port 8900 \
+                              --response-body $(shell pwd)/test/records/fake.json \
+                              --url https://api.github.com/users/octocat/orgs
+.PHONY: mastermind-simple-settings
+
 
 mastermind-simple-broken1:
 	@$(shell pwd)/mastermind.py \

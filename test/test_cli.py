@@ -9,7 +9,7 @@ def test_valid_simple_mode():
     assert cli.simple_mode(config) == ["--host",
                                        "--port", "8080",
                                        "--bind-address", "0.0.0.0",
-                                       "--script", "{}/scripts/simple.py http://localhost ./foo.json True 8080 0.0.0.0".format(base_path),
+                                       "--script", "{}/scripts/simple.py http://localhost ./foo.json".format(base_path),
                                        "--quiet"]
 
 def test_no_url_simple_mode():
@@ -51,7 +51,7 @@ def test_valid_driver_mode():
     assert cli.driver_mode(config) == ["--host",
                                        "--port", "8080",
                                        "--bind-address", "0.0.0.0",
-                                       "--script", "{}/scripts/flasked.py /foo/bar True 8080 0.0.0.0 {}".format(base_path, storage_path),
+                                       "--script", "{}/scripts/flasked.py /foo/bar {}".format(base_path, storage_path),
                                        "--quiet"]
 
 def test_unexpected_flags_driver_mode():

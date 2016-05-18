@@ -20,7 +20,11 @@ def main():
     say.level(config["core"]["verbose"])
 
     try:
+        if config["os"]["proxy-settings"]:
+            proxyswitch.enable(config["core"]["host"],
+                               str(config["core"]["port"]))
+
         mitmdump(mitm_args + extra_arguments)
-    except:
+    finally:
         if config["os"]["proxy-settings"]:
             proxyswitch.disable()
