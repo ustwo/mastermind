@@ -71,7 +71,6 @@ def main():
     config = {"core": {"verbose": 2,
                        "host": "0.0.0.0",
                        "port": 8080},
-              "driver": {},
               "mitm": {},
               "os": {"proxy-settings": True}}
 
