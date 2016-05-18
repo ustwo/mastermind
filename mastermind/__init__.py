@@ -88,50 +88,16 @@ def main():
     config = cli.merge(config, args)
 
     if "source-dir" in config["core"]:
-        cli.check_driver_mode(config, parser)
-
-        storage_dir = os.path.expanduser("~/.mastermind/{}".format(os.getcwd().split("/")[-1]))
-        config["core"]["storage-dir"] = storage_dir
-
-        if not os.path.isdir(storage_dir):
-            os.makedirs(storage_dir)
-
-        script_path_template = "{}/scripts/flasked.py {} {} {} {} {}"
-        script_path = os.path.dirname(os.path.realpath(__file__))
-        if getattr( sys, 'frozen', False ):
-            script_path = sys._MEIPASS
-
-        mitm_args = ['--script',
-                     script_path_template.format(script_path,
-                                                 config["core"]["source-dir"],
-                                                 config["os"]["proxy-settings"],
-                                                 config["core"]["port"],
-                                                 config["core"]["host"],
-                                                 config["core"]["storage-dir"])]
+        mitm_args = cli.driver_mode(config)
     elif "script" in config["core"]:
-        cli.check_script_mode(config, parser)
-
-        mitm_args.append('--script')
-        mitm_args.append(config["core"]["script"])
-
+        mitm_args = cli.script_mode(config)
     elif ("response-body" in config["core"]) and ("url" in config["core"]):
-        script_path_template = "{}/scripts/simple.py {} {} {} {} {}"
-        script_path = os.path.dirname(os.path.realpath(__file__))
-
-        if getattr(sys, 'frozen', False):
-            script_path = sys._MEIPASS
-
-        mitm_args = ['--script',
-                     script_path_template.format(script_path,
-                                                 config["core"]["url"],
-                                                 config["core"]["response-body"],
-                                                 config["os"]["proxy-settings"],
-                                                 config["core"]["port"],
-                                                 config["core"]["host"])]
+        mitm_args = cli.simple_mode(config)
     else:
-        parser.print_help()
-        parser.exit(1, "\n\nThe arguments used don't match any of the possible modes. Please check the help above\n")
+        parser.error("The arguments used don't match any of the possible modes. Please check the help for more information.")
 
+    if type(mitm_args) == Exception:
+        parser.error(mitm_args.message)
 
     say.level(config["core"]["verbose"])
 
