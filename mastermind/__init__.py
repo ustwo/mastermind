@@ -66,13 +66,8 @@ def main():
                                  help="Makes Mastermind verbose")
 
     args, extra_arguments = parser.parse_known_args()
-    mitm_args = ["--host"]
 
-    config = {"core": {"verbose": 2,
-                       "host": "0.0.0.0",
-                       "port": 8080},
-              "mitm": {},
-              "os": {"proxy-settings": True}}
+    config = cli.default_config()
 
     if args.config:
         try:
@@ -86,15 +81,7 @@ def main():
             parser.error("Errors found in the config file:\n\n", err)
 
     config = cli.merge(config, args)
-
-    if "source-dir" in config["core"]:
-        mitm_args = cli.driver_mode(config)
-    elif "script" in config["core"]:
-        mitm_args = cli.script_mode(config)
-    elif ("response-body" in config["core"]) and ("url" in config["core"]):
-        mitm_args = cli.simple_mode(config)
-    else:
-        parser.error("The arguments used don't match any of the possible modes. Please check the help for more information.")
+    mitm_args = cli.mitm_args(config)
 
     if type(mitm_args) == Exception:
         parser.error(mitm_args.message)
@@ -108,8 +95,6 @@ def main():
         mitm_args + list(repeat("-v", config["core"]["verbose"] - 3))
 
     mitm_args = mitm_args + extra_arguments
-    mitm_args = mitm_args + ["--port", str(config["core"]["port"]),
-                             "--bind-address", config["core"]["host"]]
 
     try:
         mitmdump(mitm_args)

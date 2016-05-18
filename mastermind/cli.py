@@ -1,6 +1,17 @@
 import sys
 import os
 
+def mitm_args(config):
+    if "source-dir" in config["core"]:
+        return driver_mode(config)
+    elif "script" in config["core"]:
+        return script_mode(config)
+    elif ("response-body" in config["core"]) and ("url" in config["core"]):
+        return simple_mode(config)
+    else:
+        return Exception("The arguments used don't match any of the possible modes. Please check the help for more information.")
+
+
 def default_config():
     return {"core": {"verbose": 2,
                      "host": "0.0.0.0",
@@ -45,17 +56,6 @@ def merge(config, args):
 
 
     return config
-
-
-def check_driver_mode(config, parser):
-    if bool([x for x in ["script", "response-body", "url"]
-               if x in config["core"].keys()]):
-        parser.error("The Driver mode does not allow a script, a response body or a URL.")
-
-def check_script_mode(config, parser):
-    if bool([x for x in ["response-body", "url"]
-               if x in config["core"].keys()]):
-        parser.error("The Script mode does not allow a response body or a URL.")
 
 
 ##
