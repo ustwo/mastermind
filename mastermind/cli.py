@@ -1,14 +1,16 @@
 import sys
 import os
 
-default_config = {"core": {"verbose": 2,
-                           "host": "0.0.0.0",
-                           "port": 8080},
-                  "driver": {},
-                  "mitm": {},
-                  "os": {"proxy-settings": True}}
+def default_config():
+    return {"core": {"verbose": 2,
+                     "host": "0.0.0.0",
+                     "port": 8080},
+            "driver": {},
+            "mitm": {},
+            "os": {"proxy-settings": True}}
 
-base_path = os.path.dirname(os.path.realpath(__file__))
+def base_path():
+    return os.path.dirname(os.path.realpath(__file__))
 
 # FIXME: Find a nicer way to merge args with config.
 def merge(config, args):
@@ -57,6 +59,9 @@ def check_script_mode(config, parser):
 ##
 # Takes arguments from Argparse and composes a set of arguments for mitmproxy.
 def simple_mode(config):
+    if not ("response-body" in config["core"] and "url" in config["core"]):
+        return Exception("Simple mode requires response-body and url flags")
+
     script_path_template = "{}/scripts/simple.py {} {} {} {} {}"
     script_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -70,7 +75,8 @@ def simple_mode(config):
                                                     config["core"]["port"],
                                                     config["core"]["host"])]
 
-
+##
+# Args used in all modes
 def common_args(config):
     return ["--host",
             "--port", str(config["core"]["port"]),
