@@ -22,6 +22,9 @@ def eq(a, b):
     actual = parse(a)
     expected = parse(b)
 
+    print('actual', actual)
+    print(expected)
+
     return match_host(actual, expected) and \
            match_schema(actual, expected) and \
            match_path(actual, expected) and \

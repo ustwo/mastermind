@@ -1,5 +1,9 @@
 CONF = $(shell pwd)/examples/config/verbose.toml
 
+
+	# @$(shell pwd)/mastermind.py --config $(CONF) \
+	# @$(shell pwd)/dist/mastermind --config $(CONF) \
+
 mastermind:
 	@echo $(CONF)
 	@$(shell pwd)/mastermind.py --config $(CONF) \

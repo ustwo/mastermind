@@ -67,3 +67,12 @@
   url: "http://localhost:8000/{collection}/{id}{?q,p}"
   request:
     skip: true
+
+- name: catchall
+  url: "http://localhost:8000/"
+  lazy: true
+  greedy: false
+  request:
+    skip: true
+
+

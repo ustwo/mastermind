@@ -1,8 +1,9 @@
 # -*- mode: python -*-
 
-from PyInstaller.utils.hooks import collect_data_files
+from PyInstaller.utils.hooks import collect_data_files, collect_submodules
 from mastermind.version import VERSION
 
+hiddenimports = collect_submodules('pkg_resources._vendor')
 block_cipher = None
 
 
@@ -11,7 +12,8 @@ a = Analysis(['mastermind.py'],
              binaries=None,
              datas=collect_data_files("libmproxy.onboarding") +
                    [('./mastermind/scripts/*.py', 'scripts')],
-             hiddenimports=['mastermind.handlers', 'mastermind.driver'],
+             # hiddenimports=['mastermind.handlers', 'mastermind.driver'],
+             hiddenimports=hiddenimports + ['mastermind.handlers', 'mastermind.driver'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
