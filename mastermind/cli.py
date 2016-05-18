@@ -1,3 +1,15 @@
+import sys
+import os
+
+default_config = {"core": {"verbose": 2,
+                           "host": "0.0.0.0",
+                           "port": 8080},
+                  "driver": {},
+                  "mitm": {},
+                  "os": {"proxy-settings": True}}
+
+base_path = os.path.dirname(os.path.realpath(__file__))
+
 # FIXME: Find a nicer way to merge args with config.
 def merge(config, args):
     if args.host:
@@ -40,3 +52,36 @@ def check_script_mode(config, parser):
     if bool([x for x in ["response-body", "url"]
                if x in config["core"].keys()]):
         parser.error("The Script mode does not allow a response body or a URL.")
+
+
+##
+# Takes arguments from Argparse and composes a set of arguments for mitmproxy.
+def simple_mode(config):
+    script_path_template = "{}/scripts/simple.py {} {} {} {} {}"
+    script_path = os.path.dirname(os.path.realpath(__file__))
+
+    if getattr(sys, 'frozen', False):
+        script_path = sys._MEIPASS
+
+    return common_args(config) + ['--script', script_path_template.format(script_path,
+                                                    config["core"]["url"],
+                                                    config["core"]["response-body"],
+                                                    config["os"]["proxy-settings"],
+                                                    config["core"]["port"],
+                                                    config["core"]["host"])]
+
+
+def common_args(config):
+    return ["--host",
+            "--port", str(config["core"]["port"]),
+            "--bind-address", config["core"]["host"]]
+
+##
+# Takes arguments from Argparse and composes a set of arguments for mitmproxy.
+def script_mode():
+    return []
+
+##
+# Takes arguments from Argparse and composes a set of arguments for mitmproxy.
+def driver_mode():
+    return []
