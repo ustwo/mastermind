@@ -1,4 +1,4 @@
-FROM python:2.7
+FROM python:2.7-slim
 MAINTAINER Arnau Siches <arnau@ustwo.com>
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -8,6 +8,7 @@ ENV LC_ALL C.UTF-8
 
 RUN apt-get update \
  && apt-get install -qq -y --no-install-recommends \
+      build-essential \
       libffi-dev \
       libxml2-dev \
       libxslt1-dev \
@@ -15,7 +16,8 @@ RUN apt-get update \
       git \
       zlib1g-dev \
       libssl-dev \
- && rm -rf /var/lib/apt/lists/*
+ && rm -rf /var/lib/apt/lists/* \
+ && pip install --upgrade pip
 
 
 COPY requirements.txt /usr/local/mastermind/requirements.txt

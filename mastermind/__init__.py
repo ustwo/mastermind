@@ -6,7 +6,8 @@ import os
 from . import cli
 from . import proxyswitch
 from . import say
-from libmproxy.main import mitmdump
+from . import version
+from mitmproxy.main import mitmdump
 
 def main():
     parser = cli.args()
