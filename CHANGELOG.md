@@ -3,6 +3,7 @@
 ## Next
 
 * Improve tests for the cli module that interacts with mitmproxy.
+* Guard against non-sudo when proxy-settings is enabled.
 
 ## 1.0.0-beta3
 
