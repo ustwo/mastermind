@@ -7,6 +7,9 @@ import sys
 
 from . import version
 
+# Argument parser constructor.
+#
+# The main purpose is to allow tests to reuse the same CLI.
 def args():
     parser = argparse.ArgumentParser(prog = "mastermind",
                                      description = "Man in the middle testing tool")
@@ -62,7 +65,10 @@ def args():
     return parser
 
 
-
+# Creates valid mitmproxy arguments as expected by the main functions `mitmdump`
+# and `mitmproxy` from the configuration dict.
+#
+# See `config` and `merge` for more details on the config data structure.
 def mitm_args(config):
     if "source-dir" in config["core"]:
         return driver_mode(config)
@@ -103,6 +109,9 @@ def base_path():
 def storage_path():
     return os.path.expanduser("~/.mastermind/{}".format(os.getcwd().split("/")[-1]))
 
+##
+# Merges config coming from default_config and arguments passed via CLI.
+#
 # FIXME: Find a nicer way to merge args with config.
 def merge(config, args):
     if args.host:
@@ -190,7 +199,9 @@ def common_args(config):
             "--port", str(config["core"]["port"]),
             "--bind-address", config["core"]["host"]]
 
-
+##
+# Verbosity is splitted in (3, 3), the first set mastermind's verbosity, the
+# second mitmproxy's.
 def verbosity_args(config):
     if config["core"]["verbose"] <= 3:
         return ["--quiet"]
