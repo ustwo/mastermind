@@ -27,7 +27,7 @@ only when the proxy is running.
 
 ## Contributing
 
-Check our [contributing guidelines](./CONTRIBUTING.md)
+Check our [contributing guidelines](./.github/CONTRIBUTING.md)
 
 Everyone interacting in Mastermind's codebase and issue tracker is expected to
 follow our [code of conduct](./CODE_OF_CONDUCT.md).
