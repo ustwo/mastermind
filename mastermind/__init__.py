@@ -5,11 +5,10 @@ from itertools import repeat
 from . import cli
 from . import proxyswitch
 from . import say
-from . import version
 from libmproxy.main import mitmdump
 
 def main():
-    args, extra_arguments = cli.args().parse_known_args()
+    args, extra_args = cli.args().parse_known_args()
 
     config = cli.config(args)
     mitm_args = cli.mitm_args(config)
@@ -24,7 +23,7 @@ def main():
             proxyswitch.enable(config["core"]["host"],
                                str(config["core"]["port"]))
 
-        mitmdump(mitm_args + extra_arguments)
+        mitmdump(mitm_args + extra_args)
     finally:
         if config["os"]["proxy-settings"]:
             proxyswitch.disable()
