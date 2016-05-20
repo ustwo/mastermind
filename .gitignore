@@ -4,6 +4,7 @@ sandbox/
 __pycache__
 dist
 build
+env-*/
 *.egg-info
 xcuserdata/
 project.xcworkspace/

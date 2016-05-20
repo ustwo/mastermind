@@ -12,8 +12,15 @@ version := v$(shell python mastermind/version.py)
 artifact_osx = mastermind-$(version)-osx-amd64.tar.gz
 
 install:
-	$(PIP) install -r requirements.txt
+	pip install virtualenv
+	virtualenv ./env-$(GIT_BRANCH) --always-copy
+	. ./env-$(GIT_BRANCH)/bin/activate \
+    && $(PIP) install -r requirements.txt
 .PHONY: install
+
+activate:
+	@echo source ./env-$(GIT_BRANCH)/bin/activate
+.PYTHON: activate
 
 system-install:
 	$(PYTHON) setup.py install
