@@ -1,6 +1,13 @@
 # Changelog
 
+## 1.0.0-beta3
+
+* Fix the build.
+* Fix default action for proxyswitch.
+
 ## 1.0.0-beta2
+
+**broken due to setuptools + pyinstaller incompatibilities**
 
 * Fix CLI error handling.
 

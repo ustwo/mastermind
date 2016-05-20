@@ -71,8 +71,4 @@ def main():
     if args.toggle:
         return toggle(args.host, args.port)
 
-    if args.version:
-        print('Version 0.1.1')
-        return
-
     return parser.print_help()
