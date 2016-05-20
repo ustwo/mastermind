@@ -1,10 +1,8 @@
 # -*- mode: python -*-
 
 from PyInstaller.utils.hooks import collect_data_files
-from mastermind.version import VERSION
 
 block_cipher = None
-
 
 a = Analysis(['mastermind.py'],
              pathex=['.'],
