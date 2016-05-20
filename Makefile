@@ -7,19 +7,28 @@ LESS := less
 CURL := curl
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD 2>/dev/null)
 # VERSION ?= $(subst /,.,$(GIT_BRANCH))
+ENV = ./env-$(GIT_BRANCH)
+ifdef VIRTUAL_ENV
+ENV_BIN = $(ENV)/bin/
+endif
 
 version := v$(shell python mastermind/version.py)
 artifact_osx = mastermind-$(version)-osx-amd64.tar.gz
 
-install:
+default: meta install
+.PHONY: default
+
+meta:
 	pip install virtualenv
-	virtualenv ./env-$(GIT_BRANCH) --always-copy
-	. ./env-$(GIT_BRANCH)/bin/activate \
-    && $(PIP) install -r requirements.txt
+	virtualenv $(ENV) --always-copy
+.PHONY: meta
+
+install:
+	. $(ENV)/bin/activate && $(PIP) install -r requirements.txt
 .PHONY: install
 
 activate:
-	@echo source ./env-$(GIT_BRANCH)/bin/activate
+	@echo source $(ENV)/bin/activate
 .PYTHON: activate
 
 system-install:
@@ -79,11 +88,11 @@ release-delete:
 .PHONY: release-delete
 
 bundle-mastermind:
-	pyinstaller mastermind.spec
+	$(ENV_BIN)/pyinstaller mastermind.spec
 .PHONY: bundle-mastermind
 
 bundle-proxyswitch:
-	pyinstaller proxyswitch.spec
+	$(ENV_BIN)pyinstaller proxyswitch.spec
 .PHONY: bundle-proxyswitch
 
 homebrew-create:
