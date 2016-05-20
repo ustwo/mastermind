@@ -1,4 +1,4 @@
-from libmproxy.models import decoded
+from mitmproxy.models import decoded
 from mastermind.proxyswitch import enable, disable
 
 def response(context, flow):

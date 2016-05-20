@@ -1,6 +1,6 @@
 import time
 import yaml
-from libmproxy.models import decoded
+from netlib.http import decoded
 
 from driver import driver
 import rules
