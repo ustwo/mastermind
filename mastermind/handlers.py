@@ -9,7 +9,6 @@ from .say import logger
 
 def request(context, flow):
     flow.mastermind = {"rule": None}
-    print(dir(driver))
 
     logger.info(flow.request.url)
 

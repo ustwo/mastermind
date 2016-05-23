@@ -1,1 +1,7 @@
 .git
+.env-*
+docs
+*.egg-info
+sandbox
+tasks
+textXcodeProject
