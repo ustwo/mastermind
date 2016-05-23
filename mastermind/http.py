@@ -45,7 +45,11 @@ status_codes = {100: "Continue",
 def status_message(code):
     return status_codes[code]
 
-def response(code, body='', headers=Headers()):
+def response(code, body='', headers=None):
+    # http://docs.python-guide.org/en/latest/writing/gotchas/#mutable-default-arguments
+    if not headers:
+        headers = Headers()
+
     return HTTPResponse('HTTP/1.1',
                         code,
                         status_message(code),
