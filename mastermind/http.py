@@ -1,4 +1,5 @@
-from netlib.http import Headers, Response
+from __future__ import (absolute_import, print_function, division)
+from mitmproxy.models import Headers, HTTPResponse
 
 status_codes = {100: "Continue",
                 101: "Switching Protocols",
@@ -45,7 +46,7 @@ def status_message(code):
     return status_codes[code]
 
 def response(code, body="", headers=Headers()):
-    return Response("HTTP/1.1",
+    return HTTPResponse("HTTP/1.1",
                         code,
                         status_message(code),
                         headers, body)

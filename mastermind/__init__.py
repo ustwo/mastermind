@@ -1,13 +1,9 @@
 from __future__ import (absolute_import, print_function, division)
-
 from itertools import repeat
+from mitmproxy.main import mitmdump
 import os
 
-from . import cli
-from . import proxyswitch
-from . import say
-from . import version
-from mitmproxy.main import mitmdump
+from . import (cli, proxyswitch, say)
 
 def main():
     parser = cli.args()

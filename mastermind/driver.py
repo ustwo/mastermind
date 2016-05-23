@@ -1,8 +1,9 @@
+from __future__ import (absolute_import, print_function, division)
 import os
 from flask import Flask, jsonify, request
 from tinydb import TinyDB, where
 
-from say import logger
+from .say import logger
 
 class Driver:
     '''

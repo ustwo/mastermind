@@ -1,9 +1,10 @@
+from __future__ import (absolute_import, print_function, division)
 import argparse
-import networksetup as ns
 import os
-import scutil
 import sys
-from . import version
+
+from . import networksetup as ns
+from . import (scutil, version)
 
 # Enable the proxy for the given service
 def enable_proxy(service, host, port):

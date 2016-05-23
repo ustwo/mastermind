@@ -1,5 +1,5 @@
+from __future__ import (absolute_import, print_function, division)
 from mitmproxy.models import decoded
-from mastermind.proxyswitch import enable, disable
 
 def response(context, flow):
     if flow.request.url == context.url:

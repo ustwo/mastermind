@@ -1,5 +1,7 @@
+from __future__ import (absolute_import, print_function, division)
 from urlparse import urlsplit, parse_qsl
-import rfc6570
+
+from . import rfc6570
 
 def is_template(url):
     """
