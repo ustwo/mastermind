@@ -45,8 +45,8 @@ status_codes = {100: "Continue",
 def status_message(code):
     return status_codes[code]
 
-def response(code, body="", headers=Headers()):
-    return HTTPResponse("HTTP/1.1",
+def response(code, body='', headers=Headers()):
+    return HTTPResponse('HTTP/1.1',
                         code,
                         status_message(code),
                         headers, body)
