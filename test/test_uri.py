@@ -7,7 +7,7 @@ def test_is_template():
 def test_eq():
     assert uri.eq("http://localhost:8000", "http://localhost:8000")
     assert uri.eq("https://localhost", "https://localhost")
-    assert uri.eq("https://localhost", "http://localhost:443")
+    assert not uri.eq("https://localhost", "http://localhost:443")
     assert not uri.eq("https://localhost:9443", "http://localhost:9443")
     assert not uri.eq("http://localhost/foo", "http://localhost/foo?q=1")
     assert not uri.eq("http://localhost/{var}", "http://localhost/{var}")

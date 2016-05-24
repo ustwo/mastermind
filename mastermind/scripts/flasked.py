@@ -1,5 +1,4 @@
-from __future__ import print_function, absolute_import
-import os
+from __future__ import (absolute_import, print_function, division)
 
 from mastermind import (driver, handlers)
 from mastermind.say import logger
