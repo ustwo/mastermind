@@ -72,7 +72,7 @@ def match_path(actual, expected):
     return expected.path == actual.path
 
 def match_querystring(actual, expected):
-    return parse_qsl(expected.query) == parse_qsl(actual.query)
+    return sorted(parse_qsl(expected.query)) == sorted(parse_qsl(actual.query))
 
 # Matches any combination of schema + port (variants with and without
 # `--no-upstream-cert` flag in mitmproxy.
