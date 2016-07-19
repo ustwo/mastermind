@@ -17,7 +17,7 @@ mocked response from our filesystem:
 First, create a file named `test.toml` with the following content:
 
 ```toml
-source_dir = "./rulesets"
+source-dir = "./rulesets"
 ```
 
 Next, create the directory `rulesets` and create a file inside named
