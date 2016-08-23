@@ -1,8 +1,11 @@
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD 2>/dev/null)
-# VERSION ?= $(subst /,.,$(GIT_BRANCH))
 ENV = ./env-$(GIT_BRANCH)
 ifdef VIRTUAL_ENV
   ENV_BIN = $(ENV)/bin/
+endif
+
+ifneq ("$(GIT_BRANCH)", "master")
+  BRANCH_VERSION = cat mastermind/version.py | sed -E "s/^IVERSION.+$$/IVERSION = ('$(GIT_BRANCH)')/"
 endif
 
 version := v$(shell python mastermind/version.py)
@@ -10,6 +13,10 @@ artifact_osx = mastermind-$(version)-osx-amd64.tar.gz
 
 default: meta install
 .PHONY: default
+
+clean:
+	find . -name \*.pyc -delete
+.PHONY: clean
 
 meta:
 	pip install virtualenv
@@ -100,7 +107,7 @@ homebrew-flush:
 test: docker-test
 .PHONY: test
 
-raw-test:
+raw-test: clean
 	py.test -v test
 .PHONY: raw-test
 
