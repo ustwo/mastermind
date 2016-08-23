@@ -3,7 +3,7 @@ DOCKER_TASK := $(if $(CI), $(DOCKER) run -it, $(DOCKER) run --rm -it)
 
 DOCKER_IMAGE = ustwo/mastermind$(TAG)
 
-docker-build:
+docker-build: clean
 	@$(DOCKER) build -t $(DOCKER_IMAGE) .
 .PHONY: docker-build
 
