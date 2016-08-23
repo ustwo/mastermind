@@ -1,23 +1,25 @@
+DOCKER := docker
+DOCKER_TASK := $(if $(CI), $(DOCKER) run -it, $(DOCKER) run --rm -it)
+
+DOCKER_IMAGE = ustwo/mastermind$(TAG)
 
 docker-build:
-	docker build -t ustwo/mastermind$(TAG) .
+	@$(DOCKER) build -t $(DOCKER_IMAGE) .
 .PHONY: docker-build
 
 docker-test:
-	docker run -t ustwo/mastermind$(TAG) nosetests -s
+	@$(DOCKER_TASK) $(DOCKER_IMAGE) py.test -v test
 .PHONY: docker-test
 
-# CI fails with autoremove
 docker-local-test:
-	docker run --rm -t \
-             --volume $(PWD):/usr/local/mastermind \
-             ustwo/mastermind$(TAG) nosetests -s
-.PHONY: docker-test
+	@$(DOCKER_TASK) --volume $(PWD):/usr/local/mastermind \
+                  $(DOCKER_IMAGE) py.test -v test
+.PHONY: docker-local-test
 
 docker-version:
-	docker run -t ustwo/mastermind$(TAG)
-.PHONY: docker-test
+	@$(DOCKER_TASK) $(DOCKER_IMAGE)
+.PHONY: docker-version
 
 docker-shell:
-	docker run -t ustwo/mastermind$(TAG) bash
-.PHONY: docker-test
+	@$(DOCKER_TASK) $(DOCKER_IMAGE) bash
+.PHONY: docker-shell

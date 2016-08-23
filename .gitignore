@@ -1,11 +1,11 @@
+*-store.json
+*.egg-info
 *.pyc
-sandbox/
 .cache
 __pycache__
-dist
 build
+dist
 env-*/
-*.egg-info
-xcuserdata/
 project.xcworkspace/
-*-store.json
+sandbox/
+xcuserdata/

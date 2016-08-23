@@ -1,15 +1,8 @@
-PS := ps
-GREP := grep
-PIP := pip
-PYTHON := python
-NOSE := nosetests
-LESS := less
-CURL := curl
 GIT_BRANCH = $(shell git rev-parse --abbrev-ref HEAD 2>/dev/null)
 # VERSION ?= $(subst /,.,$(GIT_BRANCH))
 ENV = ./env-$(GIT_BRANCH)
 ifdef VIRTUAL_ENV
-ENV_BIN = $(ENV)/bin/
+  ENV_BIN = $(ENV)/bin/
 endif
 
 version := v$(shell python mastermind/version.py)
@@ -24,7 +17,7 @@ meta:
 .PHONY: meta
 
 install:
-	. $(ENV)/bin/activate && $(PIP) install -r requirements.txt
+	. $(ENV)/bin/activate && pip install -r requirements.txt
 .PHONY: install
 
 activate:
@@ -32,7 +25,7 @@ activate:
 .PYTHON: activate
 
 system-install:
-	$(PYTHON) setup.py install
+	python setup.py install
 .PHONY: system-install
 
 
@@ -107,11 +100,8 @@ homebrew-flush:
 test: docker-test
 .PHONY: test
 
-local-test: docker-local-test
-.PHONY: local-test
-
 raw-test:
-	$(NOSE) -s
+	py.test -v test
 .PHONY: raw-test
 
 include tasks/*.mk

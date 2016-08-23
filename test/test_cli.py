@@ -1,3 +1,4 @@
+import pytest
 import mastermind.cli as cli
 
 def test_valid_simple_mode():

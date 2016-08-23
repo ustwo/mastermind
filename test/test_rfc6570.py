@@ -1,3 +1,4 @@
+import pytest
 import mastermind.rfc6570 as rfc
 
 var = "value"

@@ -1,3 +1,4 @@
+import pytest
 from mastermind.networksetup import *
 
 def test_service_map():

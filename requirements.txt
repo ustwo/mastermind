@@ -1,10 +1,9 @@
-mitmproxy==0.17
 Flask<0.11,>=0.10.1
-nose==1.3.7
-pytest==2.8.2
-pyYAML==3.11
-jsonschema==2.5
-tinydb==3.1
 PyInstaller==3.1
 coloredlogs==5.0
+jsonschema==2.5
+mitmproxy==0.17
+pyYAML==3.11
+pytest==2.9.2
 pytoml==0.1
+tinydb==3.1

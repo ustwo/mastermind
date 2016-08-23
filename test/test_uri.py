@@ -1,3 +1,4 @@
+import pytest
 import mastermind.uri as uri
 
 def test_is_template():
