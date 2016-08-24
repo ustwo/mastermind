@@ -9,7 +9,13 @@ def main():
     parser = cli.args()
     args, extra_args = parser.parse_known_args()
 
-    config = cli.config(args)
+    try:
+        config = cli.config(args)
+    except IOError as err:
+        parser.error(err)
+    except toml.core.TomlError as err:
+        parser.error("Errors found in the config file:\n\n", err)
+
     mitm_args = cli.mitm_args(config)
     is_sudo = os.getuid() == 0
 

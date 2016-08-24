@@ -103,3 +103,54 @@ def test_verbosity_6():
     config = cli.config(args)
 
     assert cli.verbosity_args(config) == ["-v", "-v", "-v"]
+
+
+def test_valid_driver_mode_config_file():
+    base_path = cli.base_path()
+    storage_path = cli.storage_path()
+    args = cli.args().parse_args(['--config', 'test/fixtures/simple.toml'])
+    config = cli.config(args)
+
+    assert cli.driver_mode(config) == ["--host",
+                                       "--port", "8080",
+                                       "--bind-address", "0.0.0.0",
+                                       "--script", "{}/scripts/flasked.py ./test/records {}".format(base_path, storage_path),
+                                       "--quiet"]
+
+def test_valid_config_file_with_overwrites():
+    base_path = cli.base_path()
+    storage_path = cli.storage_path()
+    args = cli.args().parse_args(['--config', 'test/fixtures/simple.toml',
+                                  '--source-dir', 'foo/bar',
+                                  '-vvv',
+                                  '--without-proxy-settings'])
+    expected = {
+        "core": {"host": "0.0.0.0",
+                 "port": 8080,
+                 "source-dir": "foo/bar",
+                 "verbose": 3},
+        "mitm": {},
+        "os": {"proxy-settings": False}
+    }
+
+    assert cli.config(args) == expected
+
+def test_valid_missing_config_file():
+    base_path = cli.base_path()
+    args = cli.args().parse_args(['--config', 'fixtures/simple.toml'])
+    with pytest.raises(IOError):
+        cli.config(args)
+
+def test_config_file_defaults():
+    base_path = cli.base_path()
+    args = cli.args().parse_args(['--config', 'test/fixtures/simple.toml'])
+    expected = {
+        "core": {"host": "0.0.0.0",
+                 "port": 8080,
+                 "source-dir": "./test/records",
+                 "verbose": 2},
+        "mitm": {},
+        "os": {"proxy-settings": True}
+    }
+
+    assert cli.config(args) == expected

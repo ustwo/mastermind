@@ -1,4 +1,4 @@
-CONF = $(shell pwd)/examples/config/verbose.toml
+CONF = $(shell pwd)/examples/config/verbose.tomla
 
 mastermind:
 	@echo $(CONF)
