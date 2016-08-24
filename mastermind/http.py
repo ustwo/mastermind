@@ -45,7 +45,7 @@ status_codes = {100: 'Continue',
 def status_message(code):
     return status_codes[code]
 
-def response(code, body='', headers=None):
+def response(code, body=b'', headers=None):
     # http://docs.python-guide.org/en/latest/writing/gotchas/#mutable-default-arguments
     if headers is None:
         headers = Headers()
