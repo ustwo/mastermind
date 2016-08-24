@@ -81,11 +81,12 @@ def mitm_args(config):
 
 
 def default_config():
+    proxy_settings = sys.platform == "darwin"
     return {"core": {"verbose": 2,
                      "host": "0.0.0.0",
                      "port": 8080},
             "mitm": {},
-            "os": {"proxy-settings": True}}
+            "os": {"proxy-settings": proxy_settings}}
 
 def config(args):
     config = default_config()
@@ -97,6 +98,9 @@ def config(args):
                 config["os"].update(data["os"])
             if "core" in data:
                 config["core"].update(data["core"])
+
+    if config["os"]["proxy-settings"] is True and (sys.platform != "darwin"):
+        raise StandardError("Proxy settings is only available on Mac OX")
 
     return merge(config, args)
 

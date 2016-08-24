@@ -1,5 +1,8 @@
 import pytest
+import sys
+
 import mastermind.cli as cli
+
 
 def test_valid_simple_mode():
     base_path = cli.base_path()
@@ -141,6 +144,14 @@ def test_valid_missing_config_file():
     with pytest.raises(IOError):
         cli.config(args)
 
+if sys.platform != "darwin":
+    def test_proxy_settings_not_osx():
+        base_path = cli.base_path()
+        args = cli.args().parse_args(['--config', 'test/fixtures/proxy-on.toml'])
+        with pytest.raises(StandardError):
+            cli.config(args)
+
+
 def test_config_file_defaults():
     base_path = cli.base_path()
     args = cli.args().parse_args(['--config', 'test/fixtures/simple.toml'])
@@ -150,7 +161,7 @@ def test_config_file_defaults():
                  "source-dir": "./test/records",
                  "verbose": 2},
         "mitm": {},
-        "os": {"proxy-settings": True}
+        "os": {"proxy-settings": (sys.platform == "darwin")}
     }
 
     assert cli.config(args) == expected
