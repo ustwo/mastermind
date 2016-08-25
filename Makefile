@@ -26,8 +26,11 @@ env:
 	virtualenv $(ENV) --always-copy
 .PHONY: env
 
+# Note: Downgrades setuptools to 19.2 so PyInstaller 3.1 does not fail.
+# Note: PyInstaller 3.2 fails silently. No apparent reason.
 install:
 	. $(ENV)/bin/activate && pip install -r requirements.txt
+	. $(ENV)/bin/activate && pip install setuptools==19.2
 .PHONY: install
 
 activate:
@@ -91,7 +94,7 @@ release-delete:
 .PHONY: release-delete
 
 bundle-mastermind:
-	$(ENV_BIN)/pyinstaller mastermind.spec
+	$(ENV_BIN)pyinstaller mastermind.spec
 .PHONY: bundle-mastermind
 
 bundle-proxyswitch:
