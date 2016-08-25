@@ -1,3 +1,4 @@
+import pytest
 import mastermind.rules as r
 import mastermind.validator as v
 import os

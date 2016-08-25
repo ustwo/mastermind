@@ -1,8 +1,9 @@
+from __future__ import (absolute_import, print_function, division)
 import os
 import yaml
-import uri
-import validator
-from say import logger
+
+from . import (uri, validator)
+from .say import logger
 
 
 def load(filename, base_path):

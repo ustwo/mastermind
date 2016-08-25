@@ -1,8 +1,11 @@
+from __future__ import (absolute_import, print_function, division)
 from jsonschema import Draft4Validator, exceptions
 import os
 import datetime
 import yaml
-from say import logger
+
+from .say import logger
+
 
 def check(instance, schema):
     v = Draft4Validator(schema)

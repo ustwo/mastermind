@@ -1,3 +1,4 @@
+from __future__ import (absolute_import, print_function, division)
 try:
    from urllib.parse import quote
 except ImportError:

@@ -7,7 +7,7 @@ block_cipher = None
 a = Analysis(['mastermind.py'],
              pathex=['.'],
              binaries=None,
-             datas=collect_data_files("libmproxy.onboarding") +
+             datas=collect_data_files("mitmproxy.onboarding") +
                    [('./mastermind/scripts/*.py', 'scripts')],
              hiddenimports=['mastermind.handlers', 'mastermind.driver'],
              hookspath=[],

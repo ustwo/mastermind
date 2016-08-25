@@ -1,5 +1,7 @@
+from __future__ import (absolute_import, print_function, division)
 from urlparse import urlsplit, parse_qsl
-import rfc6570
+
+from . import rfc6570
 
 def is_template(url):
     """
@@ -57,12 +59,6 @@ def query_pairs(query):
     """
     return parse_qsl(query, keep_blank_values=True)
 
-
-###############################################################################
-# TODO: mitmproxy 0.16 will fix the flow.response.url anomaly so the match_*
-# functions will be removed.
-###############################################################################
-
 def match_host(actual, expected):
     return expected.hostname == actual.hostname
 
@@ -70,35 +66,7 @@ def match_path(actual, expected):
     return expected.path == actual.path
 
 def match_querystring(actual, expected):
-    return parse_qsl(expected.query) == parse_qsl(actual.query)
+    return sorted(parse_qsl(expected.query)) == sorted(parse_qsl(actual.query))
 
-# Matches any combination of schema + port (variants with and without
-# `--no-upstream-cert` flag in mitmproxy.
 def match_schema(actual, expected):
-    return (explicit_match(actual, expected) or \
-            implicit_match(actual, expected) or \
-            implicit_nocert(actual, expected) or \
-            explicit_nocert(actual, expected))
-
-# TODO: If the proxy is set to `no-upstream-cert` this rule will catch the
-#       following as true:
-#
-#           Actual: https://foo.com:9443 (converted to http://foo.com:9443)
-#           Expected: http://foo.com:9443
-#
-def explicit_match(actual, expected):
-    return expected.scheme == actual.scheme and \
-           expected.port == actual.port
-
-def implicit_match(actual, expected):
-    return (expected.scheme == actual.scheme and \
-            (expected.port == 80 or expected.port == 443) and \
-            actual.port == None)
-
-def implicit_nocert(actual, expected):
-    return expected.scheme == 'http' and expected.port == 443 and \
-           actual.scheme == 'https' and actual.port == None
-
-def explicit_nocert(actual, expected):
-    return expected.scheme == 'http' and expected.scheme == 'https' and \
-           expected.port == expected.port
+    return expected.scheme == actual.scheme

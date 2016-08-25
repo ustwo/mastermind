@@ -1,3 +1,4 @@
+import pytest
 import mastermind.rules as r
 
 ruleset = [{'url': 'http://localhost:8000/',

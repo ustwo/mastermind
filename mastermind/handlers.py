@@ -1,12 +1,11 @@
+from __future__ import (absolute_import, print_function, division)
 import time
 import yaml
-from libmproxy.models import decoded
+from mitmproxy.models import decoded, Headers
 
-from driver import driver
-import rules
-import http
-import validator
-from say import logger
+from . import (http, rules, validator)
+from .driver import driver
+from .say import logger
 
 def request(context, flow):
     flow.mastermind = {"rule": None}
@@ -29,7 +28,7 @@ def request(context, flow):
             context.log("Intercepted URL: {}".format(rules.url(rule)))
 
             if rules.skip(rule):
-                return flow.reply(http.response(204))
+                return flow.reply(http.response(204, headers=Headers()))
 
             rules.process_headers('request',
                                   rule,
@@ -66,10 +65,11 @@ def response(context, flow):
                                       rule,
                                       flow.response.headers)
 
+
                 if body_filename:
                     # 204 might be set by the skip rule in the request hook
                     if flow.response.status_code == 204:
                         flow.response.status_code = 200
-                        flow.response.msg = "OK"
+                        flow.response.msg = 'OK'
                     flow.response.content = rules.body(body_filename,
                                                        context.source_dir)

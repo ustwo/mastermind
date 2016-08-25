@@ -1,7 +1,6 @@
-import os
+from __future__ import (absolute_import, print_function, division)
 
-from mastermind.proxyswitch import enable, disable
-from mastermind import handlers, driver
+from mastermind import (driver, handlers)
 from mastermind.say import logger
 
 def request(context, flow):
