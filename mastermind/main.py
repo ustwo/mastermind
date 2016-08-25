@@ -24,15 +24,23 @@ def main():
 
     say.level(config["core"]["verbose"])
 
+    host= config["core"]["host"]
+    port = config["core"]["port"]
+    pid_filename = "/var/tmp/mastermind.{}{}.pid".format(host.replace('.', ''), port)
+
     try:
         if config["os"]["proxy-settings"]:
             if not is_sudo:
                 parser.error("proxy-settings is enabled, please provide sudo in order to change the OSX proxy configuration.")
 
-            proxyswitch.enable(config["core"]["host"],
-                               str(config["core"]["port"]))
+            proxyswitch.enable(host, str(port))
+
+        with open(pid_filename, "w") as f:
+            f.write(str(os.getpid()))
 
         mitmdump(mitm_args + extra_args)
     finally:
+        os.remove(pid_filename)
+
         if config["os"]["proxy-settings"] and is_sudo:
             proxyswitch.disable()
