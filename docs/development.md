@@ -9,7 +9,7 @@ Mastermind uses a couple of tools to assist development.  The main ones are
 First install and setup virtualenv:
 
 ```sh
-make meta
+make meta env
 ```
 
 Then install Mastermind dependencies:

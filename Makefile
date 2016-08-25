@@ -20,8 +20,11 @@ clean:
 
 meta:
 	pip install virtualenv
-	virtualenv $(ENV) --always-copy
 .PHONY: meta
+
+env:
+	virtualenv $(ENV) --always-copy
+.PHONY: env
 
 install:
 	. $(ENV)/bin/activate && pip install -r requirements.txt
