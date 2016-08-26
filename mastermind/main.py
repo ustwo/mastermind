@@ -3,7 +3,7 @@ from itertools import repeat
 from mitmproxy.main import mitmdump
 import os
 
-from . import (cli, proxyswitch, say)
+from . import (cli, proxyswitch, say, pid)
 
 def main():
     parser = cli.args()
@@ -26,7 +26,7 @@ def main():
 
     host= config["core"]["host"]
     port = config["core"]["port"]
-    pid_filename = "/var/tmp/mastermind.{}{}.pid".format(host.replace('.', ''), port)
+    pid_filename = pid.filename(host, port)
 
     try:
         if config["os"]["proxy-settings"]:
@@ -35,12 +35,11 @@ def main():
 
             proxyswitch.enable(host, str(port))
 
-        with open(pid_filename, "w") as f:
-            f.write(str(os.getpid()))
+        pid.create(pid_filename)
 
         mitmdump(mitm_args + extra_args)
     finally:
-        os.remove(pid_filename)
+        pid.remove(pid_filename)
 
         if config["os"]["proxy-settings"] and is_sudo:
             proxyswitch.disable()
