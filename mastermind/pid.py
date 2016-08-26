@@ -20,3 +20,10 @@ def read(pid_filename):
 
 def remove(pid_filename):
     return os.remove(pid_filename)
+
+
+def message(host, port):
+    try:
+        return read(filename(host, port))
+    except IOError:
+        return "-1"

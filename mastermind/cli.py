@@ -17,6 +17,10 @@ def args():
                         action="version",
                         version="%(prog)s" + " " + version.VERSION)
 
+    parser.add_argument("--pid",
+                        action="store_true",
+                        help = "Returns the PID for the given host and port")
+
     driver = parser.add_argument_group("Driver")
     single = parser.add_argument_group("Single")
     script = parser.add_argument_group("Script")

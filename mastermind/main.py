@@ -18,15 +18,18 @@ def main():
 
     mitm_args = cli.mitm_args(config)
     is_sudo = os.getuid() == 0
+    host= config["core"]["host"]
+    port = config["core"]["port"]
+    pid_filename = pid.filename(host, port)
+
+    if args.pid:
+        parser.exit(message=pid.message(host, port))
 
     if type(mitm_args) == Exception:
         parser.error(mitm_args.message)
 
     say.level(config["core"]["verbose"])
 
-    host= config["core"]["host"]
-    port = config["core"]["port"]
-    pid_filename = pid.filename(host, port)
 
     try:
         if config["os"]["proxy-settings"]:
