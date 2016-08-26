@@ -188,7 +188,7 @@ def driver_mode(config):
     if not os.path.isdir(storage_path()):
         os.makedirs(storage_path())
 
-    script_path_template = "{}/scripts/flasked.py {} {}"
+    script_path_template = "{}/scripts/flasked.py {} {} {} {}"
     script_path = os.path.dirname(os.path.realpath(__file__))
     if getattr(sys, 'frozen', False):
         script_path = sys._MEIPASS
@@ -196,7 +196,9 @@ def driver_mode(config):
     return common_args(config) + ["--script",
                                   script_path_template.format(script_path,
                                                               config["core"]["source-dir"],
-                                                              config["core"]["storage-dir"])] + verbosity_args(config)
+                                                              config["core"]["storage-dir"],
+                                                              config["core"]["host"],
+                                                              config["core"]["port"])] + verbosity_args(config)
 ##
 # Args used in all modes
 def common_args(config):

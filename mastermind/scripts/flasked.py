@@ -12,6 +12,8 @@ def response(context, flow):
 def start(context, argv):
     context.source_dir = argv[1]
     context.storage_dir = argv[2]
+    context.host = argv[3]
+    context.port = argv[4]
 
     driver.register(context)
 
