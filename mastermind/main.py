@@ -35,7 +35,7 @@ def main():
 
             proxyswitch.enable(host, str(port))
 
-        pid.create(pid_filename)
+        pid.create(pid_filename, pid.get())
 
         mitmdump(mitm_args + extra_args)
     finally:
