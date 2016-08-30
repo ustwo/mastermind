@@ -210,8 +210,10 @@ def common_args(config):
 # Verbosity is splitted in (3, 3), the first set mastermind's verbosity, the
 # second mitmproxy's.
 def verbosity_args(config):
-    if config["core"]["verbose"] <= 3:
+    verbose = config["core"]["verbose"]
+
+    if verbose <= 3:
         return ["--quiet"]
 
-    if config["core"]["verbose"] > 3:
-        return list(repeat("-v", config["core"]["verbose"] - 3))
+    else:
+        return list(repeat("-v", verbose - 3 if verbose <= 6 else 3))

@@ -107,6 +107,12 @@ def test_verbosity_6():
 
     assert cli.verbosity_args(config) == ["-v", "-v", "-v"]
 
+def test_verbosity_out_of_bounds():
+    args = cli.args().parse_args(['-vvvvvvv'])
+    config = cli.config(args)
+
+    assert cli.verbosity_args(config) == ["-v", "-v", "-v"]
+
 
 def test_valid_driver_mode_config_file():
     base_path = cli.base_path()
