@@ -4,6 +4,7 @@ from flask import Flask, jsonify, request
 from tinydb import TinyDB, where
 
 from .say import logger
+from . import pid
 
 class Driver:
     '''
@@ -14,6 +15,8 @@ class Driver:
     base_path = None
     storage_path = None
     db = None
+    proxy_host = None
+    proxy_port = None
 
     def storage(self, storage_path):
         self.storage_path = storage_path
@@ -60,6 +63,8 @@ driver = Driver()
 def register(context):
     driver.root(context.source_dir)
     driver.storage(context.storage_dir)
+    driver.proxy_host = context.host
+    driver.proxy_port = context.port
     context.app_registry.add(app, driver_host, driver_port)
     return context
 
@@ -72,6 +77,10 @@ def index(path):
                               "stop": "/stop/",
                               "state": "/state/",
                               "exceptions": "/{ruleset}/exceptions/"}})
+
+@app.route('/pid/')
+def pid_number():
+    return pid.message(driver.proxy_host, driver.proxy_port)
 
 @app.route('/state/')
 def state():

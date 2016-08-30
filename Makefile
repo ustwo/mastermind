@@ -115,6 +115,7 @@ test: docker-test
 
 raw-test: clean
 	py.test -v test
+	rm -rf /var/tmp/mastermind*
 .PHONY: raw-test
 
 include tasks/*.mk

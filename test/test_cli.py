@@ -55,7 +55,7 @@ def test_valid_driver_mode():
     assert cli.driver_mode(config) == ["--host",
                                        "--port", "8080",
                                        "--bind-address", "0.0.0.0",
-                                       "--script", "{}/scripts/flasked.py /foo/bar {}".format(base_path, storage_path),
+                                       "--script", "{}/scripts/flasked.py /foo/bar {} 0.0.0.0 8080".format(base_path, storage_path),
                                        "--quiet"]
 
 def test_unexpected_flags_driver_mode():
@@ -107,6 +107,12 @@ def test_verbosity_6():
 
     assert cli.verbosity_args(config) == ["-v", "-v", "-v"]
 
+def test_verbosity_out_of_bounds():
+    args = cli.args().parse_args(['-vvvvvvv'])
+    config = cli.config(args)
+
+    assert cli.verbosity_args(config) == ["-v", "-v", "-v"]
+
 
 def test_valid_driver_mode_config_file():
     base_path = cli.base_path()
@@ -117,7 +123,7 @@ def test_valid_driver_mode_config_file():
     assert cli.driver_mode(config) == ["--host",
                                        "--port", "8080",
                                        "--bind-address", "0.0.0.0",
-                                       "--script", "{}/scripts/flasked.py ./test/records {}".format(base_path, storage_path),
+                                       "--script", "{}/scripts/flasked.py ./test/records {} 0.0.0.0 8080".format(base_path, storage_path),
                                        "--quiet"]
 
 def test_valid_config_file_with_overwrites():

@@ -1,6 +1,7 @@
 Flask<0.11,>=0.10.1
 PyInstaller==3.1
 coloredlogs==5.0
+hypothesis==3.4
 jsonschema==2.5
 mitmproxy==0.17
 pyYAML==3.11

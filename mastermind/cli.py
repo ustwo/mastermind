@@ -17,6 +17,10 @@ def args():
                         action="version",
                         version="%(prog)s" + " " + version.VERSION)
 
+    parser.add_argument("--pid",
+                        action="store_true",
+                        help = "Returns the PID for the given host and port")
+
     driver = parser.add_argument_group("Driver")
     single = parser.add_argument_group("Single")
     script = parser.add_argument_group("Script")
@@ -184,7 +188,7 @@ def driver_mode(config):
     if not os.path.isdir(storage_path()):
         os.makedirs(storage_path())
 
-    script_path_template = "{}/scripts/flasked.py {} {}"
+    script_path_template = "{}/scripts/flasked.py {} {} {} {}"
     script_path = os.path.dirname(os.path.realpath(__file__))
     if getattr(sys, 'frozen', False):
         script_path = sys._MEIPASS
@@ -192,7 +196,9 @@ def driver_mode(config):
     return common_args(config) + ["--script",
                                   script_path_template.format(script_path,
                                                               config["core"]["source-dir"],
-                                                              config["core"]["storage-dir"])] + verbosity_args(config)
+                                                              config["core"]["storage-dir"],
+                                                              config["core"]["host"],
+                                                              config["core"]["port"])] + verbosity_args(config)
 ##
 # Args used in all modes
 def common_args(config):
@@ -204,8 +210,10 @@ def common_args(config):
 # Verbosity is splitted in (3, 3), the first set mastermind's verbosity, the
 # second mitmproxy's.
 def verbosity_args(config):
-    if config["core"]["verbose"] <= 3:
+    verbose = config["core"]["verbose"]
+
+    if verbose <= 3:
         return ["--quiet"]
 
-    if config["core"]["verbose"] > 3:
-        return list(repeat("-v", config["core"]["verbose"] - 3))
+    else:
+        return list(repeat("-v", verbose - 3 if verbose <= 6 else 3))
