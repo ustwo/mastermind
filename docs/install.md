@@ -26,7 +26,7 @@ To upgrade just `brew update` and `brew upgrade mastermind`.
 * `xcode-select --install` if you use OSX.
 
 ```sh
-pip install "git+https://github.com/ustwo/mastermind.git@v0.9.0#egg=mastermind"
+pip install "git+https://github.com/ustwo/mastermind.git@v1.0.0#egg=mastermind"
 ```
 
 

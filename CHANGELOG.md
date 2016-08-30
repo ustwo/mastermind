@@ -1,9 +1,15 @@
 # Changelog
 
-## Next
+## 1.0.0
 
+* Add PID handling via CLI and endpoint `/pid/`.
+* Upgrade to mitmproxy 0.17.
+* Prevent `--proxy-settings` on non-darwin OS.
+* Avoid incompatibilities with setuptools and PyInstaller by pinning versions.
 * Improve tests for the cli module that interacts with mitmproxy.
 * Guard against non-sudo when proxy-settings is enabled.
+* Fix unsorted querystring pairs
+* Fix unwanted cached Headers.
 
 ## 1.0.0-beta3
 
