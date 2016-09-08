@@ -118,4 +118,7 @@ raw-test: clean
 	rm -rf /var/tmp/mastermind*
 .PHONY: raw-test
 
+lint:
+	flake8 --jobs 8 --count mastermind test
+
 include tasks/*.mk

@@ -1,5 +1,7 @@
-import pytest
-from mastermind.networksetup import *
+from mastermind.networksetup import (service_map,
+                                     webproxy_record,
+                                     is_proxy_enabled)
+
 
 def test_service_map():
     mock_service_order = """An asterisk (*) denotes that a network service is disabled.
@@ -33,12 +35,14 @@ def test_service_map():
 (10) frootvpn (us)
 (Hardware Port: PPTP, Device: )"""
 
-    assert service_map(mock_service_order) == [('Bluetooth DUN', 'Bluetooth-Modem'),
-                                               ('Thunderbolt Ethernet', 'en3'),
-                                               ('Wi-Fi', 'en0'),
-                                               ('AirCard 782S', 'en5'),
-                                               ('Bluetooth PAN', 'en4'),
-                                               ('Thunderbolt Bridge', 'bridge0')]
+    expected = [('Bluetooth DUN', 'Bluetooth-Modem'),
+                ('Thunderbolt Ethernet', 'en3'),
+                ('Wi-Fi', 'en0'),
+                ('AirCard 782S', 'en5'),
+                ('Bluetooth PAN', 'en4'),
+                ('Thunderbolt Bridge', 'bridge0')]
+
+    assert service_map(mock_service_order) == expected
 
 
 def test_webproxy_record():
@@ -46,11 +50,13 @@ def test_webproxy_record():
 Server: 127.0.0.1
 Port: 8080
 Authenticated Proxy Enabled: 0"""
+    expected = {'Authenticated Proxy Enabled': '0',
+                'Enabled': 'No',
+                'Port': '8080',
+                'Server': '127.0.0.1'}
 
-    assert webproxy_record(mock_raw_record) == {'Authenticated Proxy Enabled': '0',
-                                                'Enabled': 'No',
-                                                'Port': '8080',
-                                                'Server': '127.0.0.1'}
+    assert webproxy_record(mock_raw_record) == expected
+
 
 def test_is_proxy_enabled():
     mock_record_disabled = {'Authenticated Proxy Enabled': '0',
@@ -61,5 +67,5 @@ def test_is_proxy_enabled():
                            'Enabled': 'Yes',
                            'Port': '8080',
                            'Server': '127.0.0.1'}
-    assert is_proxy_enabled(mock_record_disabled) == False
-    assert is_proxy_enabled(mock_record_enabled) == True
+    assert is_proxy_enabled(mock_record_disabled) is False
+    assert is_proxy_enabled(mock_record_enabled) is True

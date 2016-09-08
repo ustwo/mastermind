@@ -58,5 +58,11 @@ make docker-test
 ```
 
 
+## Style/Linting
+
+If you do a pull request, please follow the PEP8 guidelines.  If you want
+to check your code prior opening it, run `make lint`.
+
+
 [virtualenv]: https://pypi.python.org/pypi/virtualenv
 [docker]: https://docker.com

@@ -1,8 +1,6 @@
 from __future__ import (absolute_import, print_function, division)
 from jsonschema import Draft4Validator, exceptions
-import os
 import datetime
-import yaml
 
 from .say import logger
 
@@ -10,12 +8,14 @@ from .say import logger
 def check(instance, schema):
     v = Draft4Validator(schema)
     timestamp = datetime.datetime.utcnow().isoformat()
-    errors = [to_hashmap(x, timestamp) for x in sorted(v.iter_errors(instance),
-                                                       key=exceptions.relevance)]
+    errors = [to_hashmap(x, timestamp) for x
+              in sorted(v.iter_errors(instance), key=exceptions.relevance)]
 
-    if len(errors) > 0: logger.warning(errors)
+    if len(errors) > 0:
+        logger.warning(errors)
 
     return errors
+
 
 def is_valid(instance, schema):
     return len(check(instance, schema)) == 0
@@ -28,6 +28,7 @@ def to_hashmap(item, timestamp):
             "cause": item.cause,
             "schema_path": list(item.schema_path),
             "path": list(item.absolute_path)}
+
 
 rule_schema = {
   "$schema": "http://json-schema.org/draft-04/schema#",
@@ -46,7 +47,8 @@ rule_schema = {
       "id": "url",
       "type": "string",
       "title": "The URL or URL pattern to match against",
-      "description": "The main identifier for a rule.  This value will be used in the request matching process",
+      "description": "The main identifier for a rule." +
+                     "This value will be used in the request matching process",
       "name": "url"
     },
     "method": {

@@ -1,9 +1,10 @@
 from __future__ import (absolute_import, print_function, division)
-from itertools import repeat
 from mitmproxy.main import mitmdump
 import os
+import pytoml as toml
 
 from . import (cli, proxyswitch, say, pid)
+
 
 def main():
     parser = cli.args()
@@ -18,7 +19,7 @@ def main():
 
     mitm_args = cli.mitm_args(config)
     is_sudo = os.getuid() == 0
-    host= config["core"]["host"]
+    host = config["core"]["host"]
     port = config["core"]["port"]
     pid_filename = pid.filename(host, port)
 
@@ -30,11 +31,12 @@ def main():
 
     say.level(config["core"]["verbose"])
 
-
     try:
         if config["os"]["proxy-settings"]:
             if not is_sudo:
-                parser.error("proxy-settings is enabled, please provide sudo in order to change the OSX proxy configuration.")
+                parser.error("proxy-settings is enabled," +
+                             "please provide sudo in order to change the" +
+                             "OSX proxy configuration.")
 
             proxyswitch.enable(host, str(port))
 

@@ -1,5 +1,6 @@
 import os
 
+
 def filename(host, port):
     return "/var/tmp/mastermind.{}{}.pid".format(host.replace('.', ''), port)
 
