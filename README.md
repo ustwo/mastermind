@@ -25,6 +25,12 @@ only when the proxy is running.
 * [Changelog](./CHANGELOG.md)
 
 
+## Community
+
+Join our [Slack team](https://webtask.it.auth0.com/api/run/wt-arnau-ustwo_com-0/mastermindmitm-signup)
+to discuss on new features or get help.
+
+
 ## Contributing
 
 Check our [contributing guidelines](./.github/CONTRIBUTING.md)
