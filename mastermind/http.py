@@ -1,6 +1,7 @@
 from __future__ import (absolute_import, print_function, division)
 from mitmproxy.models import Headers, HTTPResponse
 
+
 status_codes = {100: 'Continue',
                 101: 'Switching Protocols',
                 200: 'OK',
@@ -42,8 +43,10 @@ status_codes = {100: 'Continue',
                 504: 'Gateway Timeout',
                 505: 'HTTP Version Not Supported'}
 
+
 def status_message(code):
     return status_codes[code]
+
 
 def response(code, body=b'', headers=None):
     # http://docs.python-guide.org/en/latest/writing/gotchas/#mutable-default-arguments

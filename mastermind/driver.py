@@ -1,16 +1,18 @@
 from __future__ import (absolute_import, print_function, division)
 import os
 from flask import Flask, jsonify, request
-from tinydb import TinyDB, where
+from tinydb import TinyDB
 
 from .say import logger
 from . import pid
 
+
 class Driver:
-    '''
+    """
         Holds the driver state so the flasked script can change behaviour based
         on what the user injects via HTTP
-    '''
+    """
+
     name = None
     base_path = None
     storage_path = None
@@ -29,7 +31,8 @@ class Driver:
                                 "{}.yaml".format(name))
 
         if not os.path.exists(filename):
-            return {"state": "error", "message": "Ruleset {} not found".format(filename)}
+            return {"state": "error",
+                    "message": "Ruleset {} not found".format(filename)}
 
         self.name = name
         self.db = TinyDB(os.path.join(self.storage_path,
@@ -38,7 +41,7 @@ class Driver:
         return {"ruleset": self.name, "state": "started"}
 
     def stop(self):
-        if self.name == None:
+        if self.name is None:
             return {"ruleset": None, "state": None}
 
         message = {"ruleset": self.name, "state": "stopped"}
@@ -48,10 +51,11 @@ class Driver:
         return message
 
     def state(self):
-        if self.name == None:
+        if self.name is None:
             return {"ruleset": None, "state": None}
 
         return {"ruleset": self.name, "state": "running"}
+
 
 driver_host = "proxapp"
 driver_port = 5000
@@ -59,6 +63,7 @@ driver_endpoint = "http://{}:{}".format(driver_host, driver_port)
 app = Flask(driver_host)
 app.host = '127.0.0.1'
 driver = Driver()
+
 
 def register(context):
     driver.root(context.source_dir)
@@ -68,8 +73,10 @@ def register(context):
     context.app_registry.add(app, driver_host, driver_port)
     return context
 
+
 # Links use https://tools.ietf.org/html/rfc6570 URI templates
 # The data structure is close to JSON API http://jsonapi.org/
+
 @app.route('/', defaults={"path": ""})
 @app.route('/<path:path>/')
 def index(path):
@@ -78,9 +85,11 @@ def index(path):
                               "state": "/state/",
                               "exceptions": "/{ruleset}/exceptions/"}})
 
+
 @app.route('/pid/')
 def pid_number():
     return pid.message(driver.proxy_host, driver.proxy_port)
+
 
 @app.route('/state/')
 def state():
@@ -88,11 +97,13 @@ def state():
     logger.info(message)
     return jsonify(message)
 
+
 @app.route('/stop/')
 def stop_driver():
     message = driver.stop()
     logger.info(message)
     return jsonify(message)
+
 
 @app.route('/<ruleset>/start/')
 def start_driver(ruleset):
@@ -100,20 +111,24 @@ def start_driver(ruleset):
     logger.info(message)
     return jsonify(message)
 
+
 @app.route('/<ruleset>/exceptions/')
 def exceptions(ruleset):
     message = driver.start(ruleset)
     uri = request.args.get('uri')
 
-    if not driver.name: return jsonify(message)
+    if not driver.name:
+        return jsonify(message)
+
     if not uri:
         result = {"exceptions": [],
-               "ruleset": ruleset}
+                  "ruleset": ruleset}
         tables = driver.db.tables()
         tables.remove("_default")
         for table in list(tables):
             data = driver.db.table(table).all()
             result['exceptions'].append({table: data})
+
         return jsonify(result)
 
     table = driver.db.table(uri)

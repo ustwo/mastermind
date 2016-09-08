@@ -1,6 +1,7 @@
 from __future__ import (absolute_import, print_function, division)
 from mitmproxy.models import decoded
 
+
 def response(context, flow):
     if flow.request.url == context.url:
         flow.request.headers['Cache-Control'] = 'no-cache'
@@ -14,6 +15,7 @@ def response(context, flow):
         with decoded(flow.response):
             data = open(context.filepath).read()
             flow.response.content = data
+
 
 def start(context, argv):
     context.url = argv[1]

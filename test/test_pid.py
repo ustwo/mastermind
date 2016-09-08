@@ -1,5 +1,6 @@
 import mastermind.pid as pid
 
+
 def test_pidfile_read():
     id = 1
     filename = pid.filename('0', 0)

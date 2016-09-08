@@ -1,10 +1,9 @@
-import pytest
-import mastermind.rules as r
 import mastermind.validator as v
-import os
+
 
 rule_schema = v.rule_schema
 ruleset_schema = v.ruleset_schema
+
 
 ruleset = [
     {'url': 'http://example.org/'},
@@ -22,7 +21,7 @@ ruleset = [
      'response': {'delay': 5}},
     {'url': 'http://example.org/',
      'response': {'headers': {'add': {'foo': 'bar'},
-                             'remove': ['foo']}}},
+                              'remove': ['foo']}}},
     {'url': 'http://example.org/',
      'request': {'headers': {'add': {'foo': 'bar'},
                              'remove': ['foo']}}}
@@ -32,6 +31,7 @@ ruleset = [
 def test_validate_rule():
     for rule in ruleset:
         assert v.is_valid(rule, rule_schema)
+
 
 def test_validate_ruleset():
     assert v.is_valid([], ruleset_schema)

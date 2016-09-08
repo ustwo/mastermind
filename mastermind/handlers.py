@@ -7,6 +7,7 @@ from . import (http, rules, validator)
 from .driver import driver
 from .say import logger
 
+
 def request(context, flow):
     flow.mastermind = {"rule": None}
 
@@ -21,7 +22,8 @@ def request(context, flow):
         rule = rules.head(filtered_rules)
 
         if len(filtered_rules) > 1:
-            context.log("Too many rules: {}".format(map(rules.url, filtered_rules)))
+            context.log("Too many rules: {}".format(
+                map(rules.url, filtered_rules)))
 
         if rule:
             flow.mastermind['rule'] = rule
@@ -40,7 +42,8 @@ def response(context, flow):
         rule = flow.mastermind['rule']
         if rule:
             delay = rules.delay(rule)
-            if delay: time.sleep(delay)
+            if delay:
+                time.sleep(delay)
 
             with decoded(flow.response):
                 status_code = rules.status_code(rule)
@@ -56,15 +59,14 @@ def response(context, flow):
 
                 if schema:
                     table = driver.db.table(flow.request.url)
-                    schema_result = validator.check(yaml.safe_load(flow.response.content),
-                                                    schema)
+                    res = yaml.safe_load(flow.response.content)
+                    schema_result = validator.check(res, schema)
                     table.insert_multiple(schema_result)
                     logger.info(schema_result)
 
                 rules.process_headers('response',
                                       rule,
                                       flow.response.headers)
-
 
                 if body_filename:
                     # 204 might be set by the skip rule in the request hook

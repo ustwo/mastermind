@@ -9,18 +9,22 @@ def test_valid_simple_mode():
     args = cli.args().parse_args(['--url', 'http://localhost',
                                   '--response-body', './foo.json'])
     config = cli.config(args)
+    expected = ["--host",
+                "--port", "8080",
+                "--bind-address", "0.0.0.0",
+                "--script", "{}/scripts/simple.py".format(base_path) +
+                            " http://localhost ./foo.json",
+                "--quiet"]
 
-    assert cli.simple_mode(config) == ["--host",
-                                       "--port", "8080",
-                                       "--bind-address", "0.0.0.0",
-                                       "--script", "{}/scripts/simple.py http://localhost ./foo.json".format(base_path),
-                                       "--quiet"]
+    assert cli.simple_mode(config) == expected
+
 
 def test_no_url_simple_mode():
     args = cli.args().parse_args(['--response-body', './foo.json'])
     config = cli.config(args)
 
     assert type(cli.simple_mode(config)) == Exception
+
 
 def test_no_response_body_simple_mode():
     args = cli.args().parse_args(['--url', 'http://localhost'])
@@ -39,6 +43,7 @@ def test_valid_script_mode():
                                        "--script", "/foo.py bar",
                                        "--quiet"]
 
+
 def test_unexpected_flags_script_mode():
     args = cli.args().parse_args(['--url', 'http://localhost'])
     config = cli.config(args)
@@ -51,12 +56,15 @@ def test_valid_driver_mode():
     storage_path = cli.storage_path()
     args = cli.args().parse_args(['--source-dir', '/foo/bar'])
     config = cli.config(args)
+    expected = ["--host",
+                "--port", "8080",
+                "--bind-address", "0.0.0.0",
+                "--script", "{}/scripts/flasked.py".format(base_path) +
+                            " /foo/bar {} 0.0.0.0 8080".format(storage_path),
+                "--quiet"]
 
-    assert cli.driver_mode(config) == ["--host",
-                                       "--port", "8080",
-                                       "--bind-address", "0.0.0.0",
-                                       "--script", "{}/scripts/flasked.py /foo/bar {} 0.0.0.0 8080".format(base_path, storage_path),
-                                       "--quiet"]
+    assert cli.driver_mode(config) == expected
+
 
 def test_unexpected_flags_driver_mode():
     args = cli.args().parse_args(['--url', 'http://localhost'])
@@ -71,11 +79,13 @@ def test_verbosity_quiet():
 
     assert cli.verbosity_args(config) == ["--quiet"]
 
+
 def test_verbosity_1():
     args = cli.args().parse_args(['-v'])
     config = cli.config(args)
 
     assert cli.verbosity_args(config) == ["--quiet"]
+
 
 def test_verbosity_2():
     args = cli.args().parse_args(['-vv'])
@@ -83,11 +93,13 @@ def test_verbosity_2():
 
     assert cli.verbosity_args(config) == ["--quiet"]
 
+
 def test_verbosity_3():
     args = cli.args().parse_args(['-vvv'])
     config = cli.config(args)
 
     assert cli.verbosity_args(config) == ["--quiet"]
+
 
 def test_verbosity_4():
     args = cli.args().parse_args(['-vvvv'])
@@ -95,17 +107,20 @@ def test_verbosity_4():
 
     assert cli.verbosity_args(config) == ["-v"]
 
+
 def test_verbosity_5():
     args = cli.args().parse_args(['-vvvvv'])
     config = cli.config(args)
 
     assert cli.verbosity_args(config) == ["-v", "-v"]
 
+
 def test_verbosity_6():
     args = cli.args().parse_args(['-vvvvvv'])
     config = cli.config(args)
 
     assert cli.verbosity_args(config) == ["-v", "-v", "-v"]
+
 
 def test_verbosity_out_of_bounds():
     args = cli.args().parse_args(['-vvvvvvv'])
@@ -119,16 +134,18 @@ def test_valid_driver_mode_config_file():
     storage_path = cli.storage_path()
     args = cli.args().parse_args(['--config', 'test/fixtures/simple.toml'])
     config = cli.config(args)
+    expected = [
+        "--host",
+        "--port", "8080",
+        "--bind-address", "0.0.0.0",
+        "--script", "{}/scripts/flasked.py".format(base_path) +
+                    " ./test/records {} 0.0.0.0 8080".format(storage_path),
+        "--quiet"]
 
-    assert cli.driver_mode(config) == ["--host",
-                                       "--port", "8080",
-                                       "--bind-address", "0.0.0.0",
-                                       "--script", "{}/scripts/flasked.py ./test/records {} 0.0.0.0 8080".format(base_path, storage_path),
-                                       "--quiet"]
+    assert cli.driver_mode(config) == expected
+
 
 def test_valid_config_file_with_overwrites():
-    base_path = cli.base_path()
-    storage_path = cli.storage_path()
     args = cli.args().parse_args(['--config', 'test/fixtures/simple.toml',
                                   '--source-dir', 'foo/bar',
                                   '-vvv',
@@ -144,22 +161,22 @@ def test_valid_config_file_with_overwrites():
 
     assert cli.config(args) == expected
 
+
 def test_valid_missing_config_file():
-    base_path = cli.base_path()
     args = cli.args().parse_args(['--config', 'fixtures/simple.toml'])
     with pytest.raises(IOError):
         cli.config(args)
 
+
 if sys.platform != "darwin":
     def test_proxy_settings_not_osx():
-        base_path = cli.base_path()
-        args = cli.args().parse_args(['--config', 'test/fixtures/proxy-on.toml'])
+        args = cli.args().parse_args(['--config',
+                                      'test/fixtures/proxy-on.toml'])
         with pytest.raises(StandardError):
             cli.config(args)
 
 
 def test_config_file_defaults():
-    base_path = cli.base_path()
     args = cli.args().parse_args(['--config', 'test/fixtures/simple.toml'])
     expected = {
         "core": {"host": "0.0.0.0",
